@@ -1,0 +1,769 @@
+{
+ "version": 1,
+ "count": 53,
+ "modes": {
+  "dark-chrome": "dark gradient backdrop + dark glass chrome + light glass panel (lagoon / indigo style)",
+  "light": "light backdrop + light chrome + white glass (opaline style)",
+  "dark": "everything dark, accent glows (graphite style)"
+ },
+ "groups": [
+  {
+   "id": "minimal-neutral",
+   "name": "Minimal & neutral",
+   "palettes": [
+    {
+     "id": 1,
+     "name": "Ink wash",
+     "colors": [
+      "#252525",
+      "#CFCFCF",
+      "#7D7D7D",
+      "#545454"
+     ],
+     "mode": "dark",
+     "use_for": "monochrome dev tools, logs, admin consoles",
+     "closest_theme": "graphite"
+    },
+    {
+     "id": 2,
+     "name": "Neutral elegance",
+     "colors": [
+      "#FFDBBB",
+      "#CCBEB1",
+      "#997E67",
+      "#664930"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "boutique retail, interiors, beauty",
+     "closest_theme": "terracotta"
+    },
+    {
+     "id": 3,
+     "name": "Jade pebble morning",
+     "colors": [
+      "#7B9669",
+      "#E6E6E6",
+      "#6C8480",
+      "#BAC8B1",
+      "#404E3B"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "wellness, agriculture, ESG reporting",
+     "closest_theme": "evergreen"
+    },
+    {
+     "id": 4,
+     "name": "Woodland",
+     "colors": [
+      "#9F7560",
+      "#9E9E9E",
+      "#AAD31E",
+      "#D4AF9F",
+      "#525034"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "outdoor, garden centre, field ops",
+     "closest_theme": "evergreen"
+    },
+    {
+     "id": 5,
+     "name": "Driftwood pearl morning",
+     "colors": [
+      "#BC7B6F",
+      "#5A322A",
+      "#E4A499",
+      "#718A9E",
+      "#CCCDC7"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "hospitality, spa bookings, lifestyle",
+     "closest_theme": "terracotta"
+    },
+    {
+     "id": 6,
+     "name": "Graphite",
+     "colors": [
+      "#C1C0C2",
+      "#F5E9E7",
+      "#837D68",
+      "#8A9DB1",
+      "#ECC5C6"
+     ],
+     "mode": "light",
+     "use_for": "personal finance, journaling, calm consumer apps",
+     "closest_theme": "opaline"
+    },
+    {
+     "id": 7,
+     "name": "Urban slate",
+     "colors": [
+      "#E9E6E7",
+      "#5E5653",
+      "#7B7F8A",
+      "#AB978C",
+      "#6B7C98"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "real estate, architecture, B2B services",
+     "closest_theme": "marina"
+    },
+    {
+     "id": 8,
+     "name": "Pearl",
+     "colors": [
+      "#E9E3DE",
+      "#A5937B",
+      "#E3C49B",
+      "#666161",
+      "#AF9AC9"
+     ],
+     "mode": "light",
+     "use_for": "fashion, events, wedding planning",
+     "closest_theme": "opaline"
+    },
+    {
+     "id": 9,
+     "name": "Vichy",
+     "colors": [
+      "#BBBFBF",
+      "#878787",
+      "#05AD98",
+      "#FFFFFF"
+     ],
+     "mode": "light",
+     "use_for": "clinics, health records, scheduling",
+     "closest_theme": "opaline"
+    },
+    {
+     "id": 10,
+     "name": "Sorbet",
+     "colors": [
+      "#CCCCCC",
+      "#EDECEC",
+      "#B7C396",
+      "#FEFEFE",
+      "#E0E7D7",
+      "#BA9A91"
+     ],
+     "mode": "light",
+     "use_for": "food delivery, recipes, grocery",
+     "closest_theme": "opaline"
+    },
+    {
+     "id": 11,
+     "name": "Frozen mist",
+     "colors": [
+      "#7C7D75",
+      "#ADACA7",
+      "#FCF8D8",
+      "#D9DADF",
+      "#DD700B"
+     ],
+     "mode": "light",
+     "use_for": "IoT / energy monitoring, industrial",
+     "closest_theme": "opaline"
+    },
+    {
+     "id": 12,
+     "name": "Yacht club",
+     "colors": [
+      "#F2F0EF",
+      "#BBBDBC",
+      "#245F73",
+      "#733E24"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "marine, travel, private banking",
+     "closest_theme": "marina"
+    }
+   ]
+  },
+  {
+   "id": "warm",
+   "name": "Warm",
+   "palettes": [
+    {
+     "id": 13,
+     "name": "Amber walnut morning",
+     "colors": [
+      "#EBEFEE",
+      "#CCB499",
+      "#C8906D",
+      "#BB6C43",
+      "#4A413C"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "coffee, bakery, craft e-commerce",
+     "closest_theme": "terracotta"
+    },
+    {
+     "id": 14,
+     "name": "Copper aquamarine dream",
+     "colors": [
+      "#DCAA89",
+      "#30525C",
+      "#C35627",
+      "#D6794D",
+      "#4C848D",
+      "#BFB9B5"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "travel, hotels, tourism boards",
+     "closest_theme": "terracotta"
+    },
+    {
+     "id": 15,
+     "name": "Cocoa topaz noonday",
+     "colors": [
+      "#742F14",
+      "#5A84AC",
+      "#C7AC9F",
+      "#FC9C44",
+      "#5C3C2C"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "logistics, freight, warehouse",
+     "closest_theme": "terracotta"
+    },
+    {
+     "id": 16,
+     "name": "Sandstone aquamarine serenity",
+     "colors": [
+      "#BC6C50",
+      "#304C53",
+      "#DDAD9C",
+      "#5A2F25",
+      "#AFE0E7"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "property management, resorts",
+     "closest_theme": "terracotta"
+    },
+    {
+     "id": 17,
+     "name": "Honey opal sunset",
+     "colors": [
+      "#ECB914",
+      "#F6D579",
+      "#9D8108",
+      "#CBB8A0",
+      "#4F3D35"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "education, kids, beekeeping / farm",
+     "closest_theme": "terracotta"
+    },
+    {
+     "id": 18,
+     "name": "Seashell garnet afternoon",
+     "colors": [
+      "#F6C992",
+      "#30525C",
+      "#ACC0D3",
+      "#D396A6",
+      "#09A1A1",
+      "#5484A4"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "community, non-profit, events",
+     "closest_theme": "marina"
+    },
+    {
+     "id": 19,
+     "name": "Rose quartz evening",
+     "colors": [
+      "#64242F",
+      "#B44446",
+      "#FC8F8F",
+      "#DFD9D8"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "wine, restaurants, dating, beauty",
+     "closest_theme": "terracotta"
+    },
+    {
+     "id": 20,
+     "name": "Calcite",
+     "colors": [
+      "#DDDCDB",
+      "#FD7B41",
+      "#EDBF9B",
+      "#3C4044"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "fitness, sports clubs, coaching",
+     "closest_theme": "opaline"
+    },
+    {
+     "id": 21,
+     "name": "Fireside",
+     "colors": [
+      "#E76814",
+      "#D8D4BC",
+      "#891A10",
+      "#DC8236",
+      "#B8210F",
+      "#714236"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "restaurants, kitchens, food ops",
+     "closest_theme": "terracotta"
+    },
+    {
+     "id": 22,
+     "name": "Terrazzo",
+     "colors": [
+      "#EDBD95",
+      "#374F4E",
+      "#D1801E",
+      "#DACCC4",
+      "#AA8552"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "furniture, interiors, studios",
+     "closest_theme": "terracotta"
+    }
+   ]
+  },
+  {
+   "id": "cool",
+   "name": "Cool",
+   "palettes": [
+    {
+     "id": 23,
+     "name": "Sapphire nightfall whisper",
+     "colors": [
+      "#0474C4",
+      "#5379AE",
+      "#2C444C",
+      "#A8C4EC",
+      "#06457F",
+      "#262B40"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "banking, insurance, enterprise SaaS",
+     "closest_theme": "indigo"
+    },
+    {
+     "id": 24,
+     "name": "Lapis velvet evening",
+     "colors": [
+      "#213885",
+      "#ECDFD2",
+      "#5F3475",
+      "#081849",
+      "#CCCACC",
+      "#893172"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "luxury, wealth management, galleries",
+     "closest_theme": "lapis"
+    },
+    {
+     "id": 25,
+     "name": "Marina",
+     "colors": [
+      "#FFF1E7",
+      "#B5D2E6",
+      "#326080",
+      "#805232"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "maritime, travel, logistics",
+     "closest_theme": "marina"
+    },
+    {
+     "id": 26,
+     "name": "Emerald lavender lake",
+     "colors": [
+      "#248C54",
+      "#89618E",
+      "#95DCE4"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "climate, wellbeing, biotech",
+     "closest_theme": "evergreen"
+    },
+    {
+     "id": 27,
+     "name": "Sage peridot morning",
+     "colors": [
+      "#345C32",
+      "#9CAC54",
+      "#A7F0DD",
+      "#97CD97"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "agritech, sustainability, plant care",
+     "closest_theme": "evergreen"
+    },
+    {
+     "id": 28,
+     "name": "Amethyst dawn haze",
+     "colors": [
+      "#341C67",
+      "#472F5B",
+      "#C4AEF4",
+      "#CCA4B4",
+      "#DCCE40"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "creator tools, music, nightlife",
+     "closest_theme": "orchid"
+    },
+    {
+     "id": 29,
+     "name": "Moon dust",
+     "colors": [
+      "#D3D3FF",
+      "#CEB5FF",
+      "#8EC1DE",
+      "#80A8FF"
+     ],
+     "mode": "light",
+     "use_for": "productivity, notes, study apps",
+     "closest_theme": "orchid"
+    },
+    {
+     "id": 30,
+     "name": "Turquoise amber autumn",
+     "colors": [
+      "#304C64",
+      "#26788E",
+      "#A4CCD4",
+      "#E2480C",
+      "#631B08"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "operations centres, utilities, ops",
+     "closest_theme": "lagoon"
+    },
+    {
+     "id": 31,
+     "name": "Sapphire ash morning",
+     "colors": [
+      "#35627A",
+      "#E5AEA9",
+      "#B46258",
+      "#A6A9D0",
+      "#F5F5F5",
+      "#8E9A98"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "healthcare, HR, people analytics",
+     "closest_theme": "marina"
+    },
+    {
+     "id": 32,
+     "name": "Frosted aura",
+     "colors": [
+      "#5C7E8F",
+      "#A2A2A2",
+      "#D4DDE2",
+      "#FFFFFF"
+     ],
+     "mode": "light",
+     "use_for": "internal tools, documentation, settings",
+     "closest_theme": "opaline"
+    },
+    {
+     "id": 33,
+     "name": "Royal glimmer",
+     "colors": [
+      "#AD7C4B",
+      "#293C7C",
+      "#C7984F",
+      "#024944",
+      "#812B4A"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "private banking, legal, heritage brands",
+     "closest_theme": "lapis"
+    },
+    {
+     "id": 34,
+     "name": "Neptune",
+     "colors": [
+      "#8FD9FB",
+      "#4AB5B5",
+      "#6D8BC0",
+      "#525AFF"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "cloud, dev platforms, analytics",
+     "closest_theme": "lagoon"
+    }
+   ]
+  },
+  {
+   "id": "vivid",
+   "name": "Vivid & bold",
+   "palettes": [
+    {
+     "id": 35,
+     "name": "Tropical jade sunrise",
+     "colors": [
+      "#FCA47C",
+      "#23CED9",
+      "#F9D779",
+      "#A1CCA6",
+      "#097C87"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "travel deals, summer campaigns, leisure",
+     "closest_theme": "lagoon"
+    },
+    {
+     "id": 36,
+     "name": "Amethyst mint harmony",
+     "colors": [
+      "#2A3F38",
+      "#8DF688",
+      "#562F54",
+      "#57585D",
+      "#F650BD"
+     ],
+     "mode": "dark",
+     "use_for": "gaming, esports, streaming",
+     "closest_theme": "graphite"
+    },
+    {
+     "id": 37,
+     "name": "Hibiscus aura",
+     "colors": [
+      "#EA44D4",
+      "#DD3027",
+      "#733D6F",
+      "#5848B3"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "fashion drops, music, social",
+     "closest_theme": "orchid"
+    },
+    {
+     "id": 38,
+     "name": "Ocean ruby radiance",
+     "colors": [
+      "#D8226C",
+      "#B2DAE4",
+      "#F86A38",
+      "#029456",
+      "#005BB3"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "marketing, campaigns, media",
+     "closest_theme": "indigo"
+    },
+    {
+     "id": 39,
+     "name": "Tropical heat",
+     "colors": [
+      "#00CEC8",
+      "#FCEFC3",
+      "#FF9C5F",
+      "#EB4203"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "food delivery, quick commerce",
+     "closest_theme": "lagoon"
+    },
+    {
+     "id": 40,
+     "name": "Celestial",
+     "colors": [
+      "#2323FF",
+      "#807D52",
+      "#FFBD24",
+      "#FFF224"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "fintech, crypto, trading",
+     "closest_theme": "indigo"
+    },
+    {
+     "id": 41,
+     "name": "Festive eve",
+     "colors": [
+      "#2323FF",
+      "#24AEFF",
+      "#C04AFF",
+      "#7E3DFF"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "AI products, startups, launch dashboards",
+     "closest_theme": "orchid"
+    },
+    {
+     "id": 42,
+     "name": "Freshly squeezed",
+     "colors": [
+      "#FFBF00",
+      "#F2CF7E",
+      "#FFE642",
+      "#FF7900"
+     ],
+     "mode": "light",
+     "use_for": "kids, retail promos, juice / snack brands",
+     "closest_theme": "opaline"
+    },
+    {
+     "id": 43,
+     "name": "Jelly shoes",
+     "colors": [
+      "#E0AFFF",
+      "#C4D6FF",
+      "#DD68E3",
+      "#8866DE"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "creator economy, social, Gen-Z consumer",
+     "closest_theme": "orchid"
+    }
+   ]
+  },
+  {
+   "id": "modern",
+   "name": "Modern",
+   "palettes": [
+    {
+     "id": 44,
+     "name": "Opaline",
+     "colors": [
+      "#F4F4F6",
+      "#E7E7E7",
+      "#D2D2D4",
+      "#FF634A"
+     ],
+     "mode": "light",
+     "use_for": "SaaS settings, billing, minimal product UIs",
+     "closest_theme": "opaline"
+    },
+    {
+     "id": 45,
+     "name": "Gossamer",
+     "colors": [
+      "#FAFAFA",
+      "#939599",
+      "#CDCDCF",
+      "#2BCFCE",
+      "#EC4D25"
+     ],
+     "mode": "light",
+     "use_for": "design tools, portfolios, agencies",
+     "closest_theme": "opaline"
+    },
+    {
+     "id": 46,
+     "name": "Clockwork",
+     "colors": [
+      "#919599",
+      "#F8F8F8",
+      "#CDCDCB",
+      "#FBA45C",
+      "#E56515"
+     ],
+     "mode": "light",
+     "use_for": "manufacturing, time tracking, field service",
+     "closest_theme": "opaline"
+    },
+    {
+     "id": 47,
+     "name": "Lemon granite morning",
+     "colors": [
+      "#F3E308",
+      "#B8BFC1",
+      "#6C8494",
+      "#2C4C5C"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "construction, mobility, scooters",
+     "closest_theme": "marina"
+    },
+    {
+     "id": 48,
+     "name": "Arctic reflection",
+     "colors": [
+      "#5289AD",
+      "#243C4C",
+      "#ACBCBF",
+      "#F4FCFB",
+      "#698696"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "cloud infra, data warehouses, B2B",
+     "closest_theme": "marina"
+    },
+    {
+     "id": 49,
+     "name": "Slate",
+     "colors": [
+      "#BEBEBE",
+      "#79ED91",
+      "#4DBE55",
+      "#71776D",
+      "#698696"
+     ],
+     "mode": "dark",
+     "use_for": "monitoring, uptime, devops",
+     "closest_theme": "graphite"
+    },
+    {
+     "id": 50,
+     "name": "Autumn luxe",
+     "colors": [
+      "#E2E1EB",
+      "#AAAAAE",
+      "#7F7265",
+      "#BF8440",
+      "#322D27"
+     ],
+     "mode": "dark-chrome",
+     "use_for": "watches, premium retail, members clubs",
+     "closest_theme": "terracotta"
+    },
+    {
+     "id": 51,
+     "name": "Inked",
+     "colors": [
+      "#000000",
+      "#DFDEDC",
+      "#464545",
+      "#00ACAC",
+      "#A6A7A2"
+     ],
+     "mode": "dark",
+     "use_for": "dev tools, terminals, security",
+     "closest_theme": "graphite"
+    },
+    {
+     "id": 52,
+     "name": "Wraith",
+     "colors": [
+      "#1E1702",
+      "#E5E3E4",
+      "#8C886B",
+      "#047C58",
+      "#342005"
+     ],
+     "mode": "dark",
+     "use_for": "outdoor gear, hunting, military-style ops",
+     "closest_theme": "graphite"
+    },
+    {
+     "id": 53,
+     "name": "Urban nocturne",
+     "colors": [
+      "#141414",
+      "#444444",
+      "#D6D6D6",
+      "#E2E800",
+      "#979797"
+     ],
+     "mode": "dark",
+     "use_for": "nightlife, streetwear, gaming, dark-mode tools",
+     "closest_theme": "graphite"
+    }
+   ]
+  }
+ ]
+}

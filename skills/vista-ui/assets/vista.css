@@ -1,6 +1,7 @@
 /* ==========================================================================
    VISTA UI — glassmorphism dashboard design system
-   Themes : lagoon · indigo · aurora · evergreen   (set on <html data-theme>)
+   Themes : lagoon · indigo · aurora · evergreen · graphite · terracotta · lapis · orchid
+            opaline · marina   (set on <html data-theme>)
    Shells : .vx-shell--sidebar · .vx-shell--notch · .vx-shell--spatial
    Prefix : every class starts with `vx-`, every token with `--vx-`
    ========================================================================== */
@@ -241,6 +242,342 @@
   --vx-chart-muted: #e6ebe8;
 }
 
+/* ---------- 2b. More themes ------------------------------------------------
+   graphite (dark panel) · terracotta (warm, solid panel — notch-ready) · lapis (jewel tones)
+   orchid (vivid violet) · opaline (light minimal, light chrome) · marina (navy + cream + brown) */
+
+/* GRAPHITE — charcoal everything, dark glass panel, electric-lime accent (true dark mode) */
+[data-theme="graphite"] {
+  --vx-page:
+    radial-gradient(900px 600px at 85% 110%, rgba(226, 232, 0, .14) 0%, transparent 60%),
+    radial-gradient(700px 500px at 0% 0%, #2b2b2b 0%, transparent 70%),
+    radial-gradient(600px 500px at 50% 50%, rgba(0, 172, 172, .08) 0%, transparent 70%),
+    linear-gradient(150deg, #0b0b0b 0%, #151515 50%, #1e1e1e 100%);
+  --vx-ink: #f2f2ee;
+  --vx-ink-2: #babab3;
+  --vx-ink-3: #8c8c85;
+  --vx-on-dark: #f2f2ee;
+  --vx-on-dark-2: rgba(242, 242, 238, .62);
+  --vx-on-dark-3: rgba(242, 242, 238, .38);
+
+  --vx-chrome-bg: rgba(255, 255, 255, .04);
+  --vx-chrome-border: rgba(255, 255, 255, .09);
+  --vx-chrome-hover: rgba(255, 255, 255, .07);
+
+  --vx-panel-bg: linear-gradient(165deg, rgba(42, 42, 42, .80) 0%, rgba(26, 26, 26, .74) 100%);
+  --vx-panel-border: rgba(255, 255, 255, .08);
+  --vx-panel-shadow: 0 40px 90px -30px rgba(0, 0, 0, .85);
+
+  --vx-card-bg: linear-gradient(180deg, rgba(255, 255, 255, .065), rgba(255, 255, 255, .03));
+  --vx-card-border: rgba(255, 255, 255, .08);
+  --vx-card-shadow: 0 12px 30px -16px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .06);
+  --vx-sunken: rgba(255, 255, 255, .05);
+  --vx-line: rgba(255, 255, 255, .07);
+
+  --vx-primary: #e2e800;
+  --vx-primary-ink: #141414;
+  --vx-primary-soft: rgba(226, 232, 0, .13);
+  --vx-cta: #e2e800;
+  --vx-cta-ink: #141414;
+  --vx-accent: #e2e800;
+  --vx-nav-active-bg: #e2e800;
+  --vx-nav-active-ink: #141414;
+  --vx-brand-mark: linear-gradient(140deg, #f2f56a, #c9cf00);
+
+  --vx-chart-1: #e2e800;
+  --vx-chart-2: #5e5e5a;
+  --vx-chart-3: #00acac;
+  --vx-chart-4: #ff8a4c;
+  --vx-chart-5: #a6a7a2;
+  --vx-chart-6: #8f84ff;
+  --vx-chart-grid: rgba(255, 255, 255, .06);
+  --vx-chart-muted: rgba(255, 255, 255, .10);
+
+  --vx-pos: #4ade80; --vx-pos-soft: rgba(74, 222, 128, .14);
+  --vx-neg: #f87171; --vx-neg-soft: rgba(248, 113, 113, .14);
+  --vx-warn: #fbbf24; --vx-warn-soft: rgba(251, 191, 36, .14);
+  --vx-info: #60a5fa; --vx-info-soft: rgba(96, 165, 250, .14);
+}
+
+/* TERRACOTTA — ember-brown frame, solid cream panel, burnt-orange accent, walnut ink */
+[data-theme="terracotta"] {
+  --vx-page:
+    radial-gradient(1000px 200px at 50% 0%, rgba(231, 104, 20, .32) 0%, transparent 70%),
+    radial-gradient(800px 600px at 100% 100%, rgba(220, 130, 54, .34) 0%, transparent 65%),
+    radial-gradient(700px 600px at 0% 100%, #24100a 0%, transparent 70%),
+    linear-gradient(160deg, #3b1a12 0%, #5a2418 50%, #3a1912 100%);
+  --vx-ink: #2b1d17;
+  --vx-ink-2: #6a5248;
+  --vx-ink-3: #957d72;
+  --vx-on-dark: #fbefe6;
+  --vx-on-dark-2: rgba(251, 239, 230, .72);
+  --vx-on-dark-3: rgba(251, 239, 230, .46);
+
+  --vx-chrome-bg: rgba(255, 255, 255, .07);
+  --vx-chrome-border: rgba(255, 220, 200, .14);
+  --vx-chrome-hover: rgba(255, 255, 255, .12);
+
+  --vx-panel-solid: #fbf5ee;
+  --vx-panel-bg: #fbf5ee;
+  --vx-panel-border: rgba(255, 255, 255, .9);
+  --vx-panel-shadow: 0 30px 80px -30px rgba(20, 5, 0, .65);
+
+  --vx-card-bg: #ffffff;
+  --vx-card-border: #f0e6de;
+  --vx-card-shadow: 0 1px 2px rgba(60, 25, 10, .05), 0 10px 24px -18px rgba(60, 25, 10, .22);
+  --vx-sunken: #f6ede5;
+  --vx-line: #efe5dc;
+
+  --vx-primary: #c35627;
+  --vx-primary-ink: #ffffff;
+  --vx-primary-soft: rgba(195, 86, 39, .11);
+  --vx-cta: linear-gradient(180deg, #d6794d, #b8492a);
+  --vx-cta-ink: #ffffff;
+  --vx-accent: #b8492a;
+  --vx-nav-active-bg: #fbf5ee;
+  --vx-nav-active-ink: #2b1d17;
+  --vx-brand-mark: radial-gradient(circle at 30% 30%, #fc9c44, #b8210f);
+
+  --vx-chart-1: #c35627;
+  --vx-chart-2: #edbd95;
+  --vx-chart-3: #374f4e;
+  --vx-chart-4: #d1801e;
+  --vx-chart-5: #891a10;
+  --vx-chart-6: #aa8552;
+  --vx-chart-grid: #f1e8e0;
+  --vx-chart-muted: #eee3d9;
+}
+
+/* LAPIS — midnight lapis backdrop with plum/magenta glow, ivory glass panel, gold accents */
+[data-theme="lapis"] {
+  --vx-page:
+    radial-gradient(900px 700px at 100% 100%, rgba(137, 49, 114, .78) 0%, transparent 60%),
+    radial-gradient(700px 600px at 0% 0%, #050d30 0%, transparent 70%),
+    radial-gradient(600px 500px at 60% 30%, rgba(95, 52, 117, .55) 0%, transparent 70%),
+    linear-gradient(140deg, #081849 0%, #182a6e 50%, #3a2a72 100%);
+  --vx-ink: #1b1630;
+  --vx-ink-2: #4f4866;
+  --vx-ink-3: #7f7792;
+  --vx-on-dark: #f6f0ea;
+  --vx-on-dark-2: rgba(246, 240, 234, .68);
+  --vx-on-dark-3: rgba(246, 240, 234, .42);
+
+  --vx-chrome-bg: rgba(8, 24, 73, .42);
+  --vx-chrome-border: rgba(236, 223, 210, .16);
+  --vx-chrome-hover: rgba(255, 255, 255, .08);
+
+  --vx-panel-bg: linear-gradient(165deg, rgba(247, 240, 233, .93) 0%, rgba(236, 223, 210, .85) 60%, rgba(226, 212, 206, .80) 100%);
+  --vx-panel-border: rgba(255, 255, 255, .6);
+  --vx-panel-shadow: 0 40px 90px -25px rgba(5, 8, 40, .75);
+
+  --vx-card-bg: linear-gradient(180deg, rgba(255, 255, 255, .74), rgba(255, 255, 255, .52));
+  --vx-card-border: rgba(255, 255, 255, .85);
+  --vx-card-shadow: 0 12px 30px -16px rgba(40, 20, 70, .35), inset 0 1px 0 rgba(255, 255, 255, .9);
+  --vx-sunken: rgba(255, 255, 255, .55);
+  --vx-line: rgba(60, 30, 80, .10);
+
+  --vx-primary: #213885;
+  --vx-primary-ink: #ffffff;
+  --vx-primary-soft: rgba(33, 56, 133, .11);
+  --vx-cta: #213885;
+  --vx-cta-ink: #ffffff;
+  --vx-accent: #893172;
+  --vx-nav-active-bg: linear-gradient(180deg, #a2448a, #7d2a68);
+  --vx-nav-active-ink: #ffffff;
+
+  --vx-chart-1: #213885;
+  --vx-chart-2: #c7984f;
+  --vx-chart-3: #893172;
+  --vx-chart-4: #024944;
+  --vx-chart-5: #8f86b8;
+  --vx-chart-6: #e07a5f;
+  --vx-chart-grid: rgba(60, 30, 80, .09);
+  --vx-chart-muted: rgba(60, 30, 80, .15);
+}
+
+/* ORCHID — vivid violet → pink backdrop with a sky glow, lavender glass, violet CTA */
+[data-theme="orchid"] {
+  --vx-page:
+    radial-gradient(900px 700px at 100% 100%, #dd68e3 0%, transparent 55%),
+    radial-gradient(800px 600px at 0% 0%, #1e0f5c 0%, transparent 70%),
+    radial-gradient(700px 500px at 30% 95%, rgba(36, 174, 255, .45) 0%, transparent 65%),
+    linear-gradient(140deg, #23125e 0%, #5b3cc4 50%, #8866de 100%);
+  --vx-ink: #1c1540;
+  --vx-ink-2: #4c4478;
+  --vx-ink-3: #7c73a4;
+  --vx-on-dark: #f7f2ff;
+  --vx-on-dark-2: rgba(240, 232, 255, .72);
+  --vx-on-dark-3: rgba(240, 232, 255, .46);
+
+  --vx-chrome-bg: rgba(30, 15, 90, .30);
+  --vx-chrome-border: rgba(220, 200, 255, .22);
+  --vx-chrome-hover: rgba(255, 255, 255, .09);
+
+  --vx-panel-bg: linear-gradient(165deg, rgba(245, 240, 255, .91) 0%, rgba(230, 222, 255, .82) 60%, rgba(222, 216, 255, .76) 100%);
+  --vx-panel-border: rgba(255, 255, 255, .65);
+  --vx-panel-shadow: 0 40px 90px -25px rgba(30, 10, 90, .7);
+
+  --vx-card-bg: linear-gradient(180deg, rgba(255, 255, 255, .76), rgba(255, 255, 255, .54));
+  --vx-card-border: rgba(255, 255, 255, .86);
+  --vx-card-shadow: 0 12px 30px -16px rgba(60, 30, 150, .35), inset 0 1px 0 rgba(255, 255, 255, .9);
+  --vx-sunken: rgba(255, 255, 255, .55);
+  --vx-line: rgba(60, 40, 140, .10);
+
+  --vx-primary: #7e3dff;
+  --vx-primary-ink: #ffffff;
+  --vx-primary-soft: rgba(126, 61, 255, .12);
+  --vx-cta: linear-gradient(180deg, #9a5cff, #6f2ff0);
+  --vx-cta-ink: #ffffff;
+  --vx-accent: #7330f0;
+  --vx-nav-active-bg: linear-gradient(180deg, #e58cf0, #b44af2);
+  --vx-nav-active-ink: #ffffff;
+
+  --vx-chart-1: #7e3dff;
+  --vx-chart-2: #c4b5f4;
+  --vx-chart-3: #dd68e3;
+  --vx-chart-4: #24aeff;
+  --vx-chart-5: #f5a524;
+  --vx-chart-6: #22b573;
+  --vx-chart-grid: rgba(60, 40, 140, .09);
+  --vx-chart-muted: rgba(60, 40, 140, .15);
+}
+
+/* OPALINE — light minimal: pearl-grey backdrop with coral + aqua haze, white glass, black CTA */
+[data-theme="opaline"] {
+  --vx-page:
+    radial-gradient(700px 500px at 90% 0%, rgba(255, 99, 74, .22) 0%, transparent 65%),
+    radial-gradient(700px 600px at 0% 100%, rgba(43, 207, 206, .20) 0%, transparent 65%),
+    linear-gradient(160deg, #f6f6f8 0%, #e9e9eb 55%, #dedee1 100%);
+  --vx-ink: #18181b;
+  --vx-ink-2: #52525a;
+  --vx-ink-3: #7c7c85;
+  --vx-on-dark: #18181b;
+  --vx-on-dark-2: rgba(24, 24, 27, .66);
+  --vx-on-dark-3: rgba(24, 24, 27, .44);
+
+  --vx-chrome-bg: rgba(255, 255, 255, .55);
+  --vx-chrome-border: rgba(255, 255, 255, .95);
+  --vx-chrome-hover: rgba(0, 0, 0, .05);
+
+  --vx-panel-bg: linear-gradient(170deg, rgba(255, 255, 255, .74), rgba(250, 250, 251, .56));
+  --vx-panel-border: rgba(255, 255, 255, .95);
+  --vx-panel-shadow: 0 30px 80px -30px rgba(40, 40, 50, .28);
+
+  --vx-card-bg: rgba(255, 255, 255, .92);
+  --vx-card-border: #ececee;
+  --vx-card-shadow: 0 1px 2px rgba(20, 20, 30, .04), 0 12px 28px -20px rgba(20, 20, 30, .22);
+  --vx-sunken: #f2f2f4;
+  --vx-line: #ebebed;
+
+  --vx-primary: #ff634a;
+  --vx-primary-ink: #ffffff;
+  --vx-primary-soft: rgba(255, 99, 74, .12);
+  --vx-cta: #18181b;
+  --vx-cta-ink: #ffffff;
+  --vx-accent: #e0451f;
+  --vx-nav-active-bg: #18181b;
+  --vx-nav-active-ink: #ffffff;
+  --vx-brand-mark: linear-gradient(140deg, #ff8a6f, #ec4d25);
+
+  --vx-chart-1: #ff634a;
+  --vx-chart-2: #cdcdcf;
+  --vx-chart-3: #2bcfce;
+  --vx-chart-4: #fba45c;
+  --vx-chart-5: #18181b;
+  --vx-chart-6: #8a7dff;
+  --vx-chart-grid: #eeeef0;
+  --vx-chart-muted: #e7e7e9;
+}
+
+/* MARINA — harbour navy backdrop with sky haze, sand-cream glass, navy CTA, brown accent */
+[data-theme="marina"] {
+  --vx-page:
+    radial-gradient(1000px 700px at 90% 110%, rgba(181, 210, 230, .55) 0%, transparent 60%),
+    radial-gradient(800px 600px at 0% 0%, #0e1d29 0%, transparent 70%),
+    linear-gradient(150deg, #13283a 0%, #24485f 50%, #326080 100%);
+  --vx-ink: #1b2430;
+  --vx-ink-2: #4c5a68;
+  --vx-ink-3: #7a8793;
+  --vx-on-dark: #f4f8fb;
+  --vx-on-dark-2: rgba(232, 242, 248, .68);
+  --vx-on-dark-3: rgba(232, 242, 248, .42);
+
+  --vx-chrome-bg: rgba(10, 25, 40, .35);
+  --vx-chrome-border: rgba(181, 210, 230, .18);
+  --vx-chrome-hover: rgba(255, 255, 255, .08);
+
+  --vx-panel-bg: linear-gradient(165deg, rgba(255, 247, 240, .93) 0%, rgba(250, 239, 229, .85) 60%, rgba(240, 231, 223, .80) 100%);
+  --vx-panel-border: rgba(255, 255, 255, .65);
+  --vx-panel-shadow: 0 40px 90px -25px rgba(5, 20, 35, .7);
+
+  --vx-card-bg: linear-gradient(180deg, rgba(255, 255, 255, .78), rgba(255, 255, 255, .56));
+  --vx-card-border: rgba(255, 255, 255, .9);
+  --vx-card-shadow: 0 12px 30px -16px rgba(30, 50, 70, .3), inset 0 1px 0 rgba(255, 255, 255, .9);
+  --vx-sunken: rgba(255, 255, 255, .6);
+  --vx-line: rgba(30, 50, 70, .10);
+
+  --vx-primary: #326080;
+  --vx-primary-ink: #ffffff;
+  --vx-primary-soft: rgba(50, 96, 128, .12);
+  --vx-cta: #1f3b4f;
+  --vx-cta-ink: #ffffff;
+  --vx-accent: #805232;
+  --vx-nav-active-bg: linear-gradient(180deg, #fbf1e6, #efdcc8);
+  --vx-nav-active-ink: #1b2430;
+
+  --vx-chart-1: #326080;
+  --vx-chart-2: #d9b896;
+  --vx-chart-3: #805232;
+  --vx-chart-4: #5289ad;
+  --vx-chart-5: #22a06b;
+  --vx-chart-6: #e5574a;
+  --vx-chart-grid: rgba(30, 50, 70, .09);
+  --vx-chart-muted: rgba(30, 50, 70, .15);
+}
+
+/* Theme-scoped component fixes ------------------------------------------------ */
+/* graphite: dark panel → ink-filled pills invert, white-ish details dim down */
+[data-theme="graphite"] .vx-panel { box-shadow: var(--vx-panel-shadow), inset 0 1px 0 rgba(255, 255, 255, .08); }
+[data-theme="graphite"] .vx-seg .is-active, [data-theme="graphite"] .vx-chip.is-active,
+[data-theme="graphite"] .vx-seg--light .is-active, [data-theme="graphite"] .vx-btn--light,
+[data-theme="graphite"] .vx-chart-pill--light { color: #141414; }
+[data-theme="graphite"] .vx-chip.is-active { background: var(--vx-ink); }
+[data-theme="graphite"] .vx-chip.is-active .n { color: rgba(20, 20, 20, .6); }
+[data-theme="graphite"] .vx-btn { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 4px 12px -8px rgba(0, 0, 0, .6); }
+[data-theme="graphite"] .vx-btn--cta { box-shadow: 0 10px 28px -12px rgba(226, 232, 0, .5), inset 0 1px 0 rgba(255, 255, 255, .4); }
+[data-theme="graphite"] .vx-count { background: rgba(255, 255, 255, .1); }
+[data-theme="graphite"] .vx-kbd { background: rgba(255, 255, 255, .08); }
+[data-theme="graphite"] .vx-avatars .vx-avatar { box-shadow: 0 0 0 2px #222; }
+[data-theme="graphite"] .vx-table tbody tr:hover { background: rgba(255, 255, 255, .04); }
+[data-theme="graphite"] .vx-switch { background: rgba(255, 255, 255, .16); }
+[data-theme="graphite"] .vx-check.is-on { color: #141414; }
+[data-theme="graphite"] .vx-add-tile { border-color: rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .03); }
+[data-theme="graphite"] .vx-tooltip { background: #2a2a2a; border: 1px solid rgba(255, 255, 255, .1); }
+[data-theme="graphite"] .vx-card--dark { background: linear-gradient(170deg, #2c2c2c 0%, #181818 100%); }
+[data-theme="graphite"] .vx-card--feature { color: #141414; }
+[data-theme="graphite"] .vx-card--feature :is(.vx-h2, .vx-h3) { color: #141414; }
+[data-theme="graphite"] .vx-card--feature :is(.vx-caption, .vx-stat__label, .vx-stat__meta, .vx-stat__value small) { color: rgba(20, 20, 20, .66); }
+[data-theme="graphite"] .vx-card--feature :is(.vx-iconchip, .vx-delta) { background: rgba(0, 0, 0, .1); color: #141414; }
+[data-theme="graphite"] .vx-skeleton::after { background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .08), transparent); }
+
+/* opaline: light chrome → dark details where vista assumed white-on-dark */
+[data-theme="opaline"] .vx-plan { background: rgba(255, 255, 255, .6); }
+[data-theme="opaline"] .vx-plan .vx-progress { background: rgba(0, 0, 0, .08); }
+[data-theme="opaline"] .vx-plan .vx-progress > i { background: var(--vx-ink); }
+[data-theme="opaline"] .vx-nav__badge { background: rgba(0, 0, 0, .06); }
+[data-theme="opaline"] .vx-nav__item.is-active .vx-nav__badge { background: rgba(255, 255, 255, .2); }
+[data-theme="opaline"] .vx-iconbtn:hover { background: rgba(0, 0, 0, .05); }
+[data-theme="opaline"] .vx-topbar .vx-search, [data-theme="opaline"] .vx-spatial__top .vx-search { background: rgba(255, 255, 255, .7); }
+[data-theme="opaline"] .vx-card--dark { background: linear-gradient(170deg, #27272b 0%, #121214 100%); }
+[data-theme="opaline"] .vx-spatial__rail .vx-iconbtn.is-active, [data-theme="opaline"] .vx-spatial__dock a.is-active { background: #18181b; color: #fff; }
+[data-theme="opaline"] .vx-spatial__dock .vx-glider, [data-theme="opaline"] .vx-spatial__rail .vx-glider { background: #18181b; }
+[data-theme="opaline"] .vx-spatial__dock.vx-glide > .is-active, [data-theme="opaline"] .vx-spatial__rail.vx-glide > .is-active { color: #fff; }
+
+[data-theme="lapis"] .vx-card--dark { background: linear-gradient(170deg, #1d2c6e 0%, #0c1640 100%); }
+[data-theme="orchid"] .vx-card--dark { background: linear-gradient(170deg, #34207e 0%, #1a0f48 100%); }
+[data-theme="marina"] .vx-card--dark { background: linear-gradient(170deg, #24435a 0%, #12263a 100%); }
+[data-theme="terracotta"] .vx-card--dark { background: linear-gradient(170deg, #5a2a1c 0%, #2e140d 100%); }
+
 /* Physically based springs (damped oscillator sampled into linear()) — ~4% and ~12% overshoot */
 @supports (transition-timing-function: linear(0, 1)) {
   :root {
@@ -430,7 +767,7 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
 }
 .vx-shell--notch .vx-nav__badge { background: #f5a524; color: #3b2500; }
 .vx-shell--notch .vx-panel { padding: 22px 28px 28px; border-radius: 30px; backdrop-filter: none; -webkit-backdrop-filter: none; }
-.vx-shell--notch .vx-brand__mark { background: radial-gradient(circle at 30% 30%, #6fcf97, #1f6b4a); color: #fff; border-radius: 50%; }
+.vx-shell--notch .vx-brand__mark { background: var(--vx-brand-mark, radial-gradient(circle at 30% 30%, #6fcf97, #1f6b4a)); color: #fff; border-radius: 50%; }
 .vx-shell--notch .vx-plan { background: rgba(255, 255, 255, .07); margin-right: 16px; }
 .vx-panel__bar { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
 
@@ -443,10 +780,10 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
   position: fixed; z-index: 20; top: 14px; left: 50%; transform: translateX(-50%);
   width: min(1180px, calc(100% - 40px));
   display: flex; align-items: center; gap: 12px; padding: 8px 10px 8px 8px;
-  border-radius: var(--vx-r-pill); color: var(--vx-ink);
+  border-radius: var(--vx-r-pill); color: var(--vx-on-dark);
 }
 .vx-spatial__prompt {
-  margin: 0 auto; display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--vx-ink-2);
+  margin: 0 auto; display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--vx-on-dark-2);
 }
 .vx-orb {
   width: 22px; height: 22px; border-radius: 50%;
@@ -455,19 +792,19 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
 }
 .vx-spatial__rail {
   position: fixed; z-index: 20; left: 28px; top: 50%; transform: translateY(-50%);
-  display: flex; flex-direction: column; gap: 8px; padding: 8px; border-radius: var(--vx-r-pill);
+  display: flex; flex-direction: column; gap: 8px; padding: 8px; border-radius: var(--vx-r-pill); color: var(--vx-on-dark);
 }
 .vx-spatial__rail .vx-iconbtn { background: transparent; border-color: transparent; }
-.vx-spatial__rail .vx-iconbtn.is-active { background: #fff; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .35); }
+.vx-spatial__rail .vx-iconbtn.is-active { background: #fff; color: #16181d; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .35); }
 .vx-spatial__dock {
   position: fixed; z-index: 20; bottom: 18px; left: 50%; transform: translateX(-50%);
   display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: var(--vx-r-pill);
 }
 .vx-spatial__dock a {
-  padding: 9px 16px; border-radius: var(--vx-r-pill); font-size: 13px; font-weight: 600; color: var(--vx-ink-2);
+  padding: 9px 16px; border-radius: var(--vx-r-pill); font-size: 13px; font-weight: 600; color: var(--vx-on-dark-2);
 }
-.vx-spatial__dock a:hover { color: var(--vx-ink); }
-.vx-spatial__dock a.is-active { background: #fff; color: var(--vx-ink); box-shadow: 0 6px 16px -8px rgba(0, 0, 0, .4); }
+.vx-spatial__dock a:hover { color: var(--vx-on-dark); }
+.vx-spatial__dock a.is-active { background: #fff; color: #16181d; box-shadow: 0 6px 16px -8px rgba(0, 0, 0, .4); }
 .vx-shell--spatial .vx-panel { border-radius: 40px; padding: 40px 44px; }
 /* decorative "window light" to fake a room photo behind the glass */
 .vx-scene { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
@@ -888,7 +1225,29 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
   border-radius: var(--vx-r-lg); border: 1.5px dashed rgba(255, 255, 255, .7); background: rgba(255, 255, 255, .14);
   color: var(--vx-ink-2); font-size: 12.5px; font-weight: 600;
 }
-[data-theme="evergreen"] .vx-add-tile { border-color: var(--vx-line); background: transparent; }
+:is([data-theme="evergreen"], [data-theme="terracotta"], [data-theme="opaline"]) .vx-add-tile { border-color: var(--vx-line); background: transparent; }
+
+/* ---------- 22b. Theme swatch & palette strip ------------------------------- */
+.vx-swatches { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+.vx-swatch {
+  display: flex; flex-direction: column; gap: 8px; padding: 7px 7px 9px; border-radius: var(--vx-r-md); text-align: left;
+  background: var(--vx-sunken); border: 1px solid var(--vx-card-border); color: var(--vx-ink-2); font-size: 12px; font-weight: 600;
+  transition: transform var(--vx-dur-glide) var(--vx-ease-spring), box-shadow var(--vx-dur) var(--vx-ease), border-color var(--vx-dur-fast);
+}
+.vx-swatch:hover { transform: translateY(-2px); }
+.vx-swatch:active { transform: scale(.97); transition-duration: var(--vx-dur-press); }
+.vx-swatch span { padding: 0 3px; }
+.vx-swatch__view {
+  position: relative; height: 56px; border-radius: 10px; overflow: hidden; background: var(--sw, #888);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22);
+}
+.vx-swatch__view::before { content: ""; position: absolute; left: 8px; top: 8px; bottom: 8px; width: 16%; border-radius: 6px; background: rgba(255, 255, 255, .16); }
+.vx-swatch__view::after { content: ""; position: absolute; left: 30%; right: 8px; top: 8px; bottom: 8px; border-radius: 8px; background: var(--sw-panel, rgba(255, 255, 255, .8)); box-shadow: inset 14px -10px 0 -6px var(--sw-accent, transparent); }
+.vx-swatch.is-active { color: var(--vx-ink); border-color: var(--vx-primary); box-shadow: 0 0 0 3px var(--vx-primary-soft); }
+.vx-palette { display: flex; height: 44px; border-radius: 12px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .06); }
+.vx-palette > i { flex: 1; background: var(--c); transition: opacity var(--vx-dur-fast) var(--vx-ease); }
+.vx-palette:hover > i { opacity: .55; }
+.vx-palette:hover > i:hover { opacity: 1; }
 
 /* ---------- 23. Motion --------------------------------------------------- */
 /* Full guide: references/motion.md. JS choreography lives in vista-motion.js; everything here
@@ -955,10 +1314,10 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
   .vx-card--dark.vx-glow::after, .vx-card--feature.vx-glow::after {
     background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .14), transparent 62%);
   }
-  [data-theme="evergreen"] .vx-glow::after {
+  :is([data-theme="evergreen"], [data-theme="terracotta"], [data-theme="opaline"]) .vx-glow::after {
     background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--vx-primary) 9%, transparent), transparent 62%);
   }
-  [data-theme="evergreen"] .vx-glow::before {
+  :is([data-theme="evergreen"], [data-theme="terracotta"], [data-theme="opaline"]) .vx-glow::before {
     background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--vx-primary) 45%, transparent), transparent 70%);
   }
   .vx-tilt { transform-style: preserve-3d; will-change: transform; transition: transform var(--vx-dur-glide) var(--vx-ease-spring); }

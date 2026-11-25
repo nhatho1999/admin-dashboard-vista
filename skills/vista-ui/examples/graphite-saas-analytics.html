@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en" data-theme="graphite">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Relay — Product analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
+  <style>
+    .funnel { display: grid; grid-template-columns: 150px 1fr 64px; align-items: center; gap: 8px 14px; font-size: 12.5px; }
+    .funnel span:first-child { color: var(--vx-ink-2); }
+    .funnel b { text-align: right; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+<div class="vx-shell--sidebar">
+
+  <aside class="vx-sidebar vx-chrome">
+    <div class="vx-brand">
+      <div class="vx-brand__mark"><i data-lucide="activity"></i></div>
+      <div class="vx-brand__text"><div class="vx-brand__name">Relay</div><div class="vx-brand__sub">Product analytics · Pro</div></div>
+    </div>
+    <nav class="vx-nav" data-vx-group>
+      <div class="vx-nav__label">Insights</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="layout-dashboard"></i><span>Overview</span></a>
+      <a class="vx-nav__item is-active" href="#"><i data-lucide="chart-spline"></i><span>Analytics</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="filter"></i><span>Funnels</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="repeat-2"></i><span>Retention</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="circle-dollar-sign"></i><span>Revenue</span></a>
+      <div class="vx-nav__label">Workspace</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="flask-conical"></i><span>Experiments</span><span class="vx-nav__badge">3</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="siren"></i><span>Alerts</span><span class="vx-nav__badge">1</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="users"></i><span>Accounts</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="settings"></i><span>Settings</span></a>
+    </nav>
+    <div class="vx-plan">
+      <div class="vx-plan__row"><b>Events</b><span>41.2M of 50M</span></div>
+      <div class="vx-progress"><i style="--v:82%"></i></div>
+    </div>
+  </aside>
+
+  <header class="vx-topbar vx-chrome">
+    <label class="vx-search"><i data-lucide="search"></i><input placeholder="Search events, accounts, reports…"><span class="vx-kbd">⌘K</span></label>
+    <div class="vx-topbar__spacer"></div>
+    <button class="vx-iconbtn" aria-label="Share"><i data-lucide="share-2"></i></button>
+    <button class="vx-iconbtn vx-iconbtn--light" aria-label="Alerts"><i data-lucide="bell"></i><span class="vx-ping"></span></button>
+    <div class="vx-user"><span class="vx-avatar vx-avatar--sky">JP</span><div><div class="vx-user__name">Jun Park</div><div class="vx-user__role">Growth lead</div></div></div>
+  </header>
+
+  <main class="vx-panel">
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <div class="vx-eyebrow">Insights <span class="sep">/</span> Analytics <span class="pill">● Live</span></div>
+        <h1 class="vx-h1">Product analytics</h1>
+        <p class="vx-sub">Nov 1 – Nov 25 · <b>12,480 active teams</b>, <b>3 experiments</b> running and <b>1 alert</b> open.</p>
+      </div>
+      <div class="vx-page-head__actions">
+        <div class="vx-seg" data-vx-group data-vx-swap="#wat-chart"><button>7D</button><button class="is-active">30D</button><button>90D</button></div>
+        <button class="vx-btn" data-vx-loading="900" data-vx-toast="Report exported" data-vx-toast-sub="relay-analytics-nov.csv · 2.4 MB"><i data-lucide="download"></i>Export</button>
+        <button class="vx-btn vx-btn--cta"><i data-lucide="plus"></i>New report</button>
+      </div>
+    </div>
+
+    <div class="vx-grid-5">
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-stat__label">Active teams</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>6.2%</span></div>
+        <div class="vx-stat__value vx-num">12,480</div>
+        <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[10.9,11.2,11.1,11.6,11.8,12.0,11.9,12.3,12.48]}'></div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-stat__label">MRR</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>4.1%</span></div>
+        <div class="vx-stat__value vx-num">$284,600</div>
+        <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[251,256,260,262,268,271,276,280,284.6],"color":"chart-3"}'></div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-stat__label">Activation</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>2.3 pts</span></div>
+        <div class="vx-stat__value vx-num">41.8%</div>
+        <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[38,39.1,38.6,39.9,40.2,40.8,41.1,41.5,41.8]}'></div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-stat__label">Net retention</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>3 pts</span></div>
+        <div class="vx-stat__value vx-num">112%</div>
+        <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[106,107,108,108,109,110,110,111,112],"color":"chart-3"}'></div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-stat__label">Logo churn</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-down"></i>0.4 pts</span></div>
+        <div class="vx-stat__value vx-num">1.9%</div>
+        <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[2.6,2.5,2.4,2.4,2.2,2.1,2.1,2.0,1.9],"color":"chart-4"}'></div>
+      </div>
+    </div>
+
+    <div class="vx-tabs vx-section" data-vx-group style="margin-bottom:16px">
+      <button class="is-active">Engagement</button><button>Revenue</button><button>Features</button><button>Cohorts</button>
+    </div>
+
+    <div class="vx-split">
+      <section class="vx-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title">
+            <div class="vx-caption">Weekly active teams</div>
+            <div class="vx-row" style="margin-top:6px"><span class="vx-stat__value vx-num" style="margin:0">9,312</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>8.4%</span></div>
+            <div class="vx-caption">vs 8,590 in the 30 days before</div>
+          </div>
+          <div class="vx-legend"><span><i class="line" style="--c:var(--vx-chart-1)"></i>This period</span><span><i class="dash" style="--c:var(--vx-chart-5)"></i>Period before</span></div>
+        </div>
+        <div class="vx-chart" id="wat-chart" style="--h:250px" data-vx-chart="line" data-vx='{
+          "labels":["Oct 27","Nov 3","Nov 10","Nov 17","Nov 24","Dec 1"],
+          "series":[
+            {"name":"This period","data":[8120,8460,8790,8980,9312,null],"area":true},
+            {"name":"Period before","data":[7650,7820,8110,8240,8590,8710],"dashed":true,"color":"chart-5"}],
+          "points":6,"min":7000,"max":10000,"endDot":true}'></div>
+      </section>
+
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">What stands out</h2><div class="vx-caption">Auto-detected this week</div></div></div>
+        <div class="vx-list">
+          <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--pos"><i data-lucide="rocket"></i></span><div class="vx-list__body"><div class="vx-list__title">Workflows launch +31% usage</div><div class="vx-list__sub">2,140 teams built a workflow in week one</div></div></div>
+          <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--warn"><i data-lucide="triangle-alert"></i></span><div class="vx-list__body"><div class="vx-list__title">Invite step drop-off rose to 37%</div><div class="vx-list__sub">Started after the Nov 19 onboarding change</div></div></div>
+          <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--info"><i data-lucide="globe"></i></span><div class="vx-list__body"><div class="vx-list__title">Brazil is the fastest-growing market</div><div class="vx-list__sub">+412 teams, mostly agencies</div></div></div>
+          <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--neg"><i data-lucide="user-minus"></i></span><div class="vx-list__body"><div class="vx-list__title">3 enterprise accounts at risk</div><div class="vx-list__sub">Seats used fell below 40%</div></div></div>
+          <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--primary"><i data-lucide="flask-conical"></i></span><div class="vx-list__body"><div class="vx-list__title">Pricing page test is significant</div><div class="vx-list__sub">Variant B +9.6% trial starts · 97% confidence</div></div></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="vx-split--even vx-split vx-section">
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">Activation funnel</h2><div class="vx-caption">Teams that signed up in November</div></div><span class="vx-tag">18,240 sign-ups</span></div>
+        <div class="vx-stack" style="gap:12px">
+          <div class="funnel"><span>Signed up</span><div class="vx-progress vx-progress--lg"><i style="--v:100%"></i></div><b>100%</b></div>
+          <div class="funnel"><span>Created a workspace</span><div class="vx-progress vx-progress--lg"><i style="--v:80%"></i></div><b>80%</b></div>
+          <div class="funnel"><span>Invited a teammate</span><div class="vx-progress vx-progress--lg"><i style="--v:50%;--c:var(--vx-warn)"></i></div><b>50%</b></div>
+          <div class="funnel"><span>Connected a tool</span><div class="vx-progress vx-progress--lg"><i style="--v:42%"></i></div><b>42%</b></div>
+          <div class="funnel"><span>Active in week 2</span><div class="vx-progress vx-progress--lg"><i style="--v:34%;--c:var(--vx-chart-3)"></i></div><b>34%</b></div>
+        </div>
+      </section>
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">MRR by plan</h2><div class="vx-caption">$284.6K this month</div></div></div>
+        <div class="vx-row" style="gap:20px;align-items:center">
+          <div class="vx-chart" style="--h:170px;width:170px;flex:none" data-vx-chart="donut" data-vx='{"data":[{"label":"Business","value":46},{"label":"Pro","value":31,"color":"chart-3"},{"label":"Enterprise","value":17,"color":"chart-6"},{"label":"Starter","value":6,"color":"chart-5"}],"center":{"value":"$284.6K","label":"MRR"}}'></div>
+          <div class="vx-stack" style="gap:2px;flex:1">
+            <div class="vx-meter"><span><i class="vx-dot" style="color:var(--vx-chart-1)"></i>Business</span><div class="vx-progress"><i style="--v:46%;--c:var(--vx-chart-1)"></i></div><span>46%</span></div>
+            <div class="vx-meter"><span><i class="vx-dot" style="color:var(--vx-chart-3)"></i>Pro</span><div class="vx-progress"><i style="--v:31%;--c:var(--vx-chart-3)"></i></div><span>31%</span></div>
+            <div class="vx-meter"><span><i class="vx-dot" style="color:var(--vx-chart-6)"></i>Enterprise</span><div class="vx-progress"><i style="--v:17%;--c:var(--vx-chart-6)"></i></div><span>17%</span></div>
+            <div class="vx-meter"><span><i class="vx-dot" style="color:var(--vx-chart-5)"></i>Starter</span><div class="vx-progress"><i style="--v:6%;--c:var(--vx-chart-5)"></i></div><span>6%</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="vx-card vx-section">
+      <div class="vx-card__head">
+        <div class="vx-card__title"><h2 class="vx-h2">Top accounts</h2><div class="vx-caption">By MRR · health from usage, seats and support load</div></div>
+        <div class="vx-chips" data-vx-group><span class="vx-chip is-active">All <span class="n">12,480</span></span><span class="vx-chip">At risk <span class="n">3</span></span><span class="vx-chip">Expanding <span class="n">41</span></span></div>
+      </div>
+      <div class="vx-table-wrap">
+        <table class="vx-table">
+          <thead><tr><th>Account</th><th>Plan</th><th>Seats used</th><th>Health</th><th class="r">MRR</th></tr></thead>
+          <tbody>
+            <tr><td><div class="vx-person"><span class="vx-avatar vx-avatar--violet">NC</span><div><div class="vx-person__name">Northwind Collective</div><div class="vx-person__sub">Agency · São Paulo</div></div></div></td><td><span class="vx-tag vx-tag--primary">Enterprise</span></td><td class="vx-num">412 / 450</td><td><span class="vx-status vx-status--success">Expanding</span></td><td class="r vx-num vx-strong">$18,400</td></tr>
+            <tr><td><div class="vx-person"><span class="vx-avatar vx-avatar--amber">BL</span><div><div class="vx-person__name">Brightline Labs</div><div class="vx-person__sub">SaaS · Berlin</div></div></div></td><td><span class="vx-tag vx-tag--primary">Enterprise</span></td><td class="vx-num">158 / 400</td><td><span class="vx-status vx-status--danger">At risk</span></td><td class="r vx-num vx-strong">$12,950</td></tr>
+            <tr><td><div class="vx-person"><span class="vx-avatar vx-avatar--mint">QF</span><div><div class="vx-person__name">Quillfield</div><div class="vx-person__sub">Publishing · Toronto</div></div></div></td><td><span class="vx-tag">Business</span></td><td class="vx-num">96 / 100</td><td><span class="vx-status vx-status--success">Healthy</span></td><td class="r vx-num vx-strong">$6,720</td></tr>
+            <tr><td><div class="vx-person"><span class="vx-avatar vx-avatar--rose">OT</span><div><div class="vx-person__name">Orbit Travel</div><div class="vx-person__sub">Travel · Lisbon</div></div></div></td><td><span class="vx-tag">Business</span></td><td class="vx-num">61 / 80</td><td><span class="vx-status vx-status--warn">Watch</span></td><td class="r vx-num vx-strong">$4,880</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+</body>
+</html>

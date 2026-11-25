@@ -11,6 +11,10 @@ viên "active" trượt giữa các lựa chọn, ánh sáng chạy theo con tr�
 | ![lagoon](docs/screenshots/lagoon-agency-overview-1440.png) | ![indigo](docs/screenshots/indigo-store-overview-1440.png) |
 | **Aurora (spatial)** | **Evergreen (notch)** |
 | ![aurora](docs/screenshots/aurora-finance-spatial-1440.png) | ![evergreen](docs/screenshots/evergreen-crm-dashboard-1440.png) |
+| **Graphite (dark) · SaaS analytics** | **Terracotta (notch) · Reservations** |
+| ![graphite](docs/screenshots/graphite-saas-analytics-1440.png) | ![terracotta](docs/screenshots/terracotta-restaurant-reservations-1440.png) |
+| **Orchid · Support inbox** | **Opaline (light) · Settings** |
+| ![orchid](docs/screenshots/orchid-support-inbox-1440.png) | ![opaline](docs/screenshots/opaline-workspace-settings-1440.png) |
 | **Motion · Live operations** | **Entrance filmstrip (120 → 300 → 500 → 800 ms)** |
 | ![motion](docs/screenshots/lagoon-live-ops-motion-1440.png) | ![filmstrip](docs/screenshots/motion-entrance-filmstrip.png) |
 
@@ -20,16 +24,17 @@ viên "active" trượt giữa các lựa chọn, ánh sáng chạy theo con tr�
 skills/vista-ui/
 ├── SKILL.md                 # điểm vào: quy trình 7 bước cho agent
 ├── assets/
-│   ├── vista.css            # design system: token, 4 theme, 3 shell, ~40 component (prefix vx-)
+│   ├── vista.css            # design system: token, 10 theme, 3 shell, ~50 component (prefix vx-)
 │   ├── vista-charts.js      # biểu đồ SVG không phụ thuộc: bar, line, area, donut, gauge, ring, sparkline (có hiệu ứng vẽ)
 │   ├── vista-motion.js      # engine chuyển động: entrance, scroll reveal, count-up, glider, glow/tilt, toast, FLIP
 │   ├── vista.js             # icon + toggle cho segmented/chips/tabs/switch, đổi theme trực tiếp
 │   └── vendor/lucide.min.js # bộ icon Lucide (ISC) — chạy offline
 ├── templates/               # khung trang: sidebar.html · notch.html · spatial.html
-├── examples/                # 4 trang hoàn chỉnh + lagoon-live-ops-motion.html (mọi pattern motion) + index.html (gallery)
+├── examples/                # 9 trang hoàn chỉnh (8 theme, nhiều kiểu trang) + theme-gallery.html + index.html (gallery)
 ├── references/              # tài liệu sâu, agent chỉ đọc khi cần
 │   ├── design-language.md   # "ADN" thị giác của phong cách, nên/không nên
-│   ├── themes.md            # bảng token, tạo theme theo màu thương hiệu, dark mode
+│   ├── themes.md            # 10 theme, chọn theme theo sản phẩm, generator, theme thương hiệu, dark mode
+│   ├── palettes.md / .json  # thư viện 53 bảng màu theo cảm xúc (tối giản, ấm, lạnh, rực rỡ, hiện đại)
 │   ├── components.md        # HTML copy‑paste cho mọi component
 │   ├── layouts.md           # các shell + công thức trang (overview, analytics, bảng, gallery, inbox…)
 │   ├── charts.md            # API biểu đồ
@@ -39,13 +44,16 @@ skills/vista-ui/
 └── scripts/
     ├── scaffold.py          # tạo trang mới từ template (copy hoặc nhúng asset)
     ├── bundle.py            # gộp CSS/JS vào 1 file HTML duy nhất
+    ├── palette_theme.py     # bảng màu / mã hex → theme Vista đầy đủ + báo cáo độ tương phản
     └── screenshot.py        # chụp PNG + báo lỗi console, icon sai tên, chart rỗng, placeholder sót; --frames = filmstrip motion
 adapters/system-prompt.md    # prompt rút gọn cho agent không đọc được thư mục skill
 install.sh                   # cài skill cho từng loại agent
 AGENTS.md                    # chỉ dẫn cho agent làm việc trong chính repo này
 ```
 
-## 4 theme
+## 10 theme
+
+![10 theme](docs/screenshots/themes-grid.png)
 
 | Theme | Cảm giác | Shell | Hợp với |
 |---|---|---|---|
@@ -53,8 +61,22 @@ AGENTS.md                    # chỉ dẫn cho agent làm việc trong chính re
 | `indigo` | kính xanh hoàng gia, sidebar navy | sidebar | e‑commerce, analytics, SaaS |
 | `aurora` | kính ấm kiểu visionOS trên nền phòng | spatial (top bar + rail + dock) | tài chính cá nhân, consumer |
 | `evergreen` | khung xanh rêu, panel trắng, tab "notch" | notch | CRM, sales, productivity |
+| `graphite` | dark mode thật: than chì, điểm nhấn vàng chanh | sidebar | dev tools, monitoring, analytics |
+| `terracotta` | nâu than hồng, panel kem, cam đất | notch | nhà hàng, khách sạn, nội thất |
+| `lapis` | xanh lapis đêm, ánh tím mận, panel ngà | sidebar | tài sản, cao cấp, pháp lý |
+| `orchid` | tím rực → hồng, kính oải hương | sidebar | creator, support, AI |
+| `opaline` | sáng tối giản, xám ngọc trai, cam san hô | spatial / sidebar | settings, billing, SaaS tối giản |
+| `marina` | navy bến cảng, panel cát, điểm nhấn nâu | sidebar | du lịch, hàng hải, logistics |
 
-Đổi theme: `<html data-theme="indigo">`. Theo màu thương hiệu: xem `references/themes.md`.
+Đổi theme: `<html data-theme="indigo">`. Xem cả 10 theme: `examples/theme-gallery.html`.
+
+**Thêm màu sắc:** thư viện 53 bảng màu trong `references/palettes.md`, và một lệnh để biến bảng màu
+(hoặc mã màu thương hiệu) thành theme hoàn chỉnh:
+```bash
+python3 skills/vista-ui/scripts/palette_theme.py --list                     # duyệt 53 bảng màu
+python3 skills/vista-ui/scripts/palette_theme.py 21 --name fireside --out fireside.css
+python3 skills/vista-ui/scripts/palette_theme.py "#0F4C81,#F2E8DC,#E07A5F" --name acme
+```
 
 ## Chuyển động
 

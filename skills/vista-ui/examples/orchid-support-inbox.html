@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en" data-theme="orchid">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loopwave — Support inbox</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
+  <style>
+    .ticket { cursor: pointer; align-items: flex-start; }
+    .ticket .vx-list__sub { white-space: normal; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+    .ticket.is-active { background: #fff; box-shadow: 0 8px 20px -14px rgba(60, 30, 150, .5); }
+    .ticket__meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; font-size: 11px; color: var(--vx-ink-3); white-space: nowrap; }
+    .fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .reply { display: flex; gap: 8px; align-items: center; margin-top: 16px; }
+    .reply .vx-input { flex: 1; height: 44px; }
+  </style>
+</head>
+<body>
+<div class="vx-shell--sidebar">
+  <aside class="vx-sidebar vx-chrome">
+    <div class="vx-brand">
+      <div class="vx-brand__mark"><i data-lucide="infinity"></i></div>
+      <div class="vx-brand__text"><div class="vx-brand__name">Loopwave</div><div class="vx-brand__sub">Creator support desk</div></div>
+    </div>
+    <nav class="vx-nav" data-vx-group>
+      <div class="vx-nav__label">Support</div>
+      <a class="vx-nav__item is-active" href="#"><i data-lucide="inbox"></i><span>Inbox</span><span class="vx-nav__badge">48</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="at-sign"></i><span>Mentions</span><span class="vx-nav__badge">5</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="book-open-text"></i><span>Help center</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="message-square-quote"></i><span>Macros</span></a>
+      <div class="vx-nav__label">Creators</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="users"></i><span>Accounts</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="wallet"></i><span>Payouts</span><span class="vx-nav__badge">2</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="chart-pie"></i><span>Reports</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="settings"></i><span>Settings</span></a>
+    </nav>
+    <div class="vx-plan">
+      <div class="vx-plan__row"><b>SLA today</b><span>94% under 1h</span></div>
+      <div class="vx-progress"><i style="--v:94%"></i></div>
+    </div>
+  </aside>
+
+  <header class="vx-topbar vx-chrome">
+    <label class="vx-search"><i data-lucide="search"></i><input placeholder="Search tickets, creators, order IDs…"><span class="vx-kbd">⌘K</span></label>
+    <div class="vx-topbar__spacer"></div>
+    <button class="vx-iconbtn vx-iconbtn--primary" aria-label="Assistant"><i data-lucide="sparkles"></i></button>
+    <button class="vx-iconbtn vx-iconbtn--light" aria-label="Notifications"><i data-lucide="bell"></i><span class="vx-ping"></span></button>
+    <div class="vx-user"><span class="vx-avatar vx-avatar--violet">RV</span><div><div class="vx-user__name">Rae Villanueva</div><div class="vx-user__role">Support · Tier 2</div></div></div>
+  </header>
+
+  <main class="vx-panel">
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <div class="vx-eyebrow">Support <span class="sep">/</span> Inbox</div>
+        <h1 class="vx-h1">Inbox</h1>
+        <p class="vx-sub"><b>7 urgent</b> tickets, <b>2 payout</b> escalations and first reply at <b>14 min</b> today.</p>
+      </div>
+      <div class="vx-page-head__actions">
+        <div class="vx-seg vx-seg--light" data-vx-group><button class="is-active">Mine</button><button>Team</button><button>Unassigned</button></div>
+        <button class="vx-btn vx-btn--cta"><i data-lucide="plus"></i>New ticket</button>
+      </div>
+    </div>
+
+    <div class="vx-grid-4">
+      <div class="vx-card vx-stat vx-glow"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--primary"><i data-lucide="inbox"></i></span><span class="vx-stat__label">Open</span><span class="vx-delta vx-delta--down"><i data-lucide="trending-up"></i>9</span></div><div class="vx-stat__value vx-num">48</div><div class="vx-caption">12 assigned to you</div></div>
+      <div class="vx-card vx-stat vx-glow"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--neg"><i data-lucide="flame"></i></span><span class="vx-stat__label">Urgent &amp; high</span></div><div class="vx-stat__value vx-num">7</div><div class="vx-caption">Oldest waiting 2h 10m</div></div>
+      <div class="vx-card vx-stat vx-glow"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--warn"><i data-lucide="hourglass"></i></span><span class="vx-stat__label">Waiting on creator</span></div><div class="vx-stat__value vx-num">19</div><div class="vx-caption">Auto-close after 5 days</div></div>
+      <div class="vx-card vx-stat vx-glow"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--pos"><i data-lucide="reply"></i></span><span class="vx-stat__label">First reply</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-down"></i>4 min</span></div><div class="vx-stat__value vx-num">14<small>min median</small></div><div class="vx-caption">Goal under 30 min</div></div>
+    </div>
+
+    <div class="vx-split--rev vx-split vx-section">
+      <section class="vx-card">
+        <div class="vx-tabs" data-vx-group style="margin-bottom:12px"><button class="is-active">Open <span class="vx-count">12</span></button><button>Pending <span class="vx-count">5</span></button><button>Solved</button></div>
+        <label class="vx-search" style="margin-bottom:12px"><i data-lucide="search"></i><input placeholder="Filter my tickets"></label>
+        <div class="vx-list vx-list--boxed" id="tickets">
+          <div class="vx-list__item ticket is-active"><span class="vx-avatar vx-avatar--peach">MI</span><div class="vx-list__body"><div class="vx-list__title">Payout stuck in “processing”</div><div class="vx-list__sub">It's been 6 days and my bank says nothing arrived…</div></div><div class="ticket__meta">12m<span class="vx-tag vx-tag--neg">Urgent</span></div></div>
+          <div class="vx-list__item ticket"><span class="vx-avatar vx-avatar--sky">DS</span><div class="vx-list__body"><div class="vx-list__title">Can't connect my storefront</div><div class="vx-list__sub">The OAuth window closes right after I log in</div></div><div class="ticket__meta">38m<span class="vx-tag vx-tag--warn">High</span></div></div>
+          <div class="vx-list__item ticket"><span class="vx-avatar vx-avatar--lime">AH</span><div class="vx-list__body"><div class="vx-list__title">Refund for a duplicate charge</div><div class="vx-list__sub">I was billed twice for the Pro plan on Nov 21</div></div><div class="ticket__meta">1h<span class="vx-tag vx-tag--warn">High</span></div></div>
+          <div class="vx-list__item ticket"><span class="vx-avatar vx-avatar--mint">CT</span><div class="vx-list__body"><div class="vx-list__title">Custom domain shows SSL error</div><div class="vx-list__sub">studio.cleotan.art says “not secure”</div></div><div class="ticket__meta">2h<span class="vx-tag">Normal</span></div></div>
+          <div class="vx-list__item ticket"><span class="vx-avatar vx-avatar--rose">JB</span><div class="vx-list__body"><div class="vx-list__title">How do I add a co-host?</div><div class="vx-list__sub">Want my editor to manage live sessions</div></div><div class="ticket__meta">3h<span class="vx-tag">Low</span></div></div>
+        </div>
+      </section>
+
+      <section class="vx-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title">
+            <div class="vx-row"><span class="vx-status vx-status--danger">Urgent</span><span class="vx-caption">#4821 · via email · 12 min ago</span></div>
+            <h2 class="vx-h2" style="margin-top:8px;font-size:18px">Payout stuck in “processing” for 6 days</h2>
+          </div>
+          <button class="vx-btn vx-btn--sm" aria-label="Snooze"><i data-lucide="alarm-clock"></i>Snooze</button>
+          <button class="vx-btn vx-btn--sm vx-btn--cta" data-vx-loading="700" data-vx-toast="Ticket #4821 solved" data-vx-toast-sub="Mika gets a satisfaction survey in 1 hour"><i data-lucide="check"></i>Mark solved</button>
+        </div>
+
+        <div class="fields">
+          <div class="vx-field"><label>Priority</label><div class="vx-select">Urgent <i data-lucide="chevron-down"></i></div></div>
+          <div class="vx-field"><label>Assignee</label><div class="vx-select">Rae Villanueva <i data-lucide="chevron-down"></i></div></div>
+          <div class="vx-field"><label>Topic</label><div class="vx-select">Payouts <i data-lucide="chevron-down"></i></div></div>
+        </div>
+
+        <div class="vx-card vx-card--sunken vx-section" style="padding:14px">
+          <div class="vx-row vx-row--between">
+            <div class="vx-person"><span class="vx-avatar vx-avatar--peach vx-avatar--lg">MI</span><div><div class="vx-person__name">Mika Ishikawa</div><div class="vx-person__sub">Illustrator · Pro since 2023 · Osaka</div></div></div>
+            <div class="vx-row" style="gap:18px">
+              <div><div class="vx-caption">Lifetime sales</div><b class="vx-num">$48,210</b></div>
+              <div><div class="vx-caption">Pending payout</div><b class="vx-num">$1,964.50</b></div>
+              <div><div class="vx-caption">Past tickets</div><b class="vx-num">3</b></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vx-chat vx-section">
+          <div class="vx-bubble">Hi! My November payout of $1,964.50 has said “processing” since Nov 19. My bank says nothing has arrived. Can you check?<div class="vx-bubble__meta">Mika · 12 min ago</div></div>
+          <div class="vx-bubble vx-bubble--me">Thanks Mika — I can see the transfer was held because the bank name on file changed on Nov 18. I've sent you a 2-minute verification link.<div class="vx-bubble__meta">You · 6 min ago</div></div>
+          <div class="vx-bubble">Oh, I switched banks last week. Done! Anything else?<div class="vx-bubble__meta">Mika · 1 min ago</div></div>
+        </div>
+
+        <div class="reply">
+          <label class="vx-input"><i data-lucide="message-circle"></i><input placeholder="Reply to Mika…" value="All set — the payout is released and should land within 1 business day."></label>
+          <button class="vx-iconbtn vx-iconbtn--ink" aria-label="Insert macro"><i data-lucide="zap"></i></button>
+          <button class="vx-btn vx-btn--cta" data-vx-loading="600" data-vx-toast="Reply sent" data-vx-toast-tone="info" data-vx-toast-sub="Status changed to Pending"><i data-lucide="send"></i>Send</button>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+<script>
+  // select a ticket (rows are divs, so handle it here instead of data-vx-group)
+  document.getElementById("tickets").addEventListener("click", function (e) {
+    var t = e.target.closest(".ticket");
+    if (!t) return;
+    this.querySelectorAll(".ticket.is-active").forEach(function (n) { n.classList.remove("is-active"); });
+    t.classList.add("is-active");
+  });
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 ---
 name: vista-ui
-description: Build polished glassmorphism dashboards and web-app UIs (frosted-glass panels, floating sidebar, KPI cards, SVG charts, pill controls) with smooth, professional motion (choreographed entrance, chart draw-in, count-up numbers, sliding active pills, glass light, toasts, skeletons) in four ready themes — lagoon (teal glass), indigo (royal-blue glass), aurora (warm visionOS-style spatial window) and evergreen (dark-green frame + white panel). Use when the user asks for an admin dashboard, back-office, CRM, analytics, finance, e-commerce or SaaS screen, or for a "beautiful / modern / glass / Apple-like" interface, or wants an existing page restyled that way. Ships a CSS design system, a zero-dependency chart library, a motion engine, page templates, full examples and a screenshot self-check.
+description: Build polished glassmorphism dashboards and web-app UIs (frosted-glass panels, floating sidebar, KPI cards, SVG charts, pill controls) with smooth, professional motion (choreographed entrance, chart draw-in, count-up numbers, sliding active pills, glass light, toasts, skeletons) in ten ready themes — lagoon (teal glass), indigo (royal-blue), aurora (warm spatial window), evergreen (green frame + white panel), graphite (true dark mode, lime accent), terracotta (ember + cream), lapis (midnight jewel tones), orchid (vivid violet), opaline (light minimal) and marina (navy + sand) — plus 53 curated palettes and a generator that turns any palette or brand colours into a full theme. Use when the user asks for an admin dashboard, back-office, CRM, analytics, finance, e-commerce or SaaS screen, or for a "beautiful / modern / glass / Apple-like" interface, or wants an existing page restyled that way. Ships a CSS design system, a zero-dependency chart library, a motion engine, page templates, full examples and a screenshot self-check.
 ---
 
 # Vista UI
@@ -18,16 +18,17 @@ agent. Paths below are relative to this skill's folder.
 
 | Path | What it is |
 |---|---|
-| `assets/vista.css` | The design system: tokens (incl. motion tokens), 4 themes, 3 shells, ~45 components (`vx-` prefix) |
+| `assets/vista.css` | The design system: tokens (incl. motion tokens), 10 themes, 3 shells, ~50 components (`vx-` prefix) |
 | `assets/vista-charts.js` | SVG charts: bar, line, area, donut, gauge, ring, sparkline (reads theme colors, draws in on view) |
 | `assets/vista-motion.js` | Motion engine: entrance choreography, scroll reveal, count-up, glider, glow/tilt, swap, FLIP insert/remove, toasts, loading |
 | `assets/vista.js` | Icons bootstrap + toggles for segmented controls, chips, tabs, switches; theme switch |
 | `assets/vendor/lucide.min.js` | Lucide icon set (ISC), used as `<i data-lucide="name"></i>` |
 | `templates/{sidebar,notch,spatial}.html` | Page skeletons with `[[placeholders]]` |
-| `examples/*.html` | Four finished pages, one per theme — the quality bar; `lagoon-live-ops-motion.html` = every motion pattern wired up |
+| `examples/*.html` | Nine finished pages across 8 themes and page types (overview, analytics, CRM, finance, live ops, reservations, support inbox, settings) — the quality bar; `theme-gallery.html` = all themes + palette library |
 | `scripts/scaffold.py` | New page from a template (copies or inlines assets) |
 | `scripts/bundle.py` | Inline local CSS/JS → one self-contained `.html` |
 | `scripts/screenshot.py` | Render pages to PNG + report console errors; `--frames` filmstrip of the motion (Playwright) |
+| `scripts/palette_theme.py` | Palette (id / name / hex list) → complete `[data-theme]` token block with contrast report; `--list`, `--preview` |
 | `references/*.md` | Deep docs — read only what the task needs (see below) |
 
 ## Workflow
@@ -40,8 +41,16 @@ agent. Paths below are relative to this skill's folder.
 | E-commerce, analytics, SaaS — vivid, energetic | `indigo` | `sidebar` |
 | Personal finance, lifestyle, consumer, "Apple Vision" demo | `aurora` | `spatial` |
 | CRM, sales, productivity, health — clean & trustworthy | `evergreen` | `notch` |
+| Dev tools, monitoring, product analytics, anything asked "dark mode" | `graphite` | `sidebar` |
+| Restaurants, hospitality, crafts, interiors — warm | `terracotta` | `notch` |
+| Wealth, luxury, legal, galleries — premium | `lapis` | `sidebar` |
+| Creator tools, support desks, social, AI products — playful | `orchid` | `sidebar` |
+| Settings, billing, minimal SaaS, light UI requested | `opaline` | `spatial` or `sidebar` |
+| Travel, maritime, logistics, property | `marina` | `sidebar` |
 
-Brand color given? Keep the closest theme and override tokens (see `references/themes.md`).
+Brand colours given? Run `python3 scripts/palette_theme.py "#hex,#hex,…" --name brand` and paste the CSS
+(see `references/themes.md`). Only a mood given (“warm”, “calm”, “bold”…)? Pick from the 53 palettes in
+`references/palettes.md` when no built-in theme fits, and generate.
 
 ### 2. Start from a file, never from a blank page
 
@@ -125,7 +134,8 @@ If it cannot run at all, re-read the checklist line by line instead.
 | Need | Read |
 |---|---|
 | Why it looks this way, do/don't | `references/design-language.md` |
-| Theme tokens, custom/brand themes, dark chrome | `references/themes.md` |
+| Theme tokens, choosing a theme, brand themes, generator, dark mode | `references/themes.md` |
+| 53 palettes by mood (minimal, warm, cool, vivid, modern) | `references/palettes.md` (+ `palettes.json`) |
 | HTML for every component | `references/components.md` |
 | Shells + page recipes | `references/layouts.md` |
 | Chart types & options | `references/charts.md` |

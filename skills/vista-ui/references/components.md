@@ -249,6 +249,19 @@ Button busy state: `btn.classList.add("is-loading")` (or `VistaMotion.loading(bt
 Toast from JS: `VistaMotion.toast("Invoice archived", {tone:"success", sub:"INV-0042", action:{label:"Undo", onClick}})`.
 Gliders (the sliding active pill) are automatic on `.vx-seg`, `.vx-tabs`, sidebar `.vx-nav`, dock and rail.
 
+## Theme swatches & palette strips
+```html
+<div class="vx-swatches" data-vx-group>   <!-- theme picker: live switch via vista.js -->
+  <button class="vx-swatch is-active" data-vx-theme-switch="lapis"
+          style="--sw:linear-gradient(140deg,#081849,#893172);--sw-panel:rgba(247,240,233,.94);--sw-accent:#893172">
+    <div class="vx-swatch__view"></div><span>Lapis</span></button>
+  …
+</div>
+<div class="vx-palette"><i style="--c:#213885"></i><i style="--c:#ECDFD2"></i><i style="--c:#893172"></i></div>
+```
+Swatch preview colours are the one place inline colours are fine (like flags). Copy the 10 built-in
+swatches from `examples/opaline-workspace-settings.html`.
+
 ## Utilities
 `vx-row` (flex, gap 10) · `vx-row--between` · `vx-stack` (column, gap 16) · `vx-grid-2/3/4/5` ·
 `vx-grid-auto` (`--min`) · `vx-split` (2:1) · `vx-split--rev` (1:2) · `vx-split--even` · `vx-span-2` ·

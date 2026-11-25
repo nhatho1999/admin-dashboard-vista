@@ -24,7 +24,12 @@ and status pills, media card grid, list or chat).
 indigo (navy→royal-blue backdrop, navy sidebar, lavender panel, blue CTA and accent name), aurora (warm room
 backdrop, light glass everywhere, black CTA, teal + orange accents, spatial shell), evergreen (dark-green
 frame, solid off-white panel, sidebar pills where the active one merges into the panel with concave corners,
-green CTA, mint charts).
+green CTA, mint charts), graphite (true dark mode: charcoal backdrop and dark smoked-glass panel, electric-lime
+accent/CTA, teal second series), terracotta (ember-brown frame, solid cream panel, burnt-orange CTA), lapis
+(midnight lapis + plum glow, ivory glass, lapis CTA, magenta accent, gold series), orchid (violet→pink backdrop,
+lavender glass, violet CTA), opaline (light: pearl-grey backdrop with coral/aqua haze, light chrome, white glass,
+black CTA, coral accent), marina (harbour navy, sand-cream glass, navy CTA, brown accent). Custom palette: darkest
+colour → backdrop/chrome, lightest → panel tint, most vivid → accent/CTA (≥4.5:1 text), most different → 2nd series.
 
 **Type & color:** Plus Jakarta Sans; weights 500/600/700; tabular numbers; uppercase letter-spaced micro labels.
 Neutral glass + one accent; green/red/amber/blue only for meaning; pastel initials avatars.

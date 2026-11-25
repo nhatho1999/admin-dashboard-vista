@@ -5,7 +5,8 @@ Usage:
     python3 scripts/scaffold.py --shell sidebar --theme indigo --title "Orders" --out ./ui/orders.html
     python3 scripts/scaffold.py --shell notch --out ./ui/crm.html --inline       # single self-contained file
 
-Shells : sidebar (lagoon | indigo) · notch (evergreen) · spatial (aurora)
+Shells : sidebar (lagoon | indigo | graphite | lapis | orchid | marina) · notch (evergreen | terracotta)
+         spatial (aurora | opaline) — any theme works in any shell; these pairings look best.
 Assets : by default the skill's assets/ folder is copied next to the page as  vista-assets/
          (skipped if it already exists unless --force-assets). --inline embeds everything instead.
 """
@@ -17,13 +18,13 @@ import sys
 
 SKILL = pathlib.Path(__file__).resolve().parent.parent
 DEFAULT_THEME = {"sidebar": "indigo", "notch": "evergreen", "spatial": "aurora"}
-THEMES = ["lagoon", "indigo", "aurora", "evergreen"]
+THEMES = ["lagoon", "indigo", "aurora", "evergreen", "graphite", "terracotta", "lapis", "orchid", "opaline", "marina"]
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--shell", choices=list(DEFAULT_THEME), required=True)
-    ap.add_argument("--theme", choices=THEMES)
+    ap.add_argument("--theme", help="built-in: " + ", ".join(THEMES) + " (or your own data-theme name)")
     ap.add_argument("--title", default=None, help='page <title>, e.g. "Acme Admin — Orders"')
     ap.add_argument("--out", required=True)
     ap.add_argument("--inline", action="store_true", help="embed CSS/JS into the html")

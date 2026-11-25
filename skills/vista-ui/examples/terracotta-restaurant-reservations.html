@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" data-theme="terracotta">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ember &amp; Oak — Tonight</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
+</head>
+<body>
+<div class="vx-shell--notch">
+  <aside class="vx-sidebar">
+    <div class="vx-brand" style="padding-right:16px">
+      <div class="vx-brand__mark"><i data-lucide="flame"></i></div>
+      <div class="vx-brand__text" style="flex:1"><div class="vx-brand__name">Ember &amp; Oak</div><div class="vx-brand__sub">Harbour St · 180 seats</div></div>
+    </div>
+    <nav class="vx-nav" data-vx-group style="margin-top:8px">
+      <a class="vx-nav__item is-active" href="#"><i data-lucide="utensils-crossed"></i><span>Tonight</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="calendar-days"></i><span>Reservations</span><span class="vx-nav__badge">9</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="layout-grid"></i><span>Floor plan</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="book-open"></i><span>Menu</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="heart-handshake"></i><span>Guests</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="chart-column"></i><span>Reports</span></a>
+    </nav>
+    <div class="vx-stack" style="gap:8px;padding-right:16px">
+      <div class="vx-plan vx-row" style="margin:0;gap:10px">
+        <div class="vx-chart" style="--h:34px;width:34px;flex:none" data-vx-chart="ring" data-vx='{"value":79,"color":"#fc9c44","trackColor":"rgba(255,255,255,.15)","thickness":4,"center":{"value":""}}'></div>
+        <div><b style="font-size:12.5px">Covers tonight</b><div class="vx-brand__sub">142 of 180 seats</div></div>
+      </div>
+      <a class="vx-nav__item" href="#" style="width:fit-content;border-radius:999px;background:var(--vx-chrome-bg);border:1px solid var(--vx-chrome-border);color:var(--vx-on-dark)"><i data-lucide="sliders-horizontal"></i><span>Settings</span></a>
+      <div class="vx-row" style="margin-top:8px"><span class="vx-avatar vx-avatar--amber">MB</span><div style="flex:1"><div class="vx-user__name">Mara Bellweather</div><div class="vx-brand__sub">General manager</div></div></div>
+    </div>
+  </aside>
+
+  <main class="vx-panel">
+    <div class="vx-panel__bar">
+      <span class="vx-chip" style="background:#fff"><i data-lucide="calendar"></i>Fri, Nov 27 · Dinner <i data-lucide="chevron-down"></i></span>
+      <span style="flex:1"></span>
+      <label class="vx-search" style="width:300px"><i data-lucide="search"></i><input placeholder="Search guests, bookings, tables…"><span class="vx-kbd">⌘K</span></label>
+      <button class="vx-iconbtn vx-iconbtn--ink" aria-label="Notifications"><i data-lucide="bell"></i><span class="vx-ping"></span></button>
+      <button class="vx-iconbtn vx-iconbtn--cta" aria-label="New booking"><i data-lucide="plus"></i></button>
+    </div>
+
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <div class="vx-eyebrow" style="color:var(--vx-accent)">● Service starts in 40 min</div>
+        <h1 class="vx-h1">Good evening, <em>Mara</em></h1>
+        <p class="vx-sub"><b>142 covers</b> booked, <b>3 large parties</b> and <b>6 guests</b> on the waitlist.</p>
+      </div>
+      <div class="vx-page-head__actions">
+        <button class="vx-btn vx-btn--ghost"><i data-lucide="layout-grid"></i>Floor plan</button>
+        <button class="vx-btn vx-btn--cta" data-vx-toast="Booking form opened" data-vx-toast-tone="info" data-vx-toast-sub="Tip: press B anywhere to start a booking"><i data-lucide="plus"></i>New booking</button>
+      </div>
+    </div>
+
+    <div class="vx-grid-4">
+      <div class="vx-card vx-stat vx-glow"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--primary"><i data-lucide="users"></i></span><span class="vx-stat__label">Covers booked</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>12%</span></div><div class="vx-stat__value vx-num">142</div><div class="vx-caption">vs 127 last Friday</div></div>
+      <div class="vx-card vx-stat vx-glow"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--primary"><i data-lucide="timer"></i></span><span class="vx-stat__label">Avg. table turn</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-down"></i>6 min</span></div><div class="vx-stat__value vx-num">94<small>min</small></div><div class="vx-caption">Target 90 min on 2-tops</div></div>
+      <div class="vx-card vx-stat vx-glow"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--warn"><i data-lucide="user-x"></i></span><span class="vx-stat__label">No-show rate</span><span class="vx-delta vx-delta--down"><i data-lucide="trending-up"></i>0.6 pts</span></div><div class="vx-stat__value vx-num">3.1%</div><div class="vx-caption">Card hold on parties of 6+</div></div>
+      <div class="vx-card vx-stat vx-glow"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--pos"><i data-lucide="receipt"></i></span><span class="vx-stat__label">Avg. spend</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>4.8%</span></div><div class="vx-stat__value vx-num">$68.40</div><div class="vx-caption">Per cover, before tips</div></div>
+    </div>
+
+    <div class="vx-split vx-section">
+      <section class="vx-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title"><h2 class="vx-h2">Covers by arrival time</h2><div class="vx-caption">Booked vs kitchen capacity (30 covers per slot)</div></div>
+          <div class="vx-seg vx-seg--light" data-vx-group data-vx-swap="#covers-chart"><button class="is-active">Tonight</button><button>Saturday</button></div>
+        </div>
+        <div class="vx-chart" id="covers-chart" style="--h:240px" data-vx-chart="bar" data-vx='{
+          "labels":["5:00","5:30","6:00","6:30","7:00","7:30","8:00","8:30","9:00","9:30","10:00"],
+          "series":[{"name":"Covers","data":[6,10,14,22,28,31,18,6,4,2,1]}],
+          "barRatio":0.5,"highlight":5,"highlightLabel":"31 · over","refLine":30,"refLabel":"Capacity 30"}'></div>
+      </section>
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">Dining room</h2><div class="vx-caption">Seats committed at 7:30pm peak</div></div><span class="vx-status vx-status--warn">Tight</span></div>
+        <div class="vx-chart" style="--h:140px" data-vx-chart="gauge" data-vx='{"max":180,"segments":[{"value":118,"color":"chart-1"},{"value":24,"color":"chart-2"}],"center":{"value":"79%","label":"142 of 180 seats"}}'></div>
+        <div class="vx-stack" style="gap:2px;margin-top:14px">
+          <div class="vx-meter"><span><i class="vx-dot" style="color:var(--vx-chart-1)"></i>Booked</span><div class="vx-progress"><i style="--v:66%;--c:var(--vx-chart-1)"></i></div><span>118</span></div>
+          <div class="vx-meter"><span><i class="vx-dot" style="color:var(--vx-chart-2)"></i>Walk-in hold</span><div class="vx-progress"><i style="--v:13%;--c:var(--vx-chart-2)"></i></div><span>24</span></div>
+          <div class="vx-meter"><span><i class="vx-dot" style="color:var(--vx-chart-3)"></i>Bar seats</span><div class="vx-progress"><i style="--v:40%;--c:var(--vx-chart-3)"></i></div><span>8/20</span></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="vx-split vx-section">
+      <section class="vx-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title"><h2 class="vx-h2">Arriving next</h2><div class="vx-caption">Next 90 minutes · notes from past visits</div></div>
+          <div class="vx-chips" data-vx-group><span class="vx-chip is-active">All <span class="n">24</span></span><span class="vx-chip">Large parties <span class="n">3</span></span><span class="vx-chip">VIP <span class="n">2</span></span></div>
+        </div>
+        <div class="vx-table-wrap">
+          <table class="vx-table">
+            <thead><tr><th>Time</th><th>Guest</th><th>Party</th><th>Table</th><th>Notes</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="vx-num vx-strong">6:00</td><td><div class="vx-person"><span class="vx-avatar vx-avatar--rose">LH</span><div><div class="vx-person__name">Lena Hartmann</div><div class="vx-person__sub">7th visit</div></div></div></td><td class="vx-num">2</td><td>12 · window</td><td><span class="vx-tag vx-tag--pos">Anniversary</span></td><td><span class="vx-status vx-status--success">Confirmed</span></td></tr>
+              <tr><td class="vx-num vx-strong">6:15</td><td><div class="vx-person"><span class="vx-avatar vx-avatar--sky">OK</span><div><div class="vx-person__name">Omar Khalil</div><div class="vx-person__sub">First visit</div></div></div></td><td class="vx-num">8</td><td>Private room</td><td><span class="vx-tag vx-tag--warn">Nut allergy</span></td><td><span class="vx-status vx-status--success">Deposit paid</span></td></tr>
+              <tr><td class="vx-num vx-strong">6:30</td><td><div class="vx-person"><span class="vx-avatar vx-avatar--violet">SA</span><div><div class="vx-person__name">Sofie Andersen</div><div class="vx-person__sub">Regular · prefers booth</div></div></div></td><td class="vx-num">4</td><td>B3 · booth</td><td><span class="vx-tag vx-tag--primary">VIP</span></td><td><span class="vx-status vx-status--info">Running late</span></td></tr>
+              <tr><td class="vx-num vx-strong">6:45</td><td><div class="vx-person"><span class="vx-avatar vx-avatar--lime">TN</span><div><div class="vx-person__name">Tomás Nieves</div><div class="vx-person__sub">2nd visit</div></div></div></td><td class="vx-num">3</td><td>—</td><td><span class="vx-tag">High chair</span></td><td><span class="vx-status vx-status--warn">Unassigned</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="vx-card vx-card--dark">
+        <div class="vx-row vx-row--between"><span class="vx-live">Waitlist</span><span class="vx-caption">Quoted 25–40 min</span></div>
+        <div class="vx-stat__value vx-num" style="margin-top:10px">6<small>parties · 15 guests</small></div>
+        <div class="vx-list vx-list--boxed" style="margin-top:14px">
+          <div class="vx-list__item"><span class="vx-iconchip"><i data-lucide="users"></i></span><div class="vx-list__body"><div class="vx-list__title">Priya · party of 2</div><div class="vx-list__sub">Waiting 22 min · bar is fine</div></div><button class="vx-btn vx-btn--sm vx-btn--light" data-vx-toast="Text sent to Priya" data-vx-toast-sub="“Your table is ready — see you at the host stand”">Notify</button></div>
+          <div class="vx-list__item"><span class="vx-iconchip"><i data-lucide="users"></i></span><div class="vx-list__body"><div class="vx-list__title">Grant · party of 4</div><div class="vx-list__sub">Waiting 15 min · terrace ok</div></div><button class="vx-btn vx-btn--sm vx-btn--light" data-vx-toast="Text sent to Grant">Notify</button></div>
+          <div class="vx-list__item"><span class="vx-iconchip"><i data-lucide="users"></i></span><div class="vx-list__body"><div class="vx-list__title">Yuki · party of 3</div><div class="vx-list__sub">Waiting 9 min</div></div><button class="vx-btn vx-btn--sm vx-btn--light" data-vx-toast="Text sent to Yuki">Notify</button></div>
+          <div class="vx-list__item"><span class="vx-iconchip"><i data-lucide="users"></i></span><div class="vx-list__body"><div class="vx-list__title">Adebayo · party of 2</div><div class="vx-list__sub">Waiting 4 min</div></div><button class="vx-btn vx-btn--sm vx-btn--light" data-vx-toast="Text sent to Adebayo">Notify</button></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" data-theme="opaline">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Studio North — Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
+  <style>
+    .set-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--vx-line); }
+    .set-row:last-child { border-bottom: 0; }
+    .set-row .vx-caption { margin-top: 2px; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  </style>
+</head>
+<body>
+<div class="vx-shell--spatial">
+  <header class="vx-spatial__top vx-chrome">
+    <span class="vx-avatar vx-avatar--ink">SN</span>
+    <b style="font-size:13px">Studio North</b>
+    <div class="vx-spatial__prompt"><span class="vx-orb"></span>Ask: “how do I move a project to another workspace?”</div>
+    <button class="vx-iconbtn vx-iconbtn--light" aria-label="Help"><i data-lucide="circle-help"></i></button>
+  </header>
+
+  <nav class="vx-spatial__rail vx-chrome" data-vx-group>
+    <button class="vx-iconbtn" aria-label="Home"><i data-lucide="house"></i></button>
+    <button class="vx-iconbtn" aria-label="Projects"><i data-lucide="layers"></i></button>
+    <button class="vx-iconbtn" aria-label="Team"><i data-lucide="users"></i></button>
+    <button class="vx-iconbtn" aria-label="Billing"><i data-lucide="credit-card"></i></button>
+    <button class="vx-iconbtn is-active" aria-label="Settings"><i data-lucide="settings-2"></i></button>
+  </nav>
+
+  <main class="vx-panel">
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <div class="vx-eyebrow">Workspace <span class="sep">/</span> Settings</div>
+        <h1 class="vx-h1 vx-h1--hero">Settings</h1>
+        <p class="vx-sub">Studio North · <b>14 members</b> · Pro plan, renews <b>Jan 12</b>.</p>
+      </div>
+      <div class="vx-page-head__actions">
+        <button class="vx-btn vx-btn--ghost">Discard</button>
+        <button class="vx-btn vx-btn--cta" data-vx-loading="800" data-vx-toast="Settings saved" data-vx-toast-sub="Everyone in Studio North sees the changes now"><i data-lucide="check"></i>Save changes</button>
+      </div>
+    </div>
+
+    <div class="vx-tabs" data-vx-group style="margin-bottom:18px">
+      <button class="is-active">General</button><button>Members <span class="vx-count">14</span></button><button>Billing</button><button>Notifications</button><button>Security</button>
+    </div>
+
+    <!-- appearance: live theme + motion switch -->
+    <section class="vx-card vx-glow">
+      <div class="vx-card__head">
+        <div class="vx-card__title"><h2 class="vx-h2">Appearance</h2><div class="vx-caption">Theme applies to everyone in the workspace · click to preview</div></div>
+        <span class="vx-tag vx-tag--primary">10 themes</span>
+      </div>
+      <div class="vx-swatches" data-vx-group>
+        <button class="vx-swatch" data-vx-theme-switch="lagoon" style="--sw:linear-gradient(135deg,#072530,#137f97);--sw-panel:rgba(214,238,246,.88);--sw-accent:#2aaee0"><div class="vx-swatch__view"></div><span>Lagoon</span></button>
+        <button class="vx-swatch" data-vx-theme-switch="indigo" style="--sw:linear-gradient(140deg,#050d45,#2a52e8);--sw-panel:rgba(232,235,252,.92);--sw-accent:#2f5bff"><div class="vx-swatch__view"></div><span>Indigo</span></button>
+        <button class="vx-swatch" data-vx-theme-switch="aurora" style="--sw:linear-gradient(180deg,#cdb59a,#8b6a50);--sw-panel:rgba(255,249,242,.7);--sw-accent:#2f9e83"><div class="vx-swatch__view"></div><span>Aurora</span></button>
+        <button class="vx-swatch" data-vx-theme-switch="evergreen" style="--sw:linear-gradient(160deg,#0d2c1f,#154a33);--sw-panel:#f6f8f7;--sw-accent:#1f6b4a"><div class="vx-swatch__view"></div><span>Evergreen</span></button>
+        <button class="vx-swatch" data-vx-theme-switch="graphite" style="--sw:linear-gradient(150deg,#0b0b0b,#262626);--sw-panel:#2c2c2c;--sw-accent:#e2e800"><div class="vx-swatch__view"></div><span>Graphite</span></button>
+        <button class="vx-swatch" data-vx-theme-switch="terracotta" style="--sw:linear-gradient(160deg,#3b1a12,#7a3018);--sw-panel:#fbf5ee;--sw-accent:#c35627"><div class="vx-swatch__view"></div><span>Terracotta</span></button>
+        <button class="vx-swatch" data-vx-theme-switch="lapis" style="--sw:linear-gradient(140deg,#081849,#3a2a72 70%,#893172);--sw-panel:rgba(247,240,233,.94);--sw-accent:#893172"><div class="vx-swatch__view"></div><span>Lapis</span></button>
+        <button class="vx-swatch" data-vx-theme-switch="orchid" style="--sw:linear-gradient(140deg,#23125e,#8866de 70%,#dd68e3);--sw-panel:rgba(245,240,255,.92);--sw-accent:#7e3dff"><div class="vx-swatch__view"></div><span>Orchid</span></button>
+        <button class="vx-swatch is-active" data-vx-theme-switch="opaline" style="--sw:linear-gradient(160deg,#f6f6f8,#d8d8dc);--sw-panel:#ffffff;--sw-accent:#ff634a"><div class="vx-swatch__view"></div><span>Opaline</span></button>
+        <button class="vx-swatch" data-vx-theme-switch="marina" style="--sw:linear-gradient(150deg,#13283a,#326080);--sw-panel:rgba(255,247,240,.94);--sw-accent:#805232"><div class="vx-swatch__view"></div><span>Marina</span></button>
+      </div>
+      <div class="set-row" style="margin-top:8px">
+        <div><b class="vx-h3">Motion</b><div class="vx-caption">How much the interface animates · reduced-motion system setting always wins</div></div>
+        <div class="vx-seg vx-seg--light" data-vx-group id="motion-level"><button data-level="subtle">Subtle</button><button class="is-active" data-level="standard">Standard</button><button data-level="expressive">Expressive</button></div>
+      </div>
+      <div class="set-row">
+        <div><b class="vx-h3">Density</b><div class="vx-caption">Compact fits about 30% more rows in tables</div></div>
+        <div class="vx-seg vx-seg--light" data-vx-group><button class="is-active">Comfortable</button><button>Compact</button></div>
+      </div>
+    </section>
+
+    <div class="vx-split--even vx-split vx-section">
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">Workspace</h2><div class="vx-caption">Shown on invoices and invite emails</div></div></div>
+        <div class="form-grid">
+          <div class="vx-field"><label>Workspace name</label><label class="vx-input"><input value="Studio North"></label></div>
+          <div class="vx-field"><label>URL</label><label class="vx-input"><span>app.studio/</span><input value="north"></label></div>
+          <div class="vx-field"><label>Time zone</label><div class="vx-select">Europe/Oslo (GMT+1) <i data-lucide="chevron-down"></i></div></div>
+          <div class="vx-field"><label>Language</label><div class="vx-select">English (UK) <i data-lucide="chevron-down"></i></div></div>
+          <div class="vx-field"><label>Week starts on</label><div class="vx-seg vx-seg--light vx-seg--block" data-vx-group><button class="is-active">Monday</button><button>Sunday</button></div></div>
+          <div class="vx-field"><label>Currency</label><div class="vx-select">NOK — Norwegian krone <i data-lucide="chevron-down"></i></div></div>
+        </div>
+      </section>
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">Notifications</h2><div class="vx-caption">Defaults for new members</div></div></div>
+        <div class="set-row"><div><b class="vx-h3">Weekly digest</b><div class="vx-caption">Monday 8:00 · projects, deadlines, mentions</div></div><button class="vx-switch is-on" role="switch" aria-checked="true" aria-label="Weekly digest"></button></div>
+        <div class="set-row"><div><b class="vx-h3">Mentions &amp; replies</b><div class="vx-caption">Push and email, bundled every 15 min</div></div><button class="vx-switch is-on" role="switch" aria-checked="true" aria-label="Mentions"></button></div>
+        <div class="set-row"><div><b class="vx-h3">Client comments</b><div class="vx-caption">When a client leaves feedback on a proof</div></div><button class="vx-switch is-on" role="switch" aria-checked="true" aria-label="Client comments"></button></div>
+        <div class="set-row"><div><b class="vx-h3">Billing alerts</b><div class="vx-caption">Owners and admins only</div></div><button class="vx-switch" role="switch" aria-checked="false" aria-label="Billing alerts"></button></div>
+      </section>
+    </div>
+
+    <div class="vx-split vx-section">
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">Plan &amp; usage</h2><div class="vx-caption">Pro · NOK 1,490 / month · renews Jan 12</div></div><button class="vx-btn vx-btn--sm vx-btn--primary"><i data-lucide="sparkles"></i>Upgrade</button></div>
+        <div class="vx-stack" style="gap:4px">
+          <div class="vx-meter" style="grid-template-columns:120px 1fr 70px"><span><i class="vx-dot" style="color:var(--vx-chart-1)"></i>Seats</span><div class="vx-progress"><i style="--v:70%;--c:var(--vx-chart-1)"></i></div><span>14 / 20</span></div>
+          <div class="vx-meter" style="grid-template-columns:120px 1fr 70px"><span><i class="vx-dot" style="color:var(--vx-chart-3)"></i>Storage</span><div class="vx-progress"><i style="--v:61%;--c:var(--vx-chart-3)"></i></div><span>61 GB</span></div>
+          <div class="vx-meter" style="grid-template-columns:120px 1fr 70px"><span><i class="vx-dot" style="color:var(--vx-chart-4)"></i>AI credits</span><div class="vx-progress"><i style="--v:38%;--c:var(--vx-chart-4)"></i></div><span>3.8K</span></div>
+        </div>
+      </section>
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">Danger zone</h2><div class="vx-caption">These can't be undone</div></div></div>
+        <div class="set-row"><div><b class="vx-h3">Transfer ownership</b><div class="vx-caption">Hand the workspace to another admin</div></div><button class="vx-btn vx-btn--sm">Transfer</button></div>
+        <div class="set-row"><div><b class="vx-h3">Delete workspace</b><div class="vx-caption">Removes 38 projects and all files</div></div><button class="vx-btn vx-btn--sm vx-btn--ghost" style="color:var(--vx-neg)"><i data-lucide="trash-2"></i>Delete</button></div>
+      </section>
+    </div>
+  </main>
+
+  <nav class="vx-spatial__dock vx-chrome" data-vx-group>
+    <a href="#">Overview</a><a href="#">Projects</a><a href="#">Team</a><a href="#">Billing</a><a href="#" class="is-active">Settings</a>
+  </nav>
+</div>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+<script>
+  // Motion level → <html data-vx-motion>, then replay the entrance so the difference is visible
+  document.getElementById("motion-level").addEventListener("vx:change", function (e) {
+    document.documentElement.setAttribute("data-vx-motion", e.detail.item.getAttribute("data-level"));
+    if (window.VistaMotion) VistaMotion.replay();
+  });
+</script>
+</body>
+</html>
