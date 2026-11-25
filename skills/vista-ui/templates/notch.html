@@ -1,0 +1,81 @@
+<!doctype html>
+<!-- VISTA UI · NOTCH SHELL — for theme "evergreen" (dark frame + clean white work panel).
+     The active nav pill merges into the panel through two concave corners (pure CSS).
+     Replace every [[…]] placeholder. -->
+<html lang="en" data-theme="evergreen">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[[App name]] — [[Page]]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+</head>
+<body>
+<div class="vx-shell--notch">
+  <aside class="vx-sidebar">
+    <div class="vx-brand" style="padding-right:16px">
+      <div class="vx-brand__mark"><i data-lucide="leaf"></i></div>
+      <div class="vx-brand__text" style="flex:1"><div class="vx-brand__name">[[App name]]</div><div class="vx-brand__sub">[[Tagline]]</div></div>
+    </div>
+    <nav class="vx-nav" data-vx-group style="margin-top:8px">
+      <a class="vx-nav__item is-active" href="#"><i data-lucide="layout-grid"></i><span>Dashboard</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="[[icon]]"></i><span>[[Item]]</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="[[icon]]"></i><span>[[Item]]</span><span class="vx-nav__badge">[[n]]</span></a>
+    </nav>
+    <div class="vx-stack" style="gap:8px;padding-right:16px">
+      <div class="vx-plan" style="margin:0"><div class="vx-plan__row"><b>[[Quota]]</b><span>[[69%]]</span></div><div class="vx-progress"><i style="--v:69%"></i></div></div>
+      <div class="vx-row" style="margin-top:8px"><span class="vx-avatar vx-avatar--peach">[[AB]]</span><div style="flex:1"><div class="vx-user__name">[[Full name]]</div><div class="vx-brand__sub">[[Role]]</div></div></div>
+    </div>
+  </aside>
+
+  <main class="vx-panel">
+    <div class="vx-panel__bar">
+      <span class="vx-chip" style="background:#fff"><i data-lucide="calendar"></i>[[Mon, Nov 23]]</span>
+      <span style="flex:1"></span>
+      <label class="vx-search" style="width:300px"><i data-lucide="search"></i><input placeholder="Search [[things]]…"><span class="vx-kbd">⌘K</span></label>
+      <button class="vx-iconbtn vx-iconbtn--ink" aria-label="Notifications"><i data-lucide="bell"></i></button>
+      <button class="vx-iconbtn vx-iconbtn--cta" aria-label="Create"><i data-lucide="plus"></i></button>
+    </div>
+
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <div class="vx-eyebrow" style="color:var(--vx-accent)">● [[Section]]</div>
+        <h1 class="vx-h1">[[Good afternoon, Name]]</h1>
+        <p class="vx-sub">[[You have 6 tasks due today and 4 deals closing this week.]]</p>
+      </div>
+      <div class="vx-page-head__actions">
+        <button class="vx-btn vx-btn--ghost"><i data-lucide="sliders-horizontal"></i>Customize</button>
+        <button class="vx-btn vx-btn--cta"><i data-lucide="plus"></i>[[Primary action]]</button>
+      </div>
+    </div>
+
+    <div class="vx-grid-4 vx-animate">
+      <div class="vx-card vx-card--sunken vx-stat">
+        <div class="vx-stat__top"><span class="vx-iconchip"><i data-lucide="[[icon]]"></i></span><span class="vx-stat__label">[[Metric]]</span></div>
+        <div class="vx-stat--split">
+          <div><div class="vx-stat__value vx-num">[[$171K]]<small>[[this qtr]]</small></div><div class="vx-stat__meta" style="margin-top:6px"><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>[[18.6%]]</span></div></div>
+          <div class="vx-chart" style="--h:34px" data-vx-chart="sparkline" data-vx='{"data":[3,4,3.6,5,4.8,6,6.4,7.5],"area":false}'></div>
+        </div>
+      </div>
+      <!-- …repeat 3× -->
+    </div>
+
+    <div class="vx-split vx-section">
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">[[Trend title]]</h2><div class="vx-caption">[[subtitle]]</div></div></div>
+        <div class="vx-chart" style="--h:250px" data-vx-chart="line" data-vx='{"labels":["Jan","Feb","Mar","Apr","May","Jun"],"series":[{"name":"Actual","data":[92,104,98,126,133,148],"area":true},{"name":"Target","data":[100,108,116,124,132,140],"dashed":true,"color":"chart-2"}],"yFormat":{"prefix":"$","suffix":"K"}}'></div>
+      </section>
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">[[Progress title]]</h2><div class="vx-caption">[[Against a $250K goal]]</div></div></div>
+        <div class="vx-chart" style="--h:130px" data-vx-chart="gauge" data-vx='{"max":100,"segments":[{"value":69,"color":"chart-3"},{"value":12,"color":"chart-2"}],"center":{"value":"69%","label":"of goal"}}'></div>
+      </section>
+    </div>
+  </main>
+</div>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+</body>
+</html>

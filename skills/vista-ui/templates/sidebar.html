@@ -1,0 +1,104 @@
+<!doctype html>
+<!-- VISTA UI · SIDEBAR SHELL — for theme "lagoon" or "indigo".
+     Replace every [[…]] placeholder. Delete sections you do not need; keep the order:
+     page-head → KPI row → main split (chart + side card) → detail (table/list). -->
+<html lang="en" data-theme="indigo">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[[App name]] — [[Page]]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+</head>
+<body>
+<div class="vx-shell--sidebar">
+
+  <aside class="vx-sidebar vx-chrome">
+    <div class="vx-brand">
+      <div class="vx-brand__mark"><i data-lucide="[[brand-icon]]"></i></div>
+      <div class="vx-brand__text"><div class="vx-brand__name">[[App name]]</div><div class="vx-brand__sub">[[Workspace · role]]</div></div>
+    </div>
+    <nav class="vx-nav" data-vx-group>
+      <div class="vx-nav__label">[[Section]]</div>
+      <a class="vx-nav__item is-active" href="#"><i data-lucide="house"></i><span>Overview</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="[[icon]]"></i><span>[[Item]]</span><span class="vx-nav__badge">[[n]]</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="[[icon]]"></i><span>[[Item]]</span></a>
+      <div class="vx-nav__label">System</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="settings"></i><span>Settings</span></a>
+    </nav>
+    <div class="vx-plan">
+      <div class="vx-plan__row"><b>[[Plan / usage]]</b><span>[[12 of 20 seats]]</span></div>
+      <div class="vx-progress"><i style="--v:60%"></i></div>
+    </div>
+  </aside>
+
+  <header class="vx-topbar vx-chrome">
+    <label class="vx-search"><i data-lucide="search"></i><input placeholder="Search [[things]]…"><span class="vx-kbd">⌘K</span></label>
+    <div class="vx-topbar__spacer"></div>
+    <button class="vx-iconbtn vx-iconbtn--primary" aria-label="Assistant"><i data-lucide="sparkles"></i></button>
+    <button class="vx-iconbtn vx-iconbtn--light" aria-label="Notifications"><i data-lucide="bell"></i><span class="vx-ping"></span></button>
+    <div class="vx-user"><span class="vx-avatar vx-avatar--peach">[[AB]]</span><div><div class="vx-user__name">[[Full name]]</div><div class="vx-user__role">[[Role]]</div></div></div>
+  </header>
+
+  <main class="vx-panel">
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <div class="vx-eyebrow">[[Group]] <span class="sep">/</span> [[Page]]</div>
+        <h1 class="vx-h1">[[Page title or "Good afternoon, <em>Name</em>"]]</h1>
+        <p class="vx-sub">[[One line that summarises what needs attention, with <b>bold counts</b>.]]</p>
+      </div>
+      <div class="vx-page-head__actions">
+        <div class="vx-seg vx-seg--light" data-vx-group><button>7D</button><button class="is-active">30D</button><button>90D</button></div>
+        <button class="vx-btn"><i data-lucide="download"></i>Export</button>
+        <button class="vx-btn vx-btn--cta"><i data-lucide="plus"></i>[[Primary action]]</button>
+      </div>
+    </div>
+
+    <!-- KPI row: always 4 (or 5) cards -->
+    <div class="vx-grid-4 vx-animate">
+      <div class="vx-card vx-stat">
+        <div class="vx-stat__top"><span class="vx-iconchip"><i data-lucide="[[icon]]"></i></span><span class="vx-stat__label">[[Metric]]</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>[[2.7%]]</span></div>
+        <div class="vx-stat__value vx-num">[[$16,477]]</div>
+        <div class="vx-caption">[[vs $16,044 last period]]</div>
+        <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[3,4,3,5,4,6,5,7]}'></div>
+      </div>
+      <!-- …repeat 3× -->
+    </div>
+
+    <div class="vx-split vx-section">
+      <section class="vx-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title"><h2 class="vx-h2">[[Chart title]]</h2><div class="vx-caption">[[What the chart shows]]</div></div>
+          <div class="vx-legend"><span><i style="--c:var(--vx-chart-1)"></i>[[This period]]</span><span><i style="--c:var(--vx-chart-2)"></i>[[Before]]</span></div>
+        </div>
+        <div class="vx-chart" style="--h:240px" data-vx-chart="bar" data-vx='{"labels":["Jan","Feb","Mar","Apr","May","Jun"],"series":[{"name":"This period","data":[12,19,14,22,18,25]},{"name":"Before","data":[10,15,16,18,17,20]}],"yFormat":{"prefix":"$","suffix":"K"}}'></div>
+      </section>
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">[[Breakdown]]</h2><div class="vx-caption">[[Period]]</div></div></div>
+        <div class="vx-chart" style="--h:170px" data-vx-chart="donut" data-vx='{"data":[{"label":"A","value":48},{"label":"B","value":30},{"label":"C","value":22}],"center":{"value":"[[$209.7K]]","label":"[[total]]"}}'></div>
+      </section>
+    </div>
+
+    <section class="vx-card vx-section">
+      <div class="vx-card__head">
+        <div class="vx-card__title"><h2 class="vx-h2">[[Table title]]</h2><div class="vx-caption">[[Sort / filter hint]]</div></div>
+        <div class="vx-chips" data-vx-group><span class="vx-chip is-active">All <span class="n">12</span></span><span class="vx-chip">[[Filter]] <span class="n">4</span></span></div>
+      </div>
+      <div class="vx-table-wrap">
+        <table class="vx-table">
+          <thead><tr><th>[[Name]]</th><th>[[Column]]</th><th>Status</th><th class="r">[[Amount]]</th></tr></thead>
+          <tbody>
+            <tr><td><div class="vx-person"><span class="vx-avatar vx-avatar--sky">[[AB]]</span><div><div class="vx-person__name">[[Name]]</div><div class="vx-person__sub">[[detail]]</div></div></div></td><td>[[value]]</td><td><span class="vx-status vx-status--success">[[Active]]</span></td><td class="r vx-num vx-strong">[[$1,240]]</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<!-- VISTA UI · SPATIAL SHELL — for theme "aurora" (visionOS‑style glass window over a scene).
+     Top pill (welcome + assistant prompt), left icon rail, bottom tab dock.
+     For a real backdrop photo: delete .vx-scene and add  body{background:url(room.jpg) center/cover fixed}
+     Replace every [[…]] placeholder. -->
+<html lang="en" data-theme="aurora">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[[App name]] — [[Page]]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+</head>
+<body>
+<div class="vx-scene" aria-hidden="true"><i class="w1"></i><i class="w2"></i><i class="lamp"></i><i class="shelf"></i><i class="sofa"></i></div>
+
+<div class="vx-shell--spatial">
+  <header class="vx-spatial__top vx-chrome">
+    <span class="vx-avatar vx-avatar--ink">[[AB]]</span>
+    <b style="font-size:13px">Welcome, [[Name]]</b>
+    <div class="vx-spatial__prompt"><span class="vx-orb"></span>[[Ask anything, e.g. "Send $250 to Jenny"…]]</div>
+    <button class="vx-iconbtn vx-iconbtn--light" aria-label="Assistant"><i data-lucide="mic"></i></button>
+  </header>
+
+  <nav class="vx-spatial__rail vx-chrome" data-vx-group>
+    <button class="vx-iconbtn is-active" aria-label="Home"><i data-lucide="house"></i></button>
+    <button class="vx-iconbtn" aria-label="[[Label]]"><i data-lucide="[[icon]]"></i></button>
+    <button class="vx-iconbtn" aria-label="Settings"><i data-lucide="settings-2"></i></button>
+  </nav>
+
+  <main class="vx-panel">
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <h1 class="vx-h1 vx-h1--hero">[[Good morning, Name]]</h1>
+        <p class="vx-sub">[[Short friendly summary line.]]</p>
+      </div>
+      <div class="vx-page-head__actions"><button class="vx-btn vx-btn--cta"><i data-lucide="plus"></i>[[Primary action]]</button></div>
+    </div>
+
+    <div class="vx-grid-3">
+      <section class="vx-card">
+        <span class="vx-stat__label">[[Hero metric]]</span>
+        <div class="vx-stat__value vx-num" style="font-size:34px">[[$635,218.32]]</div>
+        <div class="vx-row" style="margin-top:6px"><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>[[6%]]</span><span class="vx-caption">[[than last month]]</span></div>
+        <div class="vx-grid-2" style="margin-top:16px;gap:10px">
+          <button class="vx-btn vx-btn--cta vx-btn--lg">[[Action]]</button>
+          <button class="vx-btn vx-btn--light vx-btn--lg">[[Action]]</button>
+        </div>
+      </section>
+      <div class="vx-grid-2" style="gap:12px">
+        <div class="vx-card vx-card--feature vx-stat"><span class="vx-stat__label">[[Metric]]</span><div class="vx-stat__value vx-num">[[$872]]</div><div class="vx-stat__meta"><span class="vx-delta vx-delta--up">+7%</span>[[This month]]</div></div>
+        <div class="vx-card vx-stat"><span class="vx-stat__label">[[Metric]]</span><div class="vx-stat__value vx-num">[[$609]]</div><div class="vx-stat__meta"><span class="vx-delta vx-delta--down">−4%</span>[[This month]]</div></div>
+        <div class="vx-card vx-stat"><span class="vx-stat__label">[[Metric]]</span><div class="vx-stat__value vx-num">[[$846]]</div><div class="vx-stat__meta"><span class="vx-delta vx-delta--up">+5%</span>[[This month]]</div></div>
+        <div class="vx-card vx-stat"><span class="vx-stat__label">[[Metric]]</span><div class="vx-stat__value vx-num">[[$610]]</div><div class="vx-stat__meta"><span class="vx-delta vx-delta--up">+3%</span>[[This month]]</div></div>
+      </div>
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">[[Chart title]]</h2><div class="vx-caption">[[subtitle]]</div></div></div>
+        <div class="vx-chart" style="--h:200px" data-vx-chart="bar" data-vx='{"labels":["Jan","Feb","Mar","Apr","May","Jun"],"series":[{"name":"Loss","data":[22,17,12,16,15,24],"color":"chart-2"},{"name":"Profit","data":[12,20,18,15,17,18],"color":"chart-1"}],"stacked":true,"barRatio":0.5,"yFormat":{"suffix":"K"}}'></div>
+      </section>
+    </div>
+  </main>
+
+  <nav class="vx-spatial__dock vx-chrome" data-vx-group>
+    <a href="#" class="is-active">Overview</a><a href="#">[[Tab]]</a><a href="#">[[Tab]]</a><a href="#">Reports</a>
+    <button class="vx-iconbtn vx-iconbtn--light vx-iconbtn--sm" aria-label="Add"><i data-lucide="plus"></i></button>
+  </nav>
+</div>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+</body>
+</html>

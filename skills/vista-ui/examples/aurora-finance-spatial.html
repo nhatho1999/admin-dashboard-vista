@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" data-theme="aurora">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sunroom — Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+</head>
+<body>
+<!-- decorative room behind the glass (swap for a real photo: body{background:url(room.jpg) center/cover}) -->
+<div class="vx-scene" aria-hidden="true"><i class="w1"></i><i class="w2"></i><i class="lamp"></i><i class="shelf"></i><i class="sofa"></i></div>
+
+<div class="vx-shell--spatial">
+  <header class="vx-spatial__top vx-chrome">
+    <span class="vx-avatar vx-avatar--ink">KR</span>
+    <b style="font-size:13px">Welcome, Kai</b>
+    <div class="vx-spatial__prompt"><span class="vx-orb"></span>Can you send $250 to Jenny Wilson…</div>
+    <button class="vx-iconbtn vx-iconbtn--light" aria-label="Assistant"><i data-lucide="mic"></i></button>
+  </header>
+
+  <nav class="vx-spatial__rail vx-chrome" data-vx-group>
+    <button class="vx-iconbtn is-active" aria-label="Home"><i data-lucide="house"></i></button>
+    <button class="vx-iconbtn" aria-label="Insights"><i data-lucide="sparkles"></i></button>
+    <button class="vx-iconbtn" aria-label="Savings"><i data-lucide="piggy-bank"></i></button>
+    <button class="vx-iconbtn" aria-label="Cards"><i data-lucide="credit-card"></i></button>
+    <button class="vx-iconbtn" aria-label="Settings"><i data-lucide="settings-2"></i></button>
+  </nav>
+
+  <main class="vx-panel">
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <h1 class="vx-h1 vx-h1--hero">Good morning, Kai</h1>
+        <p class="vx-sub">Stay on top of your money, review recent activity and keep your goals moving.</p>
+      </div>
+      <div class="vx-page-head__actions"><button class="vx-btn vx-btn--cta"><i data-lucide="plus"></i>New goal</button></div>
+    </div>
+
+    <div class="vx-grid-3" style="grid-template-columns:1fr 1fr 1fr">
+      <!-- balance -->
+      <section class="vx-card">
+        <div class="vx-row vx-row--between"><span class="vx-stat__label">Total balance</span><span class="vx-chip" style="padding:4px 10px"><span class="vx-flag" style="--c:#2f5bd8">$</span>USD <i data-lucide="chevron-down"></i></span></div>
+        <div class="vx-stat__value vx-num" style="font-size:34px">$635,218.32</div>
+        <div class="vx-row" style="margin-top:6px"><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>6%</span><span class="vx-caption">than last month</span></div>
+        <div class="vx-grid-2" style="margin-top:16px;gap:10px">
+          <button class="vx-btn vx-btn--cta vx-btn--lg"><i data-lucide="arrow-left-right"></i>Transfer</button>
+          <button class="vx-btn vx-btn--light vx-btn--lg"><i data-lucide="arrow-down-left"></i>Request</button>
+        </div>
+        <div class="vx-card vx-card--sunken" style="margin-top:14px;padding:12px">
+          <div class="vx-caption" style="margin-bottom:8px"><b class="vx-strong">Wallets</b> · Total 6 wallets</div>
+          <div class="vx-grid-3" style="gap:8px">
+            <div><div class="vx-caption vx-row" style="gap:6px"><span class="vx-flag" style="--c:#2f5bd8">$</span>USD</div><b class="vx-num">$22,678</b></div>
+            <div><div class="vx-caption vx-row" style="gap:6px"><span class="vx-flag" style="--c:#1d4ed8">€</span>EUR</div><b class="vx-num">€18,345</b></div>
+            <div><div class="vx-caption vx-row" style="gap:6px"><span class="vx-flag" style="--c:#c2334d">£</span>GBP</div><b class="vx-num">£15,212</b></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2x2 KPIs -->
+      <div class="vx-grid-2" style="gap:12px">
+        <div class="vx-card vx-card--feature vx-stat"><div class="vx-stat__top"><span class="vx-stat__label">Total earnings</span><span class="vx-iconchip vx-iconchip--round"><i data-lucide="arrow-up-right"></i></span></div><div class="vx-stat__value vx-num">$872</div><div class="vx-stat__meta"><span class="vx-delta vx-delta--up">+7%</span>This month</div></div>
+        <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-stat__label">Total spending</span><span class="vx-iconchip vx-iconchip--round"><i data-lucide="arrow-down-right"></i></span></div><div class="vx-stat__value vx-num">$609</div><div class="vx-stat__meta"><span class="vx-delta vx-delta--down">−4%</span>This month</div></div>
+        <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-stat__label">Total income</span><span class="vx-iconchip vx-iconchip--round"><i data-lucide="wallet"></i></span></div><div class="vx-stat__value vx-num">$846</div><div class="vx-stat__meta"><span class="vx-delta vx-delta--up">+5%</span>This month</div></div>
+        <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-stat__label">Total revenue</span><span class="vx-iconchip vx-iconchip--round"><i data-lucide="landmark"></i></span></div><div class="vx-stat__value vx-num">$610</div><div class="vx-stat__meta"><span class="vx-delta vx-delta--up">+3%</span>This month</div></div>
+      </div>
+
+      <!-- stacked bars -->
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">Total income</h2><div class="vx-caption">View your income in a certain period of time</div></div></div>
+        <div class="vx-card vx-card--sunken" style="padding:12px 12px 4px">
+          <div class="vx-row vx-row--between" style="margin-bottom:6px"><b style="font-size:12px">Profit and loss</b><div class="vx-legend"><span><i style="--c:var(--vx-chart-1)"></i>Profit</span><span><i style="--c:var(--vx-chart-2)"></i>Loss</span></div></div>
+          <div class="vx-chart" style="--h:190px" data-vx-chart="bar" data-vx='{
+            "labels":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug"],
+            "series":[{"name":"Loss","data":[22,17,12,16,15,24,14,9],"color":"chart-2"},{"name":"Profit","data":[12,20,18,15,17,18,6,1],"color":"chart-1"}],
+            "stacked":true,"barRatio":0.5,"radius":5,"yFormat":{"suffix":"K"},"padLeft":30}'></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="vx-split--rev vx-split vx-section">
+      <div class="vx-stack">
+        <section class="vx-card">
+          <div class="vx-h3">Monthly spending limit</div>
+          <div class="vx-progress vx-progress--lg" style="margin:14px 0 8px"><i style="--v:46%;--c:var(--vx-chart-1)"></i></div>
+          <div class="vx-row vx-row--between vx-caption"><span><b class="vx-strong vx-num">$4,229.18</b> used from total</span><b class="vx-strong vx-num">$9,500.00</b></div>
+        </section>
+        <section class="vx-card">
+          <div class="vx-card__head"><div class="vx-card__title vx-row"><i data-lucide="credit-card"></i><h2 class="vx-h2">My cards</h2></div><button class="vx-btn vx-btn--sm vx-btn--light"><i data-lucide="plus"></i>Add new</button></div>
+          <div class="vx-grid-2" style="gap:10px">
+            <div class="vx-card vx-card--dark" style="aspect-ratio:1.6;display:flex;flex-direction:column;justify-content:space-between;padding:14px"><div class="vx-row vx-row--between"><span class="vx-glass-tag">Active</span><span style="display:flex"><i class="vx-dot" style="color:#eb001b;width:16px;height:16px"></i><i class="vx-dot" style="color:#f79e1b;width:16px;height:16px;margin-left:-6px"></i></span></div><div><div class="vx-caption">•••• 4412</div><b class="vx-num">$12,840.20</b></div></div>
+            <div class="vx-card vx-card--feature" style="aspect-ratio:1.6;display:flex;flex-direction:column;justify-content:space-between;padding:14px"><div class="vx-row vx-row--between"><span class="vx-glass-tag">Active</span><i data-lucide="nfc"></i></div><div><div class="vx-caption">•••• 0937</div><b class="vx-num">$3,402.75</b></div></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="vx-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title"><h2 class="vx-h2">Recent activities</h2></div>
+          <label class="vx-search" style="height:32px;width:180px"><i data-lucide="search"></i><input placeholder="Search"></label>
+          <button class="vx-btn vx-btn--sm vx-btn--ghost">Filter <i data-lucide="list-filter"></i></button>
+        </div>
+        <div class="vx-table-wrap">
+          <table class="vx-table">
+            <thead><tr><th>Order ID</th><th>Activity</th><th class="r">Price</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody>
+              <tr><td class="id">INV_000076</td><td><div class="vx-row"><span class="vx-iconchip vx-iconchip--info" style="width:24px;height:24px;border-radius:7px"><i data-lucide="smartphone"></i></span>Mobile app purchase</div></td><td class="r vx-num vx-strong">$25,500</td><td><span class="vx-status vx-status--plain vx-status--success">Completed</span></td><td class="vx-muted">17 Apr, 2026 03:45 PM</td></tr>
+              <tr><td class="id">INV_000075</td><td><div class="vx-row"><span class="vx-iconchip vx-iconchip--warn" style="width:24px;height:24px;border-radius:7px"><i data-lucide="hotel"></i></span>Hotel booking</div></td><td class="r vx-num vx-strong">$32,750</td><td><span class="vx-status vx-status--plain vx-status--warn">Pending</span></td><td class="vx-muted">15 Apr, 2026 11:30 AM</td></tr>
+              <tr><td class="id">INV_000074</td><td><div class="vx-row"><span class="vx-iconchip vx-iconchip--pos" style="width:24px;height:24px;border-radius:7px"><i data-lucide="plane"></i></span>Flight ticket booking</div></td><td class="r vx-num vx-strong">$40,200</td><td><span class="vx-status vx-status--plain vx-status--success">Completed</span></td><td class="vx-muted">15 Apr, 2026 12:00 PM</td></tr>
+              <tr><td class="id">INV_000073</td><td><div class="vx-row"><span class="vx-iconchip vx-iconchip--primary" style="width:24px;height:24px;border-radius:7px"><i data-lucide="armchair"></i></span>Furniture order</div></td><td class="r vx-num vx-strong">$9,980</td><td><span class="vx-status vx-status--plain vx-status--info">In progress</span></td><td class="vx-muted">14 Apr, 2026 09:15 PM</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- savings goals -->
+    <div class="vx-row vx-row--between vx-section" style="margin-top:28px;margin-bottom:12px"><h2 class="vx-h2">Savings &amp; goals</h2><span class="vx-caption">$17,879.22 saved across 5 goals</span></div>
+    <div class="vx-grid-5 vx-animate">
+      <div class="vx-card" style="text-align:center"><div class="vx-row vx-row--between"><span class="vx-iconchip vx-iconchip--warn"><i data-lucide="laptop"></i></span><span class="vx-chip" style="padding:3px 8px;font-size:11px">Jan 2027</span></div><div class="vx-chart" style="--h:110px;margin:10px 0" data-vx-chart="ring" data-vx='{"value":74,"color":"chart-3","label":"saved","thickness":9}'></div><div class="vx-h3">New laptop</div><div class="vx-caption">$1,850 of $2,499</div><button class="vx-btn vx-btn--sm vx-btn--light vx-btn--block" style="margin-top:10px"><i data-lucide="plus"></i>Add money</button></div>
+      <div class="vx-card" style="text-align:center"><div class="vx-row vx-row--between"><span class="vx-iconchip vx-iconchip--info"><i data-lucide="plane"></i></span><span class="vx-chip" style="padding:3px 8px;font-size:11px">Aug 2026</span></div><div class="vx-chart" style="--h:110px;margin:10px 0" data-vx-chart="ring" data-vx='{"value":64,"color":"chart-3","label":"saved","thickness":9}'></div><div class="vx-h3">Trip to Lisbon</div><div class="vx-caption">$3,200 of $5,000</div><button class="vx-btn vx-btn--sm vx-btn--light vx-btn--block" style="margin-top:10px"><i data-lucide="plus"></i>Add money</button></div>
+      <div class="vx-card" style="text-align:center"><div class="vx-row vx-row--between"><span class="vx-iconchip vx-iconchip--pos"><i data-lucide="shield"></i></span><span class="vx-chip" style="padding:3px 8px;font-size:11px">Dec 2026</span></div><div class="vx-chart" style="--h:110px;margin:10px 0" data-vx-chart="ring" data-vx='{"value":63,"color":"chart-3","label":"saved","thickness":9}'></div><div class="vx-h3">Emergency fund</div><div class="vx-caption">$9,460 of $15,000</div><button class="vx-btn vx-btn--sm vx-btn--light vx-btn--block" style="margin-top:10px"><i data-lucide="plus"></i>Add money</button></div>
+      <div class="vx-card" style="text-align:center"><div class="vx-row vx-row--between"><span class="vx-iconchip vx-iconchip--primary"><i data-lucide="car"></i></span><span class="vx-chip" style="padding:3px 8px;font-size:11px">Mar 2027</span></div><div class="vx-chart" style="--h:110px;margin:10px 0" data-vx-chart="ring" data-vx='{"value":26,"color":"chart-3","label":"saved","thickness":9}'></div><div class="vx-h3">New car</div><div class="vx-caption">$6,300 of $24,000</div><button class="vx-btn vx-btn--sm vx-btn--light vx-btn--block" style="margin-top:10px"><i data-lucide="plus"></i>Add money</button></div>
+      <div class="vx-add-tile"><span class="vx-iconbtn vx-iconbtn--light"><i data-lucide="plus"></i></span>New goal<span class="vx-caption">Set a target and a date</span></div>
+    </div>
+  </main>
+
+  <nav class="vx-spatial__dock vx-chrome" data-vx-group>
+    <a href="#" class="is-active">Overview</a><a href="#">Activity</a><a href="#">Manage</a><a href="#">Program</a><a href="#">Account</a><a href="#">Reports</a>
+    <button class="vx-iconbtn vx-iconbtn--light vx-iconbtn--sm" aria-label="Add"><i data-lucide="plus"></i></button>
+  </nav>
+</div>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+</body>
+</html>

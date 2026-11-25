@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" data-theme="lagoon">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tidepool Admin — Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+</head>
+<body>
+<div class="vx-shell--sidebar">
+
+  <aside class="vx-sidebar vx-chrome">
+    <div class="vx-brand">
+      <div class="vx-brand__mark"><i data-lucide="waves"></i></div>
+      <div class="vx-brand__text"><div class="vx-brand__name">Tidepool Admin</div><div class="vx-brand__sub">Control center</div></div>
+    </div>
+    <nav class="vx-nav" data-vx-group>
+      <div class="vx-nav__label">Dashboard</div>
+      <a class="vx-nav__item is-active" href="#"><i data-lucide="layout-grid"></i><span>Overview</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="chart-line"></i><span>Reports</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="check-check"></i><span>Tasks</span><span class="vx-nav__badge">3</span></a>
+      <div class="vx-nav__label">People</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="users"></i><span>Team</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="key-round"></i><span>Roles &amp; access</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="briefcase"></i><span>Clients</span><span class="vx-nav__badge">2</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="headphones"></i><span>Support</span><span class="vx-nav__badge">4</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="megaphone"></i><span>Announcements</span></a>
+      <div class="vx-nav__label">Business</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="shield-check"></i><span>Moderation</span><span class="vx-nav__badge">6</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="wallet"></i><span>Finance</span><span class="vx-nav__badge">2</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="receipt"></i><span>Billing</span></a>
+      <div class="vx-nav__label">System</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="history"></i><span>Activity log</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="plug"></i><span>Integrations</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="settings"></i><span>Settings</span></a>
+    </nav>
+    <div class="vx-plan">
+      <div class="vx-plan__row"><b>Business plan</b><span>12 of 20 seats</span></div>
+      <div class="vx-progress"><i style="--v:60%"></i></div>
+    </div>
+  </aside>
+
+  <header class="vx-topbar vx-chrome">
+    <label class="vx-search"><i data-lucide="search"></i><input placeholder="Search people, clients, listings, requests…"><span class="vx-kbd">⌘K</span></label>
+    <div class="vx-topbar__spacer"></div>
+    <button class="vx-iconbtn" aria-label="Help"><i data-lucide="life-buoy"></i></button>
+    <button class="vx-iconbtn vx-iconbtn--rainbow" aria-label="Assistant"></button>
+    <button class="vx-iconbtn vx-iconbtn--light" aria-label="Notifications"><i data-lucide="bell"></i><span class="vx-ping"></span></button>
+    <div class="vx-user"><span class="vx-avatar vx-avatar--sky">AM</span><div><div class="vx-user__name">Andrea Mills</div><div class="vx-user__role">Owner</div></div></div>
+  </header>
+
+  <main class="vx-panel">
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <h1 class="vx-h1">Good afternoon, Andrea</h1>
+        <p class="vx-sub">Wednesday, November 4 · 3 things need your attention</p>
+      </div>
+      <div class="vx-page-head__actions">
+        <button class="vx-btn"><i data-lucide="history"></i>Activity log</button>
+        <button class="vx-btn vx-btn--cta"><i data-lucide="plus"></i>Invite an agent</button>
+      </div>
+    </div>
+
+    <div class="vx-split">
+      <section class="vx-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title"><h2 class="vx-h2">Agency commission</h2><div class="vx-caption">$236,700 from 37 deals in the last 6 months</div></div>
+          <div class="vx-seg" data-vx-group><button>3 months</button><button class="is-active">6 months</button><button>12 months</button></div>
+          <button class="vx-btn vx-btn--sm vx-btn--cta"><i data-lucide="plus"></i>Record a deal</button>
+        </div>
+        <div class="vx-chart" style="--h:230px" data-vx-chart="bar" data-vx='{
+          "labels":["Jun","Jul","Aug","Sep","Oct","Nov"],
+          "series":[{"name":"Commission","data":[34800,33100,40200,37600,42900,41734]}],
+          "yFormat":{"prefix":"$"},"barRatio":0.36,"radius":8,"highlight":"last","highlightLabel":"$41,734"}'></div>
+      </section>
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">Commission by office</h2><div class="vx-caption">Last 6 months · click an office to filter</div></div></div>
+        <div class="vx-chart" style="--h:150px" data-vx-chart="donut" data-vx='{
+          "data":[{"label":"Harbor HQ","value":48.1,"color":"chart-2"},{"label":"Old Town","value":109.3,"color":"chart-3"},{"label":"Riverside","value":26.4,"color":"chart-5"},{"label":"West Bank","value":53,"color":"chart-4"}],
+          "format":{"prefix":"$","suffix":"K"},"center":{"value":"$236.7K","label":"commission"}}'></div>
+        <div class="vx-grid-2 vx-section" style="gap:8px 18px;font-size:12px">
+          <div class="vx-row vx-row--between"><span class="vx-row"><i class="vx-dot" style="color:var(--vx-chart-2)"></i>Harbor HQ</span><b>$48.1K</b></div>
+          <div class="vx-row vx-row--between"><span class="vx-row"><i class="vx-dot" style="color:var(--vx-chart-5)"></i>Riverside</span><b>$26.4K</b></div>
+          <div class="vx-row vx-row--between"><span class="vx-row"><i class="vx-dot" style="color:var(--vx-chart-3)"></i>Old Town</span><b>$109.3K</b></div>
+          <div class="vx-row vx-row--between"><span class="vx-row"><i class="vx-dot" style="color:var(--vx-chart-4)"></i>West Bank</span><b>$53K</b></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="vx-grid-4 vx-section vx-animate">
+      <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--round"><i data-lucide="users"></i></span></div><div class="vx-stat__value vx-num">11</div><div class="vx-h3">Active people</div><div class="vx-caption">2 joined this month</div></div>
+      <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--round"><i data-lucide="file-clock"></i></span></div><div class="vx-stat__value vx-num">6</div><div class="vx-h3">Waiting for review</div><div class="vx-caption">Oldest sent 3 days ago</div></div>
+      <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--round"><i data-lucide="handshake"></i></span></div><div class="vx-stat__value vx-num">48</div><div class="vx-h3">Open deals</div><div class="vx-caption">Worth $3.2M</div></div>
+      <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--round"><i data-lucide="badge-dollar-sign"></i></span><span style="flex:1"></span><span class="vx-delta vx-delta--down"><i data-lucide="trending-down"></i>2.7%</span></div><div class="vx-stat__value vx-num">$41,734</div><div class="vx-h3">Agency commission</div><div class="vx-caption">This month so far</div></div>
+    </div>
+
+    <div class="vx-row vx-row--between vx-section" style="margin-top:28px;margin-bottom:12px">
+      <div><h2 class="vx-h2">Waiting for moderation</h2><div class="vx-caption">Every new listing is checked by an admin before it goes live</div></div>
+      <div class="vx-row" style="flex-wrap:wrap">
+        <div class="vx-seg" data-vx-group><button class="is-active">In review <span class="vx-count">6</span></button><button>Approved <span class="vx-count">24</span></button><button>Rejected <span class="vx-count">2</span></button></div>
+        <button class="vx-btn vx-btn--cta"><i data-lucide="check"></i>Approve ready ones</button>
+      </div>
+    </div>
+    <div class="vx-grid-4 vx-animate">
+      <article class="vx-card vx-media vx-card--hover">
+        <div class="vx-media__img"><img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=70&auto=format&fit=crop" alt="Villa with pool"><span class="vx-media__badge vx-glass-tag"><i data-lucide="clock"></i>In review</span><span class="vx-media__badge-r vx-glass-tag"><i data-lucide="image"></i>14</span></div>
+        <div class="vx-media__body"><div class="vx-media__price vx-num">$420,000</div><div class="vx-h3" style="margin-top:2px">4-bed penthouse over the bay</div>
+          <div class="vx-person" style="margin-top:12px"><span class="vx-avatar vx-avatar--sm vx-avatar--sky">TL</span><div><div class="vx-person__name">Tara Lyons</div><div class="vx-person__sub">Sent 2 h ago</div></div></div>
+          <div style="margin-top:10px"><span class="vx-tag vx-tag--pos"><i data-lucide="check"></i>All checks passed</span></div>
+          <div class="vx-row" style="margin-top:12px"><button class="vx-btn vx-btn--sm" style="flex:1"><i data-lucide="eye"></i>Review</button><button class="vx-btn vx-btn--sm vx-btn--cta" style="flex:1"><i data-lucide="check"></i>Approve</button></div></div>
+      </article>
+      <article class="vx-card vx-media vx-card--hover">
+        <div class="vx-media__img"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=70&auto=format&fit=crop" alt="Modern house"><span class="vx-media__badge vx-glass-tag"><i data-lucide="clock"></i>In review</span><span class="vx-media__badge-r vx-glass-tag"><i data-lucide="image"></i>9</span></div>
+        <div class="vx-media__body"><div class="vx-media__price vx-num">$4,800<small class="vx-muted" style="font-size:12px">/mo</small></div><div class="vx-h3" style="margin-top:2px">New-build studio, Northgate</div>
+          <div class="vx-person" style="margin-top:12px"><span class="vx-avatar vx-avatar--sm vx-avatar--violet">NL</span><div><div class="vx-person__name">Nadia Lowe</div><div class="vx-person__sub">Sent 3 h ago</div></div></div>
+          <div style="margin-top:10px"><span class="vx-tag vx-tag--warn"><i data-lucide="image-off"></i>More photos</span></div>
+          <div class="vx-row" style="margin-top:12px"><button class="vx-btn vx-btn--sm" style="flex:1"><i data-lucide="eye"></i>Review</button><button class="vx-btn vx-btn--sm vx-btn--cta" style="flex:1"><i data-lucide="check"></i>Approve</button></div></div>
+      </article>
+      <article class="vx-card vx-media vx-card--hover">
+        <div class="vx-media__img"><img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=70&auto=format&fit=crop" alt="Apartment interior"><span class="vx-media__badge vx-glass-tag"><i data-lucide="clock"></i>In review</span><span class="vx-media__badge-r vx-glass-tag"><i data-lucide="image"></i>21</span></div>
+        <div class="vx-media__body"><div class="vx-media__price vx-num">$112,000</div><div class="vx-h3" style="margin-top:2px">Renovated 2-bed apartment</div>
+          <div class="vx-person" style="margin-top:12px"><span class="vx-avatar vx-avatar--sm vx-avatar--mint">MT</span><div><div class="vx-person__name">Mara Thatcher</div><div class="vx-person__sub">Sent 4 h ago</div></div></div>
+          <div style="margin-top:10px"><span class="vx-tag vx-tag--pos"><i data-lucide="check"></i>All checks passed</span></div>
+          <div class="vx-row" style="margin-top:12px"><button class="vx-btn vx-btn--sm" style="flex:1"><i data-lucide="eye"></i>Review</button><button class="vx-btn vx-btn--sm vx-btn--cta" style="flex:1"><i data-lucide="check"></i>Approve</button></div></div>
+      </article>
+      <article class="vx-card vx-media vx-card--hover">
+        <div class="vx-media__img"><img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=70&auto=format&fit=crop" alt="Living room"><span class="vx-media__badge vx-glass-tag"><i data-lucide="clock"></i>In review</span><span class="vx-media__badge-r vx-glass-tag"><i data-lucide="image"></i>12</span></div>
+        <div class="vx-media__body"><div class="vx-media__price vx-num">$295,000</div><div class="vx-h3" style="margin-top:2px">180 m² house on a 6-are plot</div>
+          <div class="vx-person" style="margin-top:12px"><span class="vx-avatar vx-avatar--sm vx-avatar--amber">MB</span><div><div class="vx-person__name">Milo Burke</div><div class="vx-person__sub">Sent 5 h ago</div></div></div>
+          <div style="margin-top:10px"><span class="vx-tag vx-tag--warn"><i data-lucide="file-warning"></i>Check address</span></div>
+          <div class="vx-row" style="margin-top:12px"><button class="vx-btn vx-btn--sm" style="flex:1"><i data-lucide="eye"></i>Review</button><button class="vx-btn vx-btn--sm vx-btn--cta" style="flex:1"><i data-lucide="check"></i>Approve</button></div></div>
+      </article>
+    </div>
+
+    <section class="vx-card vx-section" style="margin-top:28px">
+      <div class="vx-card__head">
+        <div class="vx-card__title"><h2 class="vx-h2">Agent payouts</h2><div class="vx-caption">The agent's share of every commission</div></div>
+        <div class="vx-seg" data-vx-group><button class="is-active">Due <span class="vx-count">4</span></button><button>Overdue <span class="vx-count">1</span></button><button>Paid</button><button>All</button></div>
+      </div>
+      <div class="vx-table-wrap">
+        <table class="vx-table">
+          <thead><tr><th>Agent</th><th>Property</th><th class="r">Commission</th><th class="r">To pay</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><div class="vx-person"><span class="vx-avatar vx-avatar--sky">TL</span><div><div class="vx-person__name">Tara Lyons</div><div class="vx-person__sub">Harbor HQ · Senior</div></div></div></td><td><b>3-bed, Lakeside</b><div class="vx-caption">Closed Oct 28</div></td><td class="r vx-num">$5,600</td><td class="r vx-num vx-strong">$2,520</td><td><span class="vx-status vx-status--danger">Overdue</span></td><td class="r"><button class="vx-btn vx-btn--sm vx-btn--cta">Pay</button></td></tr>
+            <tr><td><div class="vx-person"><span class="vx-avatar vx-avatar--violet">NL</span><div><div class="vx-person__name">Nadia Lowe</div><div class="vx-person__sub">Old Town · Agent</div></div></div></td><td><b>Studio, Northgate</b><div class="vx-caption">Closed Nov 1</div></td><td class="r vx-num">$2,900</td><td class="r vx-num vx-strong">$1,160</td><td><span class="vx-status vx-status--warn">Due in 3d</span></td><td class="r"><button class="vx-btn vx-btn--sm vx-btn--cta">Pay</button></td></tr>
+            <tr><td><div class="vx-person"><span class="vx-avatar vx-avatar--mint">MT</span><div><div class="vx-person__name">Mara Thatcher</div><div class="vx-person__sub">Riverside · Agent</div></div></div></td><td><b>2-bed apartment</b><div class="vx-caption">Closed Nov 2</div></td><td class="r vx-num">$3,360</td><td class="r vx-num vx-strong">$1,344</td><td><span class="vx-status vx-status--info">Scheduled</span></td><td class="r"><button class="vx-btn vx-btn--sm">Details</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+</body>
+</html>
