@@ -1,6 +1,6 @@
 # Charts (`assets/vista-charts.js`)
 
-Zero dependencies, SVG, theme-aware, responsive (re-renders on resize), hover tooltips.
+Zero dependencies, SVG, theme-aware, responsive (re-renders on resize), hover tooltips, animated draw-in.
 
 ```html
 <div class="vx-chart" style="--h:240px" data-vx-chart="TYPE" data-vx='{ JSON CONFIG }'></div>
@@ -10,6 +10,17 @@ Zero dependencies, SVG, theme-aware, responsive (re-renders on resize), hover to
   `<script type="application/json">{…}</script>` instead of `data-vx`.
 - JS API: `VistaCharts.render(el, "bar", cfg)`, `VistaCharts.renderAll(rootEl)` (call after injecting HTML).
 - Colors: omit for palette order, or `"color": "chart-3"` (theme token), `"--my-var"`, or any CSS color.
+
+## Motion
+Each chart draws itself the first time it is 20% visible: bars grow from the baseline with a spring,
+left → right (stacked segments build upward); lines and areas sweep left → right; donut slices fill in
+order; gauge and ring arcs sweep; the end dot pops; pills fade up; the donut/gauge center counts up.
+When `vista-motion.js` is present the draw-in waits for its card to land (synced, +120ms).
+- `render(el, type, cfg)` on an element that already played = data update → quick replay (0.7× time).
+- `VistaCharts.replay(el)` replays with the current config; `VistaCharts.flush()` plays every waiting chart now.
+- Off: `"animate": false` in the config, `renderAll(root, {animate:false})`, `<html data-vx-motion="off">`
+  or the user's reduced-motion setting.
+- Hover: bars dim the others, donut slices thicken, the tooltip glides between points — all with transitions.
 
 ## Common options (bar / line / area)
 | Option | Default | Meaning |

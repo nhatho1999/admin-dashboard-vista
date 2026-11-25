@@ -226,8 +226,31 @@ Use at most one feature card and one dark card per screen.
 <div class="vx-add-tile"><span class="vx-iconbtn vx-iconbtn--light"><i data-lucide="plus"></i></span>New goal<span class="vx-caption">Set a target and a date</span></div>
 ```
 
+## Motion & feedback (needs `vista-motion.js`; full guide in `motion.md`)
+```html
+<div class="vx-card vx-stat vx-glow">…</div>                 <!-- cursor spotlight + lit border (KPI, hero cards) -->
+<section class="vx-card vx-card--dark vx-tilt vx-glow" data-vx-tilt="5">…</section>   <!-- 3D tilt, 1–2 per screen -->
+<div class="vx-stat__value vx-num" data-vx-count="off">Q4 2026</div>                  <!-- opt out of count-up -->
+<div class="vx-seg" data-vx-group data-vx-swap="#revenue-chart">…</div>              <!-- replay chart on change -->
+<button class="vx-btn vx-btn--cta" data-vx-loading="900" data-vx-toast="Report exported"
+        data-vx-toast-sub="q3-report.pdf · 412 KB"><i data-lucide="download"></i>Export</button>
+<button class="vx-btn" data-vx-toast="Link copied" data-vx-toast-tone="info">Share</button>   <!-- tones: success info warn danger -->
+<section data-vx-reveal>…</section>                         <!-- scroll-reveal for non-card blocks -->
+```
+Skeletons (loading > ~1s), swapped for content with `VistaMotion.swap(box, update)`:
+```html
+<span class="vx-skeleton vx-skeleton--title"></span>                    <!-- --w to set width -->
+<span class="vx-skeleton vx-skeleton--value" style="--w:60%"></span>
+<span class="vx-skeleton vx-skeleton--text" style="--w:85%"></span>
+<span class="vx-skeleton vx-skeleton--circle" style="--s:34px"></span>
+<span class="vx-skeleton vx-skeleton--block" style="--h:160px"></span>    <!-- chart / image placeholder -->
+```
+Button busy state: `btn.classList.add("is-loading")` (or `VistaMotion.loading(btn, promise)`).
+Toast from JS: `VistaMotion.toast("Invoice archived", {tone:"success", sub:"INV-0042", action:{label:"Undo", onClick}})`.
+Gliders (the sliding active pill) are automatic on `.vx-seg`, `.vx-tabs`, sidebar `.vx-nav`, dock and rail.
+
 ## Utilities
 `vx-row` (flex, gap 10) · `vx-row--between` · `vx-stack` (column, gap 16) · `vx-grid-2/3/4/5` ·
 `vx-grid-auto` (`--min`) · `vx-split` (2:1) · `vx-split--rev` (1:2) · `vx-split--even` · `vx-span-2` ·
-`vx-span-all` · `vx-section` (top margin 16) · `vx-animate` (staggered rise-in of children) ·
+`vx-span-all` · `vx-section` (top margin 16) · `vx-animate` (CSS-only staggered rise-in; superseded by `vista-motion.js`) ·
 text: `vx-h1 vx-h2 vx-h3 vx-sub vx-caption vx-muted vx-soft vx-strong vx-accent vx-num` · `vx-dot` (colored dot via `color`).

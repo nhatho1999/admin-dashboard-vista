@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
 </head>
 <body>
 <div class="vx-shell--sidebar">
@@ -50,15 +51,15 @@
         <p class="vx-sub">[[One line that summarises what needs attention, with <b>bold counts</b>.]]</p>
       </div>
       <div class="vx-page-head__actions">
-        <div class="vx-seg vx-seg--light" data-vx-group><button>7D</button><button class="is-active">30D</button><button>90D</button></div>
-        <button class="vx-btn"><i data-lucide="download"></i>Export</button>
+        <div class="vx-seg vx-seg--light" data-vx-group data-vx-swap="#main-chart"><button>7D</button><button class="is-active">30D</button><button>90D</button></div>
+        <button class="vx-btn" data-vx-loading="900" data-vx-toast="[[Report exported]]"><i data-lucide="download"></i>Export</button>
         <button class="vx-btn vx-btn--cta"><i data-lucide="plus"></i>[[Primary action]]</button>
       </div>
     </div>
 
     <!-- KPI row: always 4 (or 5) cards -->
-    <div class="vx-grid-4 vx-animate">
-      <div class="vx-card vx-stat">
+    <div class="vx-grid-4">
+      <div class="vx-card vx-stat vx-glow">
         <div class="vx-stat__top"><span class="vx-iconchip"><i data-lucide="[[icon]]"></i></span><span class="vx-stat__label">[[Metric]]</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>[[2.7%]]</span></div>
         <div class="vx-stat__value vx-num">[[$16,477]]</div>
         <div class="vx-caption">[[vs $16,044 last period]]</div>
@@ -73,7 +74,7 @@
           <div class="vx-card__title"><h2 class="vx-h2">[[Chart title]]</h2><div class="vx-caption">[[What the chart shows]]</div></div>
           <div class="vx-legend"><span><i style="--c:var(--vx-chart-1)"></i>[[This period]]</span><span><i style="--c:var(--vx-chart-2)"></i>[[Before]]</span></div>
         </div>
-        <div class="vx-chart" style="--h:240px" data-vx-chart="bar" data-vx='{"labels":["Jan","Feb","Mar","Apr","May","Jun"],"series":[{"name":"This period","data":[12,19,14,22,18,25]},{"name":"Before","data":[10,15,16,18,17,20]}],"yFormat":{"prefix":"$","suffix":"K"}}'></div>
+        <div class="vx-chart" id="main-chart" style="--h:240px" data-vx-chart="bar" data-vx='{"labels":["Jan","Feb","Mar","Apr","May","Jun"],"series":[{"name":"This period","data":[12,19,14,22,18,25]},{"name":"Before","data":[10,15,16,18,17,20]}],"yFormat":{"prefix":"$","suffix":"K"}}'></div>
       </section>
       <section class="vx-card">
         <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">[[Breakdown]]</h2><div class="vx-caption">[[Period]]</div></div></div>

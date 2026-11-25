@@ -36,6 +36,15 @@ Toggle groups: manage `is-active` with state instead of `vista.js`:
 ```
 Reusable pieces worth extracting: `<Shell>`, `<PageHead>`, `<StatCard>`, `<Card title caption actions>`, `<StatusPill>`, `<Avatar>`.
 
+Motion in React/Next: load `vista-motion.js` once with `<Script src="/vista-motion.js" strategy="beforeInteractive" />`
+(or a plain `<script>` in `<head>`). It reads only classes, so it works with React-rendered markup:
+gliders follow `is-active` changes made by state (a MutationObserver watches them), charts animate when
+rendered by `VxChart`. After a client-side route change call `window.VistaMotion?.replay()`; for content
+mounted later (tabs, modals) `VistaMotion.init(rootEl)` and `VistaMotion.reveal(cardEl)`. Toasts:
+`VistaMotion.toast("Saved")` from any handler. If the project uses Framer Motion / Motion One instead, map
+the tokens: enter `{ duration: 0.56, ease: [0.16, 1, 0.3, 1] }`, exit `{ duration: 0.25, ease: [0.55, 0, 0.75, 0.2] }`,
+spring `{ type: "spring", stiffness: 260, damping: 26 }`, stagger `0.045`, and keep `useReducedMotion()`.
+
 ## Vue / Nuxt
 Same CSS import; chart wrapper with `onMounted(() => VistaCharts.render(el.value, type, config))`
 and `watch(() => config, …, { deep: true })`. Icons: `lucide-vue-next`.

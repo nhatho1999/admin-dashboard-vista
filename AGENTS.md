@@ -7,7 +7,7 @@ When a task asks for a dashboard, admin panel, CRM/analytics/finance screen or a
 
 1. Read `skills/vista-ui/SKILL.md` and follow its workflow.
 2. Load files from `skills/vista-ui/references/` only when the step needs them.
-3. Reuse `skills/vista-ui/assets/` (CSS, charts, icons) instead of writing styles from scratch.
+3. Reuse `skills/vista-ui/assets/` (CSS, charts, motion, icons) instead of writing styles or animations from scratch.
 4. Verify with `python3 skills/vista-ui/scripts/screenshot.py <page.html> --full` when you can run code.
 
 Working on the skill itself:

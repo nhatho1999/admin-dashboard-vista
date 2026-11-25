@@ -41,6 +41,16 @@ not from heavy drop shadows.
 - Cards in one row share height. Keep 1–3 lines of text per list row.
 - A card has: title (15px/700) + caption, optional actions on the right, then content. Never a lone chart without a title.
 
+## Motion
+- The glass is a physical material: it **settles** (rise + slight scale, ease-out), it **catches light**
+  (cursor spotlight + lit border on `vx-glow`), and selections **slide** (one glider pill per control).
+- One choreographed entrance per page — chrome, panel, head, then cards in reading order, numbers roll up,
+  charts draw. Then calm: only what the user touches moves.
+- Arrive soft, leave fast; springs for things the user moves (pills, switches, toasts), never for big travel.
+- Details: CTA sheen on hover, quick-action icons nudge, "Review →" arrows slide, the switch knob
+  stretches while pressed, checks pop. Details are tiny (1–3px, ≤ 4°) — never bouncy cartoon motion.
+- Full rules and patterns: `motion.md`.
+
 ## Signature details worth reproducing
 - Greeting H1 with the name in the accent color + a sentence that counts what needs attention.
 - Delta badges (`↗ 2.7%`) beside or under numbers.
@@ -61,3 +71,4 @@ not from heavy drop shadows.
 - Don't use emoji as icons or flags; use Lucide or the `.vx-flag` currency dot.
 - Don't make charts without axes context or legends when there are 2+ series.
 - Don't stack more than ~3 levels of glass (panel → card → sunken box is the max).
+- Don't animate for decoration (looping gradients, bouncing icons, pulsing badges) — motion must explain a change.

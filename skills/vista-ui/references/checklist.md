@@ -28,7 +28,15 @@ Run `python3 scripts/screenshot.py page.html --full` and go through this list wi
 - [ ] Segmented controls / chips / tabs toggle (`data-vx-group` on their container).
 - [ ] Interactive elements are `<button>`/`<a>`; icon-only buttons have `aria-label`.
 - [ ] Checked at 1440px, and at 1100px / 390px if the page is meant for smaller screens.
-- [ ] `prefers-reduced-motion` respected (built in — don't add custom infinite animations).
+
+## Motion
+- [ ] `vista-motion.js` is loaded in `<head>` (right after `vista.css`), not at the end of `<body>`.
+- [ ] `--frames 0,150,300,500,900` filmstrip: chrome → panel → head → cards in reading order; charts start after their card; all landed by ~1s.
+- [ ] No `[error] … still invisible after motion finished`; `--reduced-motion` screenshot shows every card, number and chart.
+- [ ] Every async button has feedback (`data-vx-loading` and/or a toast); period switches replay their chart (`data-vx-swap`).
+- [ ] Live updates use `VistaMotion.insert/remove/countTo`, not a full re-render.
+- [ ] `vx-tilt` on at most two hero cards; no custom infinite animations except loaders; no animating width/height/top/left.
+- [ ] Custom transitions use `--vx-dur-*` / `--vx-ease-*` tokens; exits faster than entrances.
 
 ## Delivery
 - [ ] Assets resolve from the output location (or the file was bundled with `scripts/bundle.py`).

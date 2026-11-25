@@ -7,6 +7,10 @@
            JS API: VistaCharts.render(el, type, config) / VistaCharts.renderAll(root)
    Colors: "var(--vx-chart-1)" … "--vx-chart-6" are used by default, or pass
            `color` per series / slice (any CSS color or token name like "chart-3").
+   Motion: charts draw themselves in the first time they scroll into view (bars grow, lines
+           sweep, arcs fill). Calling render() again on the same element replays it faster
+           (period switch). Off with "animate": false, renderAll(root, {animate:false}),
+           <html data-vx-motion="off"> or prefers-reduced-motion.
    ========================================================================== */
 (function (global) {
   "use strict";
@@ -43,8 +47,10 @@
     return Math.ceil(max / step) * step;
   }
   function size(el) {
-    var r = el.getBoundingClientRect();
-    return { w: Math.max(40, Math.round(r.width)), h: Math.max(30, Math.round(r.height)) };
+    // layout size, not getBoundingClientRect: entrance transforms (scale) must not shrink the chart
+    var w = el.clientWidth, hh = el.clientHeight;
+    if (!w) { var r = el.getBoundingClientRect(); w = r.width; hh = r.height; }
+    return { w: Math.max(40, Math.round(w)), h: Math.max(30, Math.round(hh)) };
   }
   function svgRoot(el, w, hgt) {
     el.innerHTML = "";
@@ -180,7 +186,7 @@
         var d = top
           ? "M" + x + "," + (y + bh) + "V" + (y + r) + "Q" + x + "," + y + " " + (x + r) + "," + y + "H" + (x + bw - r) + "Q" + (x + bw) + "," + y + " " + (x + bw) + "," + (y + r) + "V" + (y + bh) + "Z"
           : "M" + x + "," + (y + bh) + "V" + y + "H" + (x + bw) + "V" + (y + bh) + "Z";
-        var p = h("path", { d: d, fill: c, opacity: sr.opacity }, svg);
+        var p = h("path", { d: d, fill: c, opacity: sr.opacity, "class": "vx-m-bar", "data-i": i, "data-k": stacked ? k : 0 }, svg);
         if (stacked && k < series.length - 1) p.setAttribute("stroke", "transparent");
         bars.push({ el: p, i: i });
         if (stacked) base -= bh;
@@ -195,7 +201,7 @@
     }
     if (cfg.refLine !== undefined) {
       var ry = box.y + box.h - (cfg.refLine / max) * box.h;
-      h("line", { x1: box.x, x2: box.x + box.w, y1: ry, y2: ry, stroke: "var(--vx-ink-2)", "stroke-dasharray": "4 4", opacity: .55 }, svg);
+      h("line", { x1: box.x, x2: box.x + box.w, y1: ry, y2: ry, stroke: "var(--vx-ink-2)", "stroke-dasharray": "4 4", opacity: .55, "class": "vx-m-ref" }, svg);
       if (cfg.refLabel) {
         var rp = document.createElement("div"); rp.className = "vx-chart-pill vx-chart-pill--light";
         rp.textContent = cfg.refLabel; rp.style.left = box.x + box.w - 30 + "px"; rp.style.top = ry + "px"; el.appendChild(rp);
@@ -225,15 +231,15 @@
         var id = "vxg" + ++uid, gr = h("linearGradient", { id: id, x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
         h("stop", { offset: "0%", "stop-color": c, "stop-opacity": sr.areaOpacity || 0.28 }, gr);
         h("stop", { offset: "100%", "stop-color": c, "stop-opacity": 0 }, gr);
-        h("path", { d: d + "L" + pts[pts.length - 1][0] + "," + (box.y + box.h) + "L" + pts[0][0] + "," + (box.y + box.h) + "Z", fill: "url(#" + id + ")" }, svg);
+        h("path", { d: d + "L" + pts[pts.length - 1][0] + "," + (box.y + box.h) + "L" + pts[0][0] + "," + (box.y + box.h) + "Z", fill: "url(#" + id + ")", "class": "vx-m-area", "data-k": k }, svg);
       }
       h("path", {
         d: d, fill: "none", stroke: c, "stroke-width": sr.width || 2.4, "stroke-linecap": "round", "stroke-linejoin": "round",
-        "stroke-dasharray": sr.dashed ? "5 5" : null, opacity: sr.opacity
+        "stroke-dasharray": sr.dashed ? "5 5" : null, opacity: sr.opacity, "class": "vx-m-line", "data-k": k
       }, svg);
       if (sr.endDot !== false && (cfg.endDot || sr.endDot) && pts.length) {
         var lp = pts[pts.length - 1];
-        h("circle", { cx: lp[0], cy: lp[1], r: 5, fill: "#fff", stroke: c, "stroke-width": 2.5 }, svg);
+        h("circle", { cx: lp[0], cy: lp[1], r: 5, fill: "#fff", stroke: c, "stroke-width": 2.5, "class": "vx-m-dot" }, svg);
       }
     });
     if (cfg.tooltip !== false) {
@@ -261,7 +267,8 @@
       if (a1 > a0) {
         var p = h("path", {
           d: arc(cx, cy, r, a0, a1), fill: "none", stroke: color(d.color, i), "stroke-width": th,
-          "stroke-linecap": cfg.round === false ? "butt" : "round"
+          "stroke-linecap": cfg.round === false ? "butt" : "round", "class": "vx-m-arc",
+          "data-a": ((a0 + Math.PI / 2) / (Math.PI * 2)).toFixed(4), "data-s": ((a1 - a0) / (Math.PI * 2)).toFixed(4)
         }, svg);
         p.addEventListener("mousemove", function (e) {
           var b = el.getBoundingClientRect();
@@ -288,7 +295,7 @@
     var cum = segs.map(function (sg) { acc += sg.value; return acc; });
     for (var i = segs.length - 1; i >= 0; i--) {
       var a1 = Math.PI + Math.min(1, cum[i] / max) * Math.PI;
-      if (cum[i] > 0) h("path", { d: arc(cx, cy, r, Math.PI, Math.max(Math.PI + 0.01, a1)), fill: "none", stroke: color(segs[i].color, i), "stroke-width": th, "stroke-linecap": "round" }, svg);
+      if (cum[i] > 0) h("path", { d: arc(cx, cy, r, Math.PI, Math.max(Math.PI + 0.01, a1)), fill: "none", stroke: color(segs[i].color, i), "stroke-width": th, "stroke-linecap": "round", "class": "vx-m-arc", "data-a": 0, "data-s": Math.min(1, cum[i] / max).toFixed(4) }, svg);
     }
     center(el, cfg.center, "vx-chart__center--gauge");
   }
@@ -303,7 +310,8 @@
       var c = 2 * Math.PI * r;
       h("circle", {
         cx: cx, cy: cy, r: r, fill: "none", stroke: color(cfg.color, 0), "stroke-width": th, "stroke-linecap": "round",
-        "stroke-dasharray": c * pct + " " + c, transform: "rotate(-90 " + cx + " " + cy + ")"
+        "stroke-dasharray": c * pct + " " + c, transform: "rotate(-90 " + cx + " " + cy + ")",
+        "class": "vx-m-arc", "data-a": 0, "data-s": pct.toFixed(4), "data-len": c * pct
       }, svg);
     }
     center(el, cfg.center || { value: Math.round(pct * 100) + "%", label: cfg.label });
@@ -320,9 +328,9 @@
       var id = "vxs" + ++uid, gr = h("linearGradient", { id: id, x1: 0, y1: 0, x2: 0, y2: 1 }, h("defs", {}, svg));
       h("stop", { offset: "0%", "stop-color": c, "stop-opacity": .25 }, gr);
       h("stop", { offset: "100%", "stop-color": c, "stop-opacity": 0 }, gr);
-      h("path", { d: d + "L" + pts[pts.length - 1][0] + "," + s.h + "L" + pts[0][0] + "," + s.h + "Z", fill: "url(#" + id + ")" }, svg);
+      h("path", { d: d + "L" + pts[pts.length - 1][0] + "," + s.h + "L" + pts[0][0] + "," + s.h + "Z", fill: "url(#" + id + ")", "class": "vx-m-area" }, svg);
     }
-    h("path", { d: d, fill: "none", stroke: c, "stroke-width": cfg.width || 1.8, "stroke-linecap": "round", "stroke-linejoin": "round" }, svg);
+    h("path", { d: d, fill: "none", stroke: c, "stroke-width": cfg.width || 1.8, "stroke-linecap": "round", "stroke-linejoin": "round", "class": "vx-m-line" }, svg);
   }
 
   var TYPES = {
@@ -330,30 +338,134 @@
     donut: donut, gauge: gauge, ring: ring, sparkline: spark, spark: spark
   };
 
-  function render(el, type, cfg) {
+  /* ---------- MOTION: draw-in on first view, quick replay on update ---------- */
+  var ROOT = document.documentElement, easeOk = {};
+  function motionOff() {
+    return ROOT.getAttribute("data-vx-motion") === "off" ||
+      !!(global.matchMedia && global.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }
+  function tokMs(name, fb) {
+    var v = getComputedStyle(ROOT).getPropertyValue(name).trim(), n = parseFloat(v);
+    if (isNaN(n)) return fb;
+    return /ms$/.test(v) ? n : /s$/.test(v) ? n * 1000 : n;
+  }
+  function tokEase(name, fb) {
+    var v = getComputedStyle(ROOT).getPropertyValue(name).trim();
+    if (!v) return fb;
+    if (easeOk[v] === undefined) {
+      try { document.createElement("div").animate([], { duration: 1, easing: v }).cancel(); easeOk[v] = true; }
+      catch (e) { easeOk[v] = false; }
+    }
+    return easeOk[v] ? v : fb;
+  }
+  function extras(el) { return el.querySelectorAll(":scope > svg, :scope > .vx-chart-pill, :scope > .vx-chart__center"); }
+  function hide(el) { extras(el).forEach(function (n) { n.style.opacity = "0"; }); }
+  function unhide(el) { extras(el).forEach(function (n) { n.style.opacity = ""; }); }
+  /* entrance sync: vista-motion.js stamps each revealed block with __vxAt (when it lands) */
+  function hostDelay(el) {
+    for (var n = el; n && n !== document.body; n = n.parentElement) {
+      if (n.__vxAt) return Math.max(0, n.__vxAt - performance.now()) + 120;
+    }
+    return 0;
+  }
+  function play(el, speed, delay) {
+    el.__vxArmed = false;
+    unhide(el);
+    var svg = el.querySelector(":scope > svg");
+    if (!svg || !svg.animate) return;
+    var draw = tokMs("--vx-dur-draw", 900) * speed, enter = tokMs("--vx-dur-enter", 560) * speed;
+    var out = tokEase("--vx-ease-out", "cubic-bezier(.16,1,.3,1)");
+    var spring = tokEase("--vx-ease-spring", out), bounce = tokEase("--vx-ease-bounce", spring);
+    function o(d, dur, ease) { return { duration: dur, delay: delay + d, easing: ease, fill: "backwards" }; }
+    svg.animate([{ opacity: 0 }, { opacity: 1 }], o(0, 260 * speed, "linear"));
+
+    var bars = svg.querySelectorAll(".vx-m-bar"), n = 0;
+    bars.forEach(function (b) { n = Math.max(n, +b.getAttribute("data-i") + 1); });
+    var step = n ? Math.min(34, 380 / n) * speed : 0;
+    bars.forEach(function (b) {
+      b.animate([{ transform: "scaleY(0)" }, { transform: "scaleY(1)" }],
+        o(+b.getAttribute("data-i") * step + +b.getAttribute("data-k") * 90 * speed, enter * 1.2, spring));
+    });
+    svg.querySelectorAll(".vx-m-line, .vx-m-ref").forEach(function (p) {
+      p.animate([{ clipPath: "inset(-20% 100% -20% 0)" }, { clipPath: "inset(-20% 0% -20% 0)" }],
+        o((+p.getAttribute("data-k") || 0) * 90 * speed, draw, out));
+    });
+    svg.querySelectorAll(".vx-m-area").forEach(function (p) {
+      p.animate([{ clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 1 }],
+        o((+p.getAttribute("data-k") || 0) * 90 * speed, draw * 1.1, out));
+    });
+    svg.querySelectorAll(".vx-m-dot").forEach(function (p) {
+      p.animate([{ transform: "scale(0)" }, { transform: "scale(1)" }], o(draw * 0.8, enter, bounce));
+    });
+    svg.querySelectorAll(".vx-m-arc").forEach(function (p) {
+      var len = +p.getAttribute("data-len") || (p.getTotalLength ? p.getTotalLength() : 0);
+      if (!len) return;
+      if (!p.getAttribute("stroke-dasharray")) p.style.strokeDasharray = len + "px " + (len + 4) + "px";
+      var a = +p.getAttribute("data-a") || 0, sw = +p.getAttribute("data-s") || 1;
+      p.animate([{ strokeDashoffset: len + "px", opacity: 0 }, { opacity: 1, offset: 0.06 }, { strokeDashoffset: "0px", opacity: 1 }],
+        o(a * draw, Math.max(260 * speed, sw * draw * 1.2), out));
+    });
+    el.querySelectorAll(":scope > .vx-chart-pill").forEach(function (p, i) {
+      p.animate([{ opacity: 0, translate: "0 6px" }, { opacity: 1, translate: "0 0" }], o(draw * 0.6 + i * 60, enter, spring));
+    });
+    var c = el.querySelector(":scope > .vx-chart__center");
+    if (c) {
+      c.animate([{ opacity: 0, scale: "0.94" }, { opacity: 1, scale: "1" }], o(draw * 0.25, enter, spring));
+      var b = c.querySelector("b");
+      if (b && global.VistaMotion && global.VistaMotion.countUp) global.VistaMotion.countUp(b, { delay: delay + draw * 0.2, duration: draw });
+    }
+  }
+  var io = global.IntersectionObserver ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      var t = e.target;
+      // rAF: let vista-motion's reveal (same frame) stamp the host card first
+      requestAnimationFrame(function () { if (t.__vxArmed) play(t, 1, hostDelay(t)); });
+    });
+  }, { threshold: 0.2 }) : null;
+
+  function render(el, type, cfg, opts) {
     if (!TYPES[type]) { console.warn("[vista-charts] unknown type", type); return; }
     el.__vx = { type: type, cfg: cfg };
     el.classList.add("vx-chart");
     try { TYPES[type](el, cfg); } catch (err) { console.error("[vista-charts]", type, err); }
+    var animate = cfg.animate !== false && !(opts && opts.animate === false) && !motionOff();
+    if (!animate) el.__vxArmed = false;
+    else if (el.__vxSeen) play(el, 0.7, 0);              // data/period change → quick replay
+    else {
+      el.__vxArmed = true; hide(el);
+      if (io) io.observe(el); else play(el, 1, 0);
+    }
+    el.__vxSeen = true;
     if (!el.__vxObs && global.ResizeObserver) {
       var last = 0;
       el.__vxObs = new ResizeObserver(function (en) {
         var w = Math.round(en[0].contentRect.width);
-        if (w && w !== last) { last = w; TYPES[el.__vx.type](el, el.__vx.cfg); }
+        if (w && w !== last) {
+          last = w; TYPES[el.__vx.type](el, el.__vx.cfg);
+          if (el.__vxArmed) hide(el);
+        }
       });
       el.__vxObs.observe(el);
     }
   }
-  function renderAll(root) {
-    (root || document).querySelectorAll("[data-vx-chart]").forEach(function (el) {
+  function renderAll(root, opts) {
+    var list = Array.prototype.slice.call((root || document).querySelectorAll("[data-vx-chart]"));
+    if (root && root.matches && root.matches("[data-vx-chart]")) list.unshift(root);
+    list.forEach(function (el) {
       var raw = el.getAttribute("data-vx");
       if (!raw) { var sc = el.querySelector('script[type="application/json"]'); raw = sc && sc.textContent; }
       var cfg = {};
       try { cfg = raw ? JSON.parse(raw) : {}; } catch (e) { console.error("[vista-charts] bad JSON in", el, e); return; }
-      render(el, el.getAttribute("data-vx-chart"), cfg);
+      render(el, el.getAttribute("data-vx-chart"), cfg, opts);
     });
   }
-  global.VistaCharts = { render: render, renderAll: renderAll, format: fmt };
+  /* play every chart still waiting for the viewport (screenshots, print, VistaMotion.finish) */
+  function flush() {
+    document.querySelectorAll(".vx-chart").forEach(function (el) { if (el.__vxArmed) { if (io) io.unobserve(el); play(el, 1, 0); } });
+  }
+  global.VistaCharts = { render: render, renderAll: renderAll, replay: function (el) { if (el.__vx) render(el, el.__vx.type, el.__vx.cfg); }, flush: flush, format: fmt };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { renderAll(); });
   else renderAll();
 })(window);

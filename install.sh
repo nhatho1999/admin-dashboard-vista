@@ -24,7 +24,7 @@ pointer() {  # $1 = path of the skill inside the project
   cat <<EOF
 ## UI: vista-ui skill
 When asked for a dashboard, admin panel, CRM / analytics / finance screen or a "beautiful, modern, glass" UI,
-read \`$1/SKILL.md\` and follow its workflow. Reuse \`$1/assets/\` (vista.css, vista-charts.js, icons),
+read \`$1/SKILL.md\` and follow its workflow. Reuse \`$1/assets/\` (vista.css, vista-charts.js, vista-motion.js, icons),
 start from \`$1/templates/\` or \`$1/examples/\`, and load \`$1/references/*.md\` only when needed.
 EOF
 }

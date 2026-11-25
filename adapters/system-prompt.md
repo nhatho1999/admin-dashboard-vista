@@ -31,5 +31,14 @@ Neutral glass + one accent; green/red/amber/blue only for meaning; pastel initia
 Charts: rounded bars, smooth lines, dashed grid, muted 10.5px axis text, donut with a centered total,
 legend for 2+ series. Icons: Lucide. No emoji. Realistic data, never Lorem ipsum.
 
+**Motion:** one choreographed entrance per page (chrome slides in → panel rises 16–22px and scales .985→1 →
+page head → cards rise in reading order 45ms apart, ease-out cubic-bezier(.16,1,.3,1), ~560ms each, all landed
+by ~1s); KPI numbers count up; charts draw in (bars grow with a spring, lines sweep left→right, arcs fill);
+segmented controls / tabs / nav use ONE sliding active pill (spring ~420ms); hover lifts 1–2px, press scales .97;
+glass cards catch a cursor spotlight; toasts rise with a spring and exit faster (≈60% of enter); skeletons for
+loads > 1s; new rows slide in while siblings glide (FLIP). Only transform/opacity, shared duration/easing tokens,
+no decorative loops, full `prefers-reduced-motion` support. If `vista-motion.js` is available, use it instead of
+writing animations.
+
 **Output:** semantic HTML + CSS variables (tokens for ink, panel, card, chrome, primary, CTA, chart-1..6);
 keep all styling in classes, not inline colors. Make it responsive (sidebar → icon rail → hidden).

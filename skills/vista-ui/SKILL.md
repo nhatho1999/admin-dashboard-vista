@@ -1,30 +1,33 @@
 ---
 name: vista-ui
-description: Build polished glassmorphism dashboards and web-app UIs (frosted-glass panels, floating sidebar, KPI cards, SVG charts, pill controls) in four ready themes — lagoon (teal glass), indigo (royal-blue glass), aurora (warm visionOS-style spatial window) and evergreen (dark-green frame + white panel). Use when the user asks for an admin dashboard, back-office, CRM, analytics, finance, e-commerce or SaaS screen, or for a "beautiful / modern / glass / Apple-like" interface, or wants an existing page restyled that way. Ships a CSS design system, a zero-dependency chart library, page templates, full examples and a screenshot self-check.
+description: Build polished glassmorphism dashboards and web-app UIs (frosted-glass panels, floating sidebar, KPI cards, SVG charts, pill controls) with smooth, professional motion (choreographed entrance, chart draw-in, count-up numbers, sliding active pills, glass light, toasts, skeletons) in four ready themes — lagoon (teal glass), indigo (royal-blue glass), aurora (warm visionOS-style spatial window) and evergreen (dark-green frame + white panel). Use when the user asks for an admin dashboard, back-office, CRM, analytics, finance, e-commerce or SaaS screen, or for a "beautiful / modern / glass / Apple-like" interface, or wants an existing page restyled that way. Ships a CSS design system, a zero-dependency chart library, a motion engine, page templates, full examples and a screenshot self-check.
 ---
 
 # Vista UI
 
 A design system + workflow for producing dashboards that look like premium Dribbble shots:
 layered frosted glass on a rich gradient (or photo) backdrop, generous radii, big confident
-numbers, pill-shaped controls and quiet, data-dense cards.
+numbers, pill-shaped controls and quiet, data-dense cards — and that *feel* premium in motion:
+the page settles in one choreographed sequence, charts draw themselves, numbers roll up, the
+active pill glides, light follows the cursor across the glass.
 
-Everything is plain HTML + one CSS file + two tiny JS files, so it works in any stack and for any
+Everything is plain HTML + one CSS file + three small JS files, so it works in any stack and for any
 agent. Paths below are relative to this skill's folder.
 
 ## What's in the box
 
 | Path | What it is |
 |---|---|
-| `assets/vista.css` | The design system: tokens, 4 themes, 3 shells, ~40 components (`vx-` prefix) |
-| `assets/vista-charts.js` | SVG charts: bar, line, area, donut, gauge, ring, sparkline (reads theme colors) |
-| `assets/vista.js` | Icons bootstrap + toggles for segmented controls, chips, tabs, switches |
+| `assets/vista.css` | The design system: tokens (incl. motion tokens), 4 themes, 3 shells, ~45 components (`vx-` prefix) |
+| `assets/vista-charts.js` | SVG charts: bar, line, area, donut, gauge, ring, sparkline (reads theme colors, draws in on view) |
+| `assets/vista-motion.js` | Motion engine: entrance choreography, scroll reveal, count-up, glider, glow/tilt, swap, FLIP insert/remove, toasts, loading |
+| `assets/vista.js` | Icons bootstrap + toggles for segmented controls, chips, tabs, switches; theme switch |
 | `assets/vendor/lucide.min.js` | Lucide icon set (ISC), used as `<i data-lucide="name"></i>` |
 | `templates/{sidebar,notch,spatial}.html` | Page skeletons with `[[placeholders]]` |
-| `examples/*.html` | Four finished pages, one per theme — the quality bar |
+| `examples/*.html` | Four finished pages, one per theme — the quality bar; `lagoon-live-ops-motion.html` = every motion pattern wired up |
 | `scripts/scaffold.py` | New page from a template (copies or inlines assets) |
 | `scripts/bundle.py` | Inline local CSS/JS → one self-contained `.html` |
-| `scripts/screenshot.py` | Render pages to PNG + report console errors (Playwright) |
+| `scripts/screenshot.py` | Render pages to PNG + report console errors; `--frames` filmstrip of the motion (Playwright) |
 | `references/*.md` | Deep docs — read only what the task needs (see below) |
 
 ## Workflow
@@ -73,10 +76,25 @@ pages are in `references/layouts.md`. Component HTML is in `references/component
 Declarative: `<div class="vx-chart" style="--h:240px" data-vx-chart="bar" data-vx='{…json…}'></div>`.
 Colors come from `--vx-chart-1..6` of the active theme. Full options: `references/charts.md`.
 
-### 6. Verify visually — mandatory when you can run code
+### 6. Motion
+
+Keep `<script src="…/vista-motion.js"></script>` in `<head>` (templates already do). That alone gives the
+choreographed entrance, scroll reveal, count-up, chart draw-in and sliding active pills. Then add
+motion **where it explains something** (`references/motion.md`):
+
+- pick the level on `<html data-vx-motion="subtle|standard|expressive">` — calm products (finance, health,
+  data entry) → `subtle`; demos / consumer → `expressive`; default `standard`.
+- `vx-glow` on the KPI cards and hero cards (light follows the cursor); `vx-tilt` on at most one or two hero cards.
+- every async action gets feedback: `data-vx-loading` / `VistaMotion.loading` → `data-vx-toast` / `VistaMotion.toast`.
+- period/metric switches: `data-vx-swap="#chart-id"` on the segmented control (chart replays).
+- live data: `VistaMotion.insert` / `remove` / `countTo` — never re-render a whole list.
+- slow loads: `vx-skeleton--*` then `VistaMotion.swap` to the content.
+
+### 7. Verify visually — mandatory when you can run code
 
 ```
-python3 scripts/screenshot.py path/to/page.html --full      # writes page-1440.png next to it
+python3 scripts/screenshot.py path/to/page.html --full      # writes page-1440.png (end state of all motion)
+python3 scripts/screenshot.py path/to/page.html --frames 0,150,300,500,900   # entrance filmstrip
 ```
 Open the PNG and compare with the example of the same theme. Fix anything on
 `references/checklist.md` (overflowing text, empty charts, cramped cards, console errors).
@@ -84,11 +102,12 @@ Also check at `--width 1100` and `--width 390` when the page will be used on sma
 If Playwright is missing: `pip install playwright && python -m playwright install chromium`.
 If it cannot run at all, re-read the checklist line by line instead.
 
-### 7. Deliver
+### 8. Deliver
 
 - Multi-file project: page + `vista-assets/` folder (scaffold does this).
 - Single file (chat artifact, email, preview): `python3 scripts/bundle.py page.html -o page.single.html`.
-- Tell the user which theme/shell you used and how to switch (`<html data-theme="…">`).
+- Tell the user which theme/shell you used and how to switch (`<html data-theme="…">`), and the motion
+  level (`<html data-vx-motion="…">`).
 
 ## Non-negotiables (what makes the style work)
 
@@ -99,6 +118,7 @@ If it cannot run at all, re-read the checklist line by line instead.
 5. **Rhythm**: 16px gaps between cards, 20px card padding, 36px panel padding. Align card heights in a row (grid does it).
 6. **Color discipline**: neutral glass + one accent (theme primary) + semantic green/red/amber only for meaning.
 7. **Use classes and tokens, not inline colors.** If something is missing, add a small class in a `<style>` block that uses `var(--vx-…)` tokens.
+8. **Motion has meaning and one rhythm.** Only transform/opacity, durations and easings from the `--vx-dur-*` / `--vx-ease-*` tokens, arrive with ease-out and leave faster, springs for things the user moves. No decorative loops. `prefers-reduced-motion` must still show every final state.
 
 ## Reference map (load on demand)
 
@@ -109,5 +129,6 @@ If it cannot run at all, re-read the checklist line by line instead.
 | HTML for every component | `references/components.md` |
 | Shells + page recipes | `references/layouts.md` |
 | Chart types & options | `references/charts.md` |
+| Motion: tokens, entrance, patterns, recipes, a11y | `references/motion.md` |
 | React / Next / Vue / Tailwind | `references/framework-port.md` |
 | Final QA | `references/checklist.md` |

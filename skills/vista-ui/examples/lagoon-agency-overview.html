@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
 </head>
 <body>
 <div class="vx-shell--sidebar">
@@ -68,10 +69,10 @@
       <section class="vx-card">
         <div class="vx-card__head">
           <div class="vx-card__title"><h2 class="vx-h2">Agency commission</h2><div class="vx-caption">$236,700 from 37 deals in the last 6 months</div></div>
-          <div class="vx-seg" data-vx-group><button>3 months</button><button class="is-active">6 months</button><button>12 months</button></div>
+          <div class="vx-seg" data-vx-group data-vx-swap="#commission-chart"><button>3 months</button><button class="is-active">6 months</button><button>12 months</button></div>
           <button class="vx-btn vx-btn--sm vx-btn--cta"><i data-lucide="plus"></i>Record a deal</button>
         </div>
-        <div class="vx-chart" style="--h:230px" data-vx-chart="bar" data-vx='{
+        <div class="vx-chart" id="commission-chart" style="--h:230px" data-vx-chart="bar" data-vx='{
           "labels":["Jun","Jul","Aug","Sep","Oct","Nov"],
           "series":[{"name":"Commission","data":[34800,33100,40200,37600,42900,41734]}],
           "yFormat":{"prefix":"$"},"barRatio":0.36,"radius":8,"highlight":"last","highlightLabel":"$41,734"}'></div>
@@ -91,17 +92,17 @@
     </div>
 
     <div class="vx-grid-4 vx-section vx-animate">
-      <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--round"><i data-lucide="users"></i></span></div><div class="vx-stat__value vx-num">11</div><div class="vx-h3">Active people</div><div class="vx-caption">2 joined this month</div></div>
-      <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--round"><i data-lucide="file-clock"></i></span></div><div class="vx-stat__value vx-num">6</div><div class="vx-h3">Waiting for review</div><div class="vx-caption">Oldest sent 3 days ago</div></div>
-      <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--round"><i data-lucide="handshake"></i></span></div><div class="vx-stat__value vx-num">48</div><div class="vx-h3">Open deals</div><div class="vx-caption">Worth $3.2M</div></div>
-      <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--round"><i data-lucide="badge-dollar-sign"></i></span><span style="flex:1"></span><span class="vx-delta vx-delta--down"><i data-lucide="trending-down"></i>2.7%</span></div><div class="vx-stat__value vx-num">$41,734</div><div class="vx-h3">Agency commission</div><div class="vx-caption">This month so far</div></div>
+      <div class="vx-card vx-stat vx-glow"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--round"><i data-lucide="users"></i></span></div><div class="vx-stat__value vx-num">11</div><div class="vx-h3">Active people</div><div class="vx-caption">2 joined this month</div></div>
+      <div class="vx-card vx-stat vx-glow"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--round"><i data-lucide="file-clock"></i></span></div><div class="vx-stat__value vx-num">6</div><div class="vx-h3">Waiting for review</div><div class="vx-caption">Oldest sent 3 days ago</div></div>
+      <div class="vx-card vx-stat vx-glow"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--round"><i data-lucide="handshake"></i></span></div><div class="vx-stat__value vx-num">48</div><div class="vx-h3">Open deals</div><div class="vx-caption">Worth $3.2M</div></div>
+      <div class="vx-card vx-stat vx-glow"><div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--round"><i data-lucide="badge-dollar-sign"></i></span><span style="flex:1"></span><span class="vx-delta vx-delta--down"><i data-lucide="trending-down"></i>2.7%</span></div><div class="vx-stat__value vx-num">$41,734</div><div class="vx-h3">Agency commission</div><div class="vx-caption">This month so far</div></div>
     </div>
 
     <div class="vx-row vx-row--between vx-section" style="margin-top:28px;margin-bottom:12px">
       <div><h2 class="vx-h2">Waiting for moderation</h2><div class="vx-caption">Every new listing is checked by an admin before it goes live</div></div>
       <div class="vx-row" style="flex-wrap:wrap">
         <div class="vx-seg" data-vx-group><button class="is-active">In review <span class="vx-count">6</span></button><button>Approved <span class="vx-count">24</span></button><button>Rejected <span class="vx-count">2</span></button></div>
-        <button class="vx-btn vx-btn--cta"><i data-lucide="check"></i>Approve ready ones</button>
+        <button class="vx-btn vx-btn--cta" data-vx-loading="900" data-vx-toast="3 listings approved" data-vx-toast-sub="They go live on the site within a minute"><i data-lucide="check"></i>Approve ready ones</button>
       </div>
     </div>
     <div class="vx-grid-4 vx-animate">

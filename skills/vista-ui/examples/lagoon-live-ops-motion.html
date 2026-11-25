@@ -1,0 +1,295 @@
+<!doctype html>
+<!-- Motion reference page: every pattern from references/motion.md in a real screen.
+     Entrance + scroll reveal + count-up + chart draw-in are automatic (vista-motion.js).
+     Declarative: data-vx-swap, data-vx-toast, data-vx-loading, .vx-glow, .vx-tilt.
+     Scripted (bottom of the file): VistaMotion.insert / countTo / swap / remove / toast / replay. -->
+<html lang="en" data-theme="lagoon">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Harbor Dispatch — Live operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
+  <style>
+    .ops-panel[hidden] { display: none; }
+    .ops-route { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; }
+    .ops-route .vx-progress { grid-column: 1 / -1; }
+  </style>
+</head>
+<body>
+<div class="vx-shell--sidebar">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="vx-sidebar vx-chrome">
+    <div class="vx-brand">
+      <div class="vx-brand__mark"><i data-lucide="anchor"></i></div>
+      <div class="vx-brand__text">
+        <div class="vx-brand__name">Harbor Dispatch</div>
+        <div class="vx-brand__sub">Courier ops · North depot</div>
+      </div>
+    </div>
+    <nav class="vx-nav" data-vx-group>
+      <div class="vx-nav__label">Operations</div>
+      <a class="vx-nav__item is-active" href="#"><i data-lucide="radar"></i><span>Live board</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="package"></i><span>Shipments</span><span class="vx-nav__badge">38</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="truck"></i><span>Fleet</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="map"></i><span>Routes</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="users"></i><span>Couriers</span><span class="vx-nav__badge">4</span></a>
+      <div class="vx-nav__label">Insight</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="chart-no-axes-column"></i><span>Reports</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="bell-ring"></i><span>Alerts</span><span class="vx-nav__badge">2</span></a>
+      <div class="vx-nav__label">System</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="settings"></i><span>Settings</span></a>
+    </nav>
+    <div class="vx-plan">
+      <div class="vx-plan__row"><b>Shift</b><span>6h 40m of 9h</span></div>
+      <div class="vx-progress"><i style="--v:74%"></i></div>
+    </div>
+  </aside>
+
+  <!-- ============ TOPBAR ============ -->
+  <header class="vx-topbar vx-chrome">
+    <label class="vx-search">
+      <i data-lucide="search"></i>
+      <input placeholder="Search parcels, couriers, postcodes…">
+      <span class="vx-kbd">⌘K</span>
+    </label>
+    <div class="vx-topbar__spacer"></div>
+    <button class="vx-iconbtn" aria-label="Replay entrance" id="replay"><i data-lucide="rotate-ccw"></i></button>
+    <button class="vx-iconbtn vx-iconbtn--light" aria-label="Alerts"><i data-lucide="bell"></i><span class="vx-ping"></span></button>
+    <div class="vx-user">
+      <span class="vx-avatar vx-avatar--mint">MO</span>
+      <div><div class="vx-user__name">Maya Ortiz</div><div class="vx-user__role">Shift lead</div></div>
+    </div>
+  </header>
+
+  <!-- ============ PANEL ============ -->
+  <main class="vx-panel">
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <div class="vx-eyebrow">Operations <span class="sep">/</span> Live board <span class="pill">● 23 couriers on road</span></div>
+        <h1 class="vx-h1 vx-h1--hero">Live operations</h1>
+        <p class="vx-sub"><b>38 parcels</b> waiting for pickup, <b>2 routes</b> running late and <b>4 couriers</b> on break.</p>
+      </div>
+      <div class="vx-page-head__actions">
+        <div class="vx-seg" data-vx-group data-vx-swap="#throughput">
+          <button>1 hour</button><button class="is-active">Today</button><button>7 days</button>
+        </div>
+        <button class="vx-btn vx-btn--cta" data-vx-loading="1100" data-vx-toast="Shift report exported" data-vx-toast-sub="ops-north-nov-25.pdf · 412 KB"><i data-lucide="download"></i>Export report</button>
+      </div>
+    </div>
+
+    <!-- KPI row: count-up + glow -->
+    <div class="vx-grid-4">
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--primary"><i data-lucide="package-check"></i></span><span class="vx-stat__label">Delivered today</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>8.1%</span></div>
+        <div class="vx-stat__value vx-num" id="kpi-delivered">1,284</div>
+        <div class="vx-caption">vs 1,188 by this time last week</div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--primary"><i data-lucide="wallet"></i></span><span class="vx-stat__label">COD collected</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>3.4%</span></div>
+        <div class="vx-stat__value vx-num" id="kpi-cod">$48,920</div>
+        <div class="vx-caption">412 cash-on-delivery drops</div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--warn"><i data-lucide="timer"></i></span><span class="vx-stat__label">Avg. dispatch time</span><span class="vx-delta vx-delta--down"><i data-lucide="trending-down"></i>1.6 min</span></div>
+        <div class="vx-stat__value vx-num">14.2<small>min</small></div>
+        <div class="vx-caption">Target under 15 min</div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--pos"><i data-lucide="badge-check"></i></span><span class="vx-stat__label">On-time rate</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>0.8 pts</span></div>
+        <div class="vx-stat__value vx-num">97.4%</div>
+        <div class="vx-caption">SLA 95% · 33 late of 1,284</div>
+      </div>
+    </div>
+
+    <div class="vx-split vx-section">
+      <!-- chart: draws in, replays on Parcels/Stops switch -->
+      <section class="vx-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title"><h2 class="vx-h2">Throughput</h2><div class="vx-caption">Parcels delivered per hour · today vs last Tuesday</div></div>
+          <div class="vx-seg vx-seg--light" data-vx-group data-vx-swap="#throughput"><button class="is-active">Parcels</button><button>Stops</button></div>
+        </div>
+        <div class="vx-legend" style="margin-bottom:6px"><span><i class="line" style="--c:var(--vx-chart-1)"></i>Today</span><span><i class="dash" style="--c:var(--vx-chart-2)"></i>Last Tuesday</span></div>
+        <div class="vx-chart" id="throughput" style="--h:250px" data-vx-chart="line" data-vx='{
+          "labels":["7am","8am","9am","10am","11am","12pm","1pm","2pm","3pm","4pm","5pm","6pm"],
+          "series":[
+            {"name":"Today","data":[64,118,162,190,176,150,171,204,226,212,null,null],"area":true},
+            {"name":"Last Tuesday","data":[58,104,149,170,168,141,160,188,201,196,172,120],"dashed":true,"color":"chart-2"}],
+          "endDot":true}'></div>
+      </section>
+
+      <!-- live feed: VistaMotion.insert -->
+      <section class="vx-card vx-card--dark">
+        <div class="vx-row vx-row--between">
+          <span class="vx-live">Live scans</span>
+          <button class="vx-btn vx-btn--sm vx-btn--light" id="simulate"><i data-lucide="scan-line"></i>Simulate scan</button>
+        </div>
+        <div class="vx-caption" style="margin-top:14px">Scanned in the last hour</div>
+        <div class="vx-stat__value vx-num" id="kpi-hour">212</div>
+        <div class="vx-caption">North depot · 6 doors open</div>
+        <div class="vx-list vx-list--boxed" id="feed" style="margin-top:14px">
+          <div class="vx-list__item"><span class="vx-iconchip"><i data-lucide="package-check"></i></span><div class="vx-list__body"><div class="vx-list__title">HD-48211 · delivered</div><div class="vx-list__sub">Tomas Reyes · Elm St 14 · 1 min ago</div></div><div class="vx-list__end">$24.00</div></div>
+          <div class="vx-list__item"><span class="vx-iconchip"><i data-lucide="truck"></i></span><div class="vx-list__body"><div class="vx-list__title">HD-48207 · out for delivery</div><div class="vx-list__sub">Ines Varga · Route N4 · 3 min ago</div></div><div class="vx-list__end"></div></div>
+          <div class="vx-list__item"><span class="vx-iconchip"><i data-lucide="package-check"></i></span><div class="vx-list__body"><div class="vx-list__title">HD-48202 · delivered</div><div class="vx-list__sub">Kofi Mensah · Bay Rd 3 · 6 min ago</div></div><div class="vx-list__end">$61.50</div></div>
+          <div class="vx-list__item"><span class="vx-iconchip"><i data-lucide="triangle-alert"></i></span><div class="vx-list__body"><div class="vx-list__title">HD-48190 · failed attempt</div><div class="vx-list__sub">No one home · rebooked for 4pm</div></div><div class="vx-list__end"></div></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="vx-grid-3 vx-section">
+      <!-- loading → content crossfade -->
+      <section class="vx-card" id="forecast-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title"><h2 class="vx-h2">Evening forecast</h2><div class="vx-caption">Model refreshed 4 min ago</div></div>
+          <button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm" aria-label="Refresh forecast" id="refresh"><i data-lucide="refresh-cw"></i></button>
+        </div>
+        <div id="forecast">
+          <div class="vx-stat__value vx-num" style="margin:0">486 <small>parcels after 5pm</small></div>
+          <div class="vx-caption" style="margin:4px 0 14px">Peak at 6pm · 3 extra couriers suggested</div>
+          <div class="vx-chart" style="--h:120px" data-vx-chart="bar" data-vx='{"labels":["5pm","6pm","7pm","8pm","9pm"],"series":[{"name":"Forecast","data":[132,168,104,58,24]}],"barRatio":0.5,"highlight":1,"yAxis":false,"grid":false}'></div>
+        </div>
+      </section>
+
+      <!-- routes: progress fills on reveal -->
+      <section class="vx-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title"><h2 class="vx-h2">Routes at risk</h2><div class="vx-caption">Stops completed vs plan</div></div>
+          <span class="vx-status vx-status--warn">2 late</span>
+        </div>
+        <div class="vx-stack" style="gap:14px">
+          <div class="ops-route"><b class="vx-h3">N4 · Harbourside</b><span class="vx-caption">18 / 31 stops</span><div class="vx-progress vx-progress--lg"><i style="--v:58%;--c:var(--vx-warn)"></i></div></div>
+          <div class="ops-route"><b class="vx-h3">N7 · Old Mill</b><span class="vx-caption">11 / 24 stops</span><div class="vx-progress vx-progress--lg"><i style="--v:46%;--c:var(--vx-neg)"></i></div></div>
+          <div class="ops-route"><b class="vx-h3">N2 · Riverside</b><span class="vx-caption">27 / 29 stops</span><div class="vx-progress vx-progress--lg"><i style="--v:93%;--c:var(--vx-pos)"></i></div></div>
+        </div>
+        <div class="vx-card__foot"><span class="vx-caption">Auto-reroute suggests moving 6 stops</span><a class="vx-h3" href="#">Review <i data-lucide="arrow-right"></i></a></div>
+      </section>
+
+      <!-- tilt + glow feature card, gauge draws in -->
+      <section class="vx-card vx-card--dark vx-tilt vx-glow">
+        <div class="vx-card__head">
+          <div class="vx-card__title"><h2 class="vx-h2">Depot capacity</h2><div class="vx-caption">Shelf slots in use</div></div>
+          <span class="vx-iconchip"><i data-lucide="warehouse"></i></span>
+        </div>
+        <div class="vx-chart" style="--h:130px" data-vx-chart="gauge" data-vx='{"max":100,"segments":[{"value":61,"color":"chart-1"},{"value":17,"color":"chart-4"}],"center":{"value":"78%","label":"of 2,400 slots"}}'></div>
+        <div class="vx-legend" style="margin-top:12px;justify-content:center;color:rgba(255,255,255,.7)"><span><i style="--c:var(--vx-chart-1)"></i>Sorted</span><span><i style="--c:var(--vx-chart-4)"></i>Awaiting sort</span></div>
+      </section>
+    </div>
+
+    <!-- tabs: glider underline + crossfade between panels -->
+    <section class="vx-card vx-section">
+      <div class="vx-card__head" style="margin-bottom:6px">
+        <div class="vx-card__title"><h2 class="vx-h2">Exceptions</h2><div class="vx-caption">Parcels that need a human today</div></div>
+        <button class="vx-btn vx-btn--sm" data-vx-toast="Couriers notified" data-vx-toast-tone="info" data-vx-toast-sub="Push sent to 3 couriers on N4 and N7"><i data-lucide="send"></i>Notify couriers</button>
+      </div>
+      <div class="vx-tabs" data-vx-group id="ex-tabs">
+        <button class="is-active" data-panel="late">Late <span class="vx-count">3</span></button>
+        <button data-panel="damaged">Damaged <span class="vx-count">1</span></button>
+        <button data-panel="address">Address issues <span class="vx-count">2</span></button>
+      </div>
+      <div id="ex-body" style="margin-top:6px">
+        <div class="ops-panel" data-panel="late">
+          <div class="vx-table-wrap">
+            <table class="vx-table">
+              <thead><tr><th>Parcel</th><th>Courier</th><th>Route</th><th>Status</th><th class="r">Delay</th><th></th></tr></thead>
+              <tbody>
+                <tr><td class="id">HD-48177</td><td><div class="vx-person"><span class="vx-avatar vx-avatar--sky">IV</span><div class="vx-person__name">Ines Varga</div></div></td><td>N4 · Harbourside</td><td><span class="vx-status vx-status--warn">Late · 22 min</span></td><td class="r vx-num vx-strong">22 min</td><td class="r"><button class="vx-btn vx-btn--sm vx-btn--ghost" data-resolve>Resolve</button></td></tr>
+                <tr><td class="id">HD-48164</td><td><div class="vx-person"><span class="vx-avatar vx-avatar--rose">DA</span><div class="vx-person__name">Dana Abbott</div></div></td><td>N7 · Old Mill</td><td><span class="vx-status vx-status--danger">Late · 41 min</span></td><td class="r vx-num vx-strong">41 min</td><td class="r"><button class="vx-btn vx-btn--sm vx-btn--ghost" data-resolve>Resolve</button></td></tr>
+                <tr><td class="id">HD-48158</td><td><div class="vx-person"><span class="vx-avatar vx-avatar--amber">SK</span><div class="vx-person__name">Sami Koh</div></div></td><td>N7 · Old Mill</td><td><span class="vx-status vx-status--warn">Late · 15 min</span></td><td class="r vx-num vx-strong">15 min</td><td class="r"><button class="vx-btn vx-btn--sm vx-btn--ghost" data-resolve>Resolve</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="ops-panel" data-panel="damaged" hidden>
+          <div class="vx-list">
+            <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--neg"><i data-lucide="package-x"></i></span><div class="vx-list__body"><div class="vx-list__title">HD-48120 · crushed corner, contents OK</div><div class="vx-list__sub">Photo logged by Kofi Mensah at door 3 · 11:42</div></div><button class="vx-btn vx-btn--sm">Open claim</button></div>
+          </div>
+        </div>
+        <div class="ops-panel" data-panel="address" hidden>
+          <div class="vx-list">
+            <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--warn"><i data-lucide="map-pin-off"></i></span><div class="vx-list__body"><div class="vx-list__title">HD-48131 · flat number missing</div><div class="vx-list__sub">Quay Tower, 2 Pier Rd · customer texted, no reply</div></div><button class="vx-btn vx-btn--sm">Call customer</button></div>
+            <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--warn"><i data-lucide="map-pin-off"></i></span><div class="vx-list__body"><div class="vx-list__title">HD-48109 · postcode does not match street</div><div class="vx-list__sub">Suggested: Mill Lane 8, NE2 4RT</div></div><button class="vx-btn vx-btn--sm">Accept fix</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- settings: spring switches, pop checks -->
+    <section class="vx-card vx-section">
+      <div class="vx-card__head" style="margin-bottom:4px"><div class="vx-card__title"><h2 class="vx-h2">Dispatch rules</h2><div class="vx-caption">Changes apply to the next wave</div></div></div>
+      <div class="vx-grid-3">
+        <div class="vx-row vx-row--between"><div><b class="vx-h3">Auto-reroute late routes</b><div class="vx-caption">When a route is 15+ min behind</div></div><button class="vx-switch is-on" role="switch" aria-checked="true" aria-label="Auto-reroute"></button></div>
+        <div class="vx-row vx-row--between"><div><b class="vx-h3">Text customers on delay</b><div class="vx-caption">SMS with a new time window</div></div><button class="vx-switch is-on" role="switch" aria-checked="true" aria-label="Text customers"></button></div>
+        <div class="vx-row vx-row--between"><div><b class="vx-h3">Hold fragile after 7pm</b><div class="vx-caption">Deliver the next morning</div></div><button class="vx-switch" role="switch" aria-checked="false" aria-label="Hold fragile"></button></div>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+<script>
+  /* Demo wiring — shows the VistaMotion JS API on real interactions. */
+  (function () {
+    var M = window.VistaMotion;
+    var names = ["Tomas Reyes", "Ines Varga", "Kofi Mensah", "Dana Abbott", "Sami Koh", "Lea Brandt"];
+    var streets = ["Elm St 9", "Bay Rd 21", "Quay Tower", "Mill Lane 4", "Pier Rd 2", "Dock St 17"];
+    var n = 48212;
+
+    // live scan → row slides in, siblings glide down, last row leaves, numbers tick
+    document.getElementById("simulate").addEventListener("click", function () {
+      var feed = document.getElementById("feed"), i = n % names.length, cod = (12 + (n * 7) % 60).toFixed(2);
+      var row = document.createElement("div");
+      row.className = "vx-list__item";
+      row.innerHTML = '<span class="vx-iconchip"><i data-lucide="package-check"></i></span><div class="vx-list__body"><div class="vx-list__title">HD-' + (n++) +
+        ' · delivered</div><div class="vx-list__sub">' + names[i] + " · " + streets[i] + ' · just now</div></div><div class="vx-list__end">$' + cod + "</div>";
+      M.insert(feed, row);
+      if (feed.children.length > 4) M.remove(feed.lastElementChild);
+      var hour = document.getElementById("kpi-hour"), del = document.getElementById("kpi-delivered"), money = document.getElementById("kpi-cod");
+      M.countTo(hour, parseInt(hour.textContent, 10) + 1);
+      M.countTo(del, parseInt(del.textContent.replace(/,/g, ""), 10) + 1);
+      M.countTo(money, parseFloat(money.textContent.replace(/[$,]/g, "")) + parseFloat(cod));
+    });
+
+    // refresh → skeleton (loading state) → crossfade back to fresh content
+    document.getElementById("refresh").addEventListener("click", function () {
+      var box = document.getElementById("forecast"), html = box.innerHTML, btn = this;
+      btn.disabled = true;
+      M.swap(box, function () {
+        box.innerHTML = '<span class="vx-skeleton vx-skeleton--value" style="--w:70%"></span>' +
+          '<span class="vx-skeleton vx-skeleton--text" style="--w:85%;margin:10px 0 18px"></span>' +
+          '<span class="vx-skeleton vx-skeleton--block" style="--h:110px"></span>';
+      }).then(function () {
+        setTimeout(function () {
+          M.swap(box, function () { box.innerHTML = html; if (window.lucide) lucide.createIcons(); VistaCharts.renderAll(box); })
+            .then(function () { btn.disabled = false; M.toast("Forecast updated", { tone: "info", sub: "Peak moved to 6pm · 486 parcels" }); });
+        }, 1200);
+      });
+    });
+
+    // tabs → glider slides (automatic), body crossfades to the chosen panel
+    document.getElementById("ex-tabs").addEventListener("vx:change", function (e) {
+      var key = e.detail.item.getAttribute("data-panel"), body = document.getElementById("ex-body");
+      M.swap(body, function () {
+        body.querySelectorAll(".ops-panel").forEach(function (p) { p.hidden = p.getAttribute("data-panel") !== key; });
+      });
+    });
+
+    // resolve → row leaves, rows below close the gap, toast offers undo
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-resolve]");
+      if (!b) return;
+      var tr = b.closest("tr"), body = tr.parentElement, next = tr.nextElementSibling, id = tr.querySelector(".id").textContent;
+      M.remove(tr).then(function () {
+        M.toast(id + " marked resolved", { action: { label: "Undo", onClick: function () { M.insert(body, tr, next && next.isConnected ? next : null); } } });
+      });
+    });
+
+    document.getElementById("replay").addEventListener("click", function () { M.replay(); });
+  })();
+</script>
+</body>
+</html>

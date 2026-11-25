@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
   <style>
     .wrap { max-width: 1280px; margin: 0 auto; padding: 40px 24px 60px; }
     .thumb { position: relative; aspect-ratio: 16 / 10; border-radius: 16px; overflow: hidden; background: var(--vx-sunken); }
@@ -22,24 +23,28 @@
   <div class="hero">
     <div class="vx-eyebrow" style="color:var(--vx-on-dark-3)">Skill · vista-ui</div>
     <h1 class="vx-h1 vx-h1--hero">Glass dashboards, four moods</h1>
-    <p class="vx-sub">Each page below is plain HTML using <code>assets/vista.css</code>, <code>vista-charts.js</code> and Lucide icons. Open one, then copy its structure.</p>
+    <p class="vx-sub">Each page below is plain HTML using <code>assets/vista.css</code>, <code>vista-charts.js</code>, <code>vista-motion.js</code> and Lucide icons. Open one, then copy its structure.</p>
   </div>
   <div class="vx-grid-2 vx-animate">
-    <a class="vx-card vx-card--hover" href="lagoon-agency-overview.html">
+    <a class="vx-card vx-card--hover vx-glow" href="lagoon-agency-overview.html">
       <div class="thumb"><iframe src="lagoon-agency-overview.html" loading="lazy" tabindex="-1" title="Lagoon preview"></iframe></div>
       <div class="vx-row vx-row--between" style="margin-top:14px"><div><div class="vx-h2">Lagoon · Agency admin</div><div class="vx-caption">Sidebar shell · teal glass · dark CTA</div></div><span class="vx-tag vx-tag--primary">lagoon</span></div>
     </a>
-    <a class="vx-card vx-card--hover" href="indigo-store-overview.html">
+    <a class="vx-card vx-card--hover vx-glow" href="indigo-store-overview.html">
       <div class="thumb"><iframe src="indigo-store-overview.html" loading="lazy" tabindex="-1" title="Indigo preview"></iframe></div>
       <div class="vx-row vx-row--between" style="margin-top:14px"><div><div class="vx-h2">Indigo · Store overview</div><div class="vx-caption">Sidebar shell · royal-blue glass · live feed</div></div><span class="vx-tag vx-tag--primary">indigo</span></div>
     </a>
-    <a class="vx-card vx-card--hover" href="aurora-finance-spatial.html">
+    <a class="vx-card vx-card--hover vx-glow" href="aurora-finance-spatial.html">
       <div class="thumb"><iframe src="aurora-finance-spatial.html" loading="lazy" tabindex="-1" title="Aurora preview"></iframe></div>
       <div class="vx-row vx-row--between" style="margin-top:14px"><div><div class="vx-h2">Aurora · Personal finance</div><div class="vx-caption">Spatial shell · warm glass · dock + rail</div></div><span class="vx-tag vx-tag--primary">aurora</span></div>
     </a>
-    <a class="vx-card vx-card--hover" href="evergreen-crm-dashboard.html">
+    <a class="vx-card vx-card--hover vx-glow" href="evergreen-crm-dashboard.html">
       <div class="thumb"><iframe src="evergreen-crm-dashboard.html" loading="lazy" tabindex="-1" title="Evergreen preview"></iframe></div>
       <div class="vx-row vx-row--between" style="margin-top:14px"><div><div class="vx-h2">Evergreen · Sales CRM</div><div class="vx-caption">Notch shell · white panel · insights</div></div><span class="vx-tag vx-tag--primary">evergreen</span></div>
+    </a>
+    <a class="vx-card vx-card--hover vx-glow vx-span-all" href="lagoon-live-ops-motion.html">
+      <div class="thumb" style="aspect-ratio:32 / 10"><iframe src="lagoon-live-ops-motion.html" loading="lazy" tabindex="-1" title="Motion reference preview"></iframe></div>
+      <div class="vx-row vx-row--between" style="margin-top:14px"><div><div class="vx-h2">Motion · Live operations</div><div class="vx-caption">Every motion pattern wired up: entrance, chart draw-in, count-up, glider, live insert, skeleton, toast with undo, tilt</div></div><span class="vx-tag vx-tag--primary">motion</span></div>
     </a>
   </div>
 </div>

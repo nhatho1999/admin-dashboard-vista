@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
 </head>
 <body>
 <!-- decorative room behind the glass (swap for a real photo: body{background:url(room.jpg) center/cover}) -->
@@ -35,7 +36,7 @@
         <h1 class="vx-h1 vx-h1--hero">Good morning, Kai</h1>
         <p class="vx-sub">Stay on top of your money, review recent activity and keep your goals moving.</p>
       </div>
-      <div class="vx-page-head__actions"><button class="vx-btn vx-btn--cta"><i data-lucide="plus"></i>New goal</button></div>
+      <div class="vx-page-head__actions"><button class="vx-btn vx-btn--cta" data-vx-toast="Goal draft created" data-vx-toast-sub="Set a target and a date to start saving"><i data-lucide="plus"></i>New goal</button></div>
     </div>
 
     <div class="vx-grid-3" style="grid-template-columns:1fr 1fr 1fr">
@@ -60,7 +61,7 @@
 
       <!-- 2x2 KPIs -->
       <div class="vx-grid-2" style="gap:12px">
-        <div class="vx-card vx-card--feature vx-stat"><div class="vx-stat__top"><span class="vx-stat__label">Total earnings</span><span class="vx-iconchip vx-iconchip--round"><i data-lucide="arrow-up-right"></i></span></div><div class="vx-stat__value vx-num">$872</div><div class="vx-stat__meta"><span class="vx-delta vx-delta--up">+7%</span>This month</div></div>
+        <div class="vx-card vx-card--feature vx-stat vx-glow vx-tilt"><div class="vx-stat__top"><span class="vx-stat__label">Total earnings</span><span class="vx-iconchip vx-iconchip--round"><i data-lucide="arrow-up-right"></i></span></div><div class="vx-stat__value vx-num">$872</div><div class="vx-stat__meta"><span class="vx-delta vx-delta--up">+7%</span>This month</div></div>
         <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-stat__label">Total spending</span><span class="vx-iconchip vx-iconchip--round"><i data-lucide="arrow-down-right"></i></span></div><div class="vx-stat__value vx-num">$609</div><div class="vx-stat__meta"><span class="vx-delta vx-delta--down">−4%</span>This month</div></div>
         <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-stat__label">Total income</span><span class="vx-iconchip vx-iconchip--round"><i data-lucide="wallet"></i></span></div><div class="vx-stat__value vx-num">$846</div><div class="vx-stat__meta"><span class="vx-delta vx-delta--up">+5%</span>This month</div></div>
         <div class="vx-card vx-stat"><div class="vx-stat__top"><span class="vx-stat__label">Total revenue</span><span class="vx-iconchip vx-iconchip--round"><i data-lucide="landmark"></i></span></div><div class="vx-stat__value vx-num">$610</div><div class="vx-stat__meta"><span class="vx-delta vx-delta--up">+3%</span>This month</div></div>

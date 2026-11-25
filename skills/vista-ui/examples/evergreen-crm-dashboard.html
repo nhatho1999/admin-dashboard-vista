@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
 </head>
 <body>
 <div class="vx-shell--notch">
@@ -76,9 +77,9 @@
       <section class="vx-card">
         <div class="vx-card__head">
           <div class="vx-card__title"><h2 class="vx-h2">Revenue vs target</h2><div class="vx-caption">Monthly closed-won revenue against plan</div></div>
-          <div class="vx-seg vx-seg--light" data-vx-group><button class="is-active">Revenue</button><button>Deals</button></div>
+          <div class="vx-seg vx-seg--light" data-vx-group data-vx-swap="#revenue-target"><button class="is-active">Revenue</button><button>Deals</button></div>
         </div>
-        <div class="vx-chart" style="--h:250px" data-vx-chart="line" data-vx='{
+        <div class="vx-chart" id="revenue-target" style="--h:250px" data-vx-chart="line" data-vx='{
           "labels":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
           "series":[
             {"name":"Revenue","data":[92,104,98,126,133,148,151,158,171,186,199,null],"area":true,"color":"chart-1","width":2.6},

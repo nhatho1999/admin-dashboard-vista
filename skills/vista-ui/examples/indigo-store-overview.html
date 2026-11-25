@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
 </head>
 <body>
 <div class="vx-shell--sidebar">
@@ -104,7 +105,7 @@
             <div class="vx-caption">vs $16,044 in the 30 days before</div>
           </div>
           <div class="vx-stack" style="gap:10px;align-items:flex-end">
-            <div class="vx-seg vx-seg--light" data-vx-group><button class="is-active">Revenue</button><button>Orders</button></div>
+            <div class="vx-seg vx-seg--light" data-vx-group data-vx-swap="#revenue-chart"><button class="is-active">Revenue</button><button>Orders</button></div>
             <div class="vx-legend"><span><i style="--c:var(--vx-chart-1)"></i>This period</span><span><i style="--c:var(--vx-chart-2)"></i>Period before</span></div>
           </div>
         </div>
@@ -113,7 +114,7 @@
           <span class="vx-chip"><i data-lucide="activity"></i>Daily average <b>$553</b></span>
           <span class="vx-chip"><i data-lucide="clock"></i>Today so far <b>$441</b></span>
         </div>
-        <div class="vx-chart" style="--h:250px" data-vx-chart="bar" data-vx='{
+        <div class="vx-chart" id="revenue-chart" style="--h:250px" data-vx-chart="bar" data-vx='{
           "labels":["Oct 24","","","","Oct 28","","","","Nov 1","","","","Nov 5","","","","Nov 9","","","","Nov 13","","","","Nov 17","","","","Today",""],
           "series":[
             {"name":"This period","data":[420,610,380,720,540,830,300,460,690,520,410,760,580,620,470,550,640,700,530,610,560,996,520,610,480,570,690,520,600,441]},
@@ -143,22 +144,22 @@
 
     <!-- KPI row with sparklines -->
     <div class="vx-grid-4 vx-section vx-animate">
-      <div class="vx-card vx-stat">
+      <div class="vx-card vx-stat vx-glow">
         <div class="vx-stat__top"><span class="vx-stat__label">Average order</span><span class="vx-delta vx-delta--down"><i data-lucide="trending-down"></i>5.5%</span></div>
         <div class="vx-stat__value vx-num">$77.36</div>
         <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[80,78,82,79,76,81,77,75,79,74,77],"color":"chart-1"}'></div>
       </div>
-      <div class="vx-card vx-stat">
+      <div class="vx-card vx-stat vx-glow">
         <div class="vx-stat__top"><span class="vx-stat__label">Conversion</span><span class="vx-delta vx-delta--down"><i data-lucide="trending-down"></i>4.2%</span></div>
         <div class="vx-stat__value vx-num">2.32%</div>
         <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[2.6,2.5,2.4,2.6,2.3,2.4,2.2,2.3,2.4,2.3,2.32]}'></div>
       </div>
-      <div class="vx-card vx-stat">
+      <div class="vx-card vx-stat vx-glow">
         <div class="vx-stat__top"><span class="vx-stat__label">Visitors</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>12.6%</span></div>
         <div class="vx-stat__value vx-num">9,176</div>
         <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[200,260,240,310,280,330,300,350,320,380,360]}'></div>
       </div>
-      <div class="vx-card vx-stat">
+      <div class="vx-card vx-stat vx-glow">
         <div class="vx-stat__top"><span class="vx-stat__label">Refunded</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>47.6%</span></div>
         <div class="vx-stat__value vx-num">$388</div>
         <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[10,14,9,20,18,25,22,30,26,34,38],"color":"chart-4"}'></div>
@@ -171,7 +172,7 @@
         <div class="vx-card__head">
           <div class="vx-card__title"><h2 class="vx-h2">Orders to ship</h2><div class="vx-caption">Oldest first · ship within 48h to keep your rating</div></div>
           <button class="vx-btn vx-btn--sm"><i data-lucide="printer"></i>Print labels</button>
-          <button class="vx-btn vx-btn--sm vx-btn--cta"><i data-lucide="truck"></i>Ship all</button>
+          <button class="vx-btn vx-btn--sm vx-btn--cta" data-vx-loading="1000" data-vx-toast="4 orders marked as shipped" data-vx-toast-sub="Customers get tracking links by email"><i data-lucide="truck"></i>Ship all</button>
         </div>
         <div class="vx-table-wrap">
           <table class="vx-table">

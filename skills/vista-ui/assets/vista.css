@@ -26,6 +26,20 @@
   --vx-ease: cubic-bezier(.2, .8, .2, 1);
   --vx-dur: .22s;
 
+  /* Motion tokens — vista-motion.js and vista-charts.js read these too (see references/motion.md).
+     Pick by distance & role, not one duration for everything. Exits ≈ 60% of the matching enter. */
+  --vx-dur-press: 90ms;     /* :active scale-down                          */
+  --vx-dur-fast: 160ms;     /* hover color/opacity, exits, tooltips        */
+  --vx-dur-glide: 420ms;    /* active-pill glider, switch knob, tilt reset */
+  --vx-dur-enter: 560ms;    /* cards / panels arriving                     */
+  --vx-dur-draw: 900ms;     /* chart draw-in, number count-up              */
+  --vx-stagger: 45ms;       /* delay between siblings in one entrance      */
+  --vx-ease-out: cubic-bezier(.16, 1, .3, 1);      /* arriving: fast start, soft landing */
+  --vx-ease-in: cubic-bezier(.55, 0, .75, .2);     /* leaving: gentle start, quick exit  */
+  --vx-ease-in-out: cubic-bezier(.65, 0, .35, 1);  /* moving between two on-screen spots */
+  --vx-ease-spring: cubic-bezier(.34, 1.4, .64, 1);/* fallback for browsers without linear() */
+  --vx-ease-bounce: cubic-bezier(.34, 1.7, .64, 1);
+
   --vx-fs-xs: 11px;
   --vx-fs-sm: 12.5px;
   --vx-fs-md: 14px;
@@ -225,6 +239,14 @@
   --vx-chart-6: #6fb7e8;
   --vx-chart-grid: #edf1ee;
   --vx-chart-muted: #e6ebe8;
+}
+
+/* Physically based springs (damped oscillator sampled into linear()) — ~4% and ~12% overshoot */
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --vx-ease-spring: linear(0, 0.034, 0.118, 0.231, 0.356, 0.482, 0.6, 0.706, 0.796, 0.87, 0.928, 0.973, 1.004, 1.026, 1.038, 1.045, 1.046, 1.044, 1.04, 1.035, 1.029, 1.023, 1.018, 1.013, 1.009, 1.006, 1.003, 1.001, 1, 0.999, 0.998, 0.998, 1);
+    --vx-ease-bounce: linear(0, 0.054, 0.188, 0.362, 0.545, 0.715, 0.86, 0.973, 1.052, 1.1, 1.123, 1.125, 1.114, 1.095, 1.073, 1.05, 1.029, 1.012, 1, 0.991, 0.986, 0.984, 0.984, 0.986, 0.989, 0.992, 0.995, 0.997, 0.999, 1, 1.001, 1.002, 1);
+  }
 }
 
 /* Status colors (shared, tuned to read on both glass & white) */
@@ -502,7 +524,7 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
   padding: var(--vx-pad);
 }
 .vx-card--flush { padding: 0; overflow: hidden; }
-.vx-card--hover { transition: transform var(--vx-dur) var(--vx-ease), box-shadow var(--vx-dur) var(--vx-ease); }
+.vx-card--hover { transition: transform var(--vx-dur-glide) var(--vx-ease-spring), box-shadow var(--vx-dur-glide) var(--vx-ease-out); }
 .vx-card--hover:hover { transform: translateY(-2px); box-shadow: var(--vx-card-shadow), 0 18px 40px -20px rgba(0, 0, 0, .35); }
 .vx-card--sunken { background: var(--vx-sunken); box-shadow: none; }
 .vx-card__head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
@@ -590,6 +612,7 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
   display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--vx-r-pill);
   font-size: 12.5px; font-weight: 600; color: var(--vx-ink-2);
   background: var(--vx-sunken); border: 1px solid var(--vx-card-border);
+  transition: background var(--vx-dur-fast), color var(--vx-dur-fast), transform var(--vx-dur) var(--vx-ease-spring);
 }
 .vx-chip .n { font-size: 11px; color: var(--vx-ink-3); font-weight: 600; }
 .vx-chip.is-active { background: var(--vx-ink); color: #fff; border-color: transparent; }
@@ -615,11 +638,12 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
   font-size: 13px; font-weight: 600; white-space: nowrap;
   border: 1px solid var(--vx-card-border); background: var(--vx-card-bg); color: var(--vx-ink);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 4px 12px -8px rgba(0, 0, 0, .3);
-  transition: transform var(--vx-dur) var(--vx-ease), filter var(--vx-dur) var(--vx-ease), background var(--vx-dur);
+  transition: transform var(--vx-dur) var(--vx-ease-spring), filter var(--vx-dur-fast) var(--vx-ease), background var(--vx-dur-fast), color var(--vx-dur-fast);
 }
 .vx-btn:hover { filter: brightness(1.04); transform: translateY(-1px); }
-.vx-btn:active { transform: translateY(0); }
+.vx-btn:active { transform: translateY(0) scale(.97); transition-duration: var(--vx-dur-press); }
 .vx-btn--cta {
+  position: relative; overflow: hidden; isolation: isolate;
   background: var(--vx-cta); color: var(--vx-cta-ink); border-color: transparent;
   box-shadow: 0 10px 24px -10px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(255, 255, 255, .15);
 }
@@ -638,9 +662,10 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
 .vx-iconbtn {
   width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; flex: none;
   border: 1px solid var(--vx-chrome-border); background: rgba(255, 255, 255, .08); color: inherit;
-  transition: background var(--vx-dur), transform var(--vx-dur) var(--vx-ease); position: relative;
+  transition: background var(--vx-dur-fast), color var(--vx-dur-fast), transform var(--vx-dur) var(--vx-ease-spring); position: relative;
 }
 .vx-iconbtn:hover { background: rgba(255, 255, 255, .18); }
+.vx-iconbtn:active { transform: scale(.92); transition-duration: var(--vx-dur-press); }
 .vx-iconbtn--light { background: #fff; color: #111; border-color: transparent; }
 .vx-iconbtn--primary { background: var(--vx-primary); color: var(--vx-primary-ink); border-color: transparent; }
 .vx-iconbtn--cta { background: var(--vx-cta); color: var(--vx-cta-ink); border-color: transparent; }
@@ -657,7 +682,10 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
 .vx-seg button, .vx-seg a {
   border: 0; background: transparent; padding: 6px 14px; border-radius: var(--vx-r-pill);
   font-size: 12.5px; font-weight: 600; color: var(--vx-ink-3); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  transition: color var(--vx-dur-fast) var(--vx-ease), background var(--vx-dur-fast), transform var(--vx-dur) var(--vx-ease-spring);
 }
+.vx-seg button:hover, .vx-seg a:hover { color: var(--vx-ink); }
+.vx-seg button:active, .vx-seg a:active, .vx-chip:active { transform: scale(.96); transition-duration: var(--vx-dur-press); }
 .vx-seg .is-active { background: var(--vx-ink); color: #fff; box-shadow: 0 6px 14px -8px rgba(0, 0, 0, .6); }
 .vx-seg--light .is-active { background: #fff; color: var(--vx-ink); box-shadow: 0 2px 8px -2px rgba(0, 0, 0, .15); }
 .vx-seg--block { display: flex; }
@@ -667,7 +695,9 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
 .vx-tabs a, .vx-tabs button {
   border: 0; background: none; padding: 10px 0; font-size: 13px; font-weight: 600; color: var(--vx-ink-3);
   border-bottom: 2px solid transparent; margin-bottom: -1px; display: inline-flex; gap: 6px; align-items: center;
+  transition: color var(--vx-dur-fast) var(--vx-ease), border-color var(--vx-dur-fast);
 }
+.vx-tabs a:hover, .vx-tabs button:hover { color: var(--vx-ink-2); }
 .vx-tabs .is-active { color: var(--vx-ink); border-color: var(--vx-ink); }
 
 .vx-search, .vx-input, .vx-select {
@@ -692,17 +722,20 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
 }
 .vx-switch::after {
   content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%;
-  background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, .3); transition: transform var(--vx-dur) var(--vx-ease);
+  background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, .3); transition: transform var(--vx-dur-glide) var(--vx-ease-spring), width var(--vx-dur) var(--vx-ease);
 }
+.vx-switch:active::after { width: 20px; }               /* knob stretches while pressed, like iOS */
+.vx-switch.is-on:active::after { transform: translateX(12px); }
 .vx-switch.is-on { background: var(--vx-accent); }
 .vx-switch.is-on::after { transform: translateX(16px); }
 .vx-card--dark .vx-switch.is-on { background: #3b82f6; }
 
 .vx-check {
   width: 18px; height: 18px; border-radius: 6px; border: 1.5px solid var(--vx-ink-3); flex: none; display: grid; place-items: center;
-  background: transparent;
+  background: transparent; transition: background var(--vx-dur-fast), border-color var(--vx-dur-fast);
 }
-.vx-check.is-on { background: var(--vx-primary); border-color: var(--vx-primary); color: #fff; }
+.vx-check.is-on { background: var(--vx-primary); border-color: var(--vx-primary); color: #fff; animation: vx-pop var(--vx-dur-glide) var(--vx-ease-bounce); }
+@keyframes vx-pop { 0% { transform: scale(.7); } 100% { transform: none; } }
 
 /* ---------- 14. Progress -------------------------------------------------- */
 .vx-progress { height: 6px; border-radius: var(--vx-r-pill); background: var(--vx-chart-muted); overflow: hidden; }
@@ -778,9 +811,12 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
 .vx-quick__item {
   display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--vx-r-md);
   background: var(--vx-card-bg); border: 1px solid var(--vx-card-border); box-shadow: var(--vx-card-shadow);
-  transition: transform var(--vx-dur) var(--vx-ease);
+  transition: transform var(--vx-dur-glide) var(--vx-ease-spring), box-shadow var(--vx-dur-glide) var(--vx-ease-out);
 }
-.vx-quick__item:hover { transform: translateY(-2px); }
+.vx-quick__item:hover { transform: translateY(-2px); box-shadow: var(--vx-card-shadow), 0 14px 30px -18px rgba(0, 0, 0, .35); }
+.vx-quick__item:active { transform: scale(.98); transition-duration: var(--vx-dur-press); }
+.vx-quick__item .vx-iconchip { transition: transform var(--vx-dur-glide) var(--vx-ease-bounce); }
+.vx-quick__item:hover .vx-iconchip { transform: scale(1.08) rotate(-4deg); }
 .vx-quick__item b { font-size: 12.5px; display: block; }
 .vx-quick__item span { font-size: 11px; color: var(--vx-ink-3); }
 
@@ -789,6 +825,8 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
 .vx-insight { display: flex; gap: 10px; padding: 12px; border-radius: var(--vx-r-md); background: var(--vx-card-bg); border: 1px solid var(--vx-card-border); font-size: 12px; color: var(--vx-ink-2); }
 .vx-insight b { color: var(--vx-ink); }
 .vx-insight a { display: inline-flex; gap: 4px; align-items: center; margin-top: 6px; font-weight: 700; color: var(--vx-ink); font-size: 12px; }
+.vx-insight a svg, .vx-card__foot a svg { transition: transform var(--vx-dur) var(--vx-ease-spring); }
+.vx-insight a:hover svg, .vx-card__foot a:hover svg { transform: translateX(3px); }
 
 /* ---------- 19. Media card (listings, products) -------------------------- */
 .vx-media { padding: 8px; }
@@ -829,8 +867,11 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
   position: absolute; z-index: 5; pointer-events: none; transform: translate(-50%, calc(-100% - 12px));
   padding: 6px 10px; border-radius: 10px; font-size: 11.5px; font-weight: 600; white-space: nowrap;
   background: #10131c; color: #fff; box-shadow: 0 10px 24px -8px rgba(0, 0, 0, .5);
-  opacity: 0; transition: opacity .12s;
+  opacity: 0; transition: opacity var(--vx-dur-fast) var(--vx-ease), left var(--vx-dur-fast) var(--vx-ease-out), top var(--vx-dur-fast) var(--vx-ease-out);
 }
+.vx-chart path, .vx-chart circle { transition: opacity var(--vx-dur-fast) var(--vx-ease), stroke-width var(--vx-dur) var(--vx-ease-spring); }
+.vx-chart .vx-m-bar, .vx-chart .vx-m-dot { transform-box: fill-box; transform-origin: 50% 100%; }
+.vx-chart .vx-m-dot { transform-origin: 50% 50%; }
 .vx-tooltip.is-on { opacity: 1; }
 .vx-tooltip .row { display: flex; align-items: center; gap: 6px; font-weight: 500; color: rgba(255, 255, 255, .8); }
 .vx-tooltip .row i { width: 7px; height: 7px; border-radius: 2px; background: var(--c); }
@@ -850,14 +891,168 @@ svg.lucide, .vx-ico { width: 16px; height: 16px; stroke-width: 2; flex: none; }
 [data-theme="evergreen"] .vx-add-tile { border-color: var(--vx-line); background: transparent; }
 
 /* ---------- 23. Motion --------------------------------------------------- */
+/* Full guide: references/motion.md. JS choreography lives in vista-motion.js; everything here
+   also works without it (pure-CSS fallback, hover/press feedback, skeletons). */
+
+/* 23.1 CSS-only stagger (used when vista-motion.js is absent) */
 @keyframes vx-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-.vx-animate > * { animation: vx-rise .5s var(--vx-ease) both; }
-.vx-animate > *:nth-child(2) { animation-delay: .05s; }
-.vx-animate > *:nth-child(3) { animation-delay: .1s; }
-.vx-animate > *:nth-child(4) { animation-delay: .15s; }
-.vx-animate > *:nth-child(5) { animation-delay: .2s; }
-.vx-animate > *:nth-child(n+6) { animation-delay: .25s; }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+.vx-animate > * { animation: vx-rise var(--vx-dur-enter) var(--vx-ease-out) both; }
+.vx-animate > *:nth-child(2) { animation-delay: calc(var(--vx-stagger) * 1); }
+.vx-animate > *:nth-child(3) { animation-delay: calc(var(--vx-stagger) * 2); }
+.vx-animate > *:nth-child(4) { animation-delay: calc(var(--vx-stagger) * 3); }
+.vx-animate > *:nth-child(5) { animation-delay: calc(var(--vx-stagger) * 4); }
+.vx-animate > *:nth-child(n+6) { animation-delay: calc(var(--vx-stagger) * 5); }
+.vx-motion .vx-animate > * { animation: none; }       /* vista-motion.js takes over */
+
+/* 23.2 Boot: vista-motion.js (loaded in <head>) hides the shell for one frame so nothing flashes
+   before the entrance starts. Failsafe: if JS dies, everything shows after 1.6s anyway. */
+@keyframes vx-unhide { to { opacity: 1; } }
+.vx-boot :is(.vx-sidebar, .vx-topbar, .vx-panel, .vx-shell--notch, .vx-spatial__top, .vx-spatial__rail, .vx-spatial__dock) {
+  opacity: 0; animation: vx-unhide 0s 1.6s forwards;
+}
+.vx-pre { opacity: 0; }                               /* waiting for scroll-reveal */
+
+/* 23.3 Glider — one shared pill that slides between options (seg, tabs, nav, dock, rail) */
+/* .vx-glide containers get position:relative from JS only when they are static (dock/rail stay fixed) */
+.vx-glide { isolation: isolate; }
+.vx-glide > :not(.vx-glider) { position: relative; z-index: 1; }
+.vx-glider {
+  position: absolute; z-index: 0; top: 0; left: 0; pointer-events: none; border-radius: var(--vx-r-pill);
+  transition: transform var(--vx-dur-glide) var(--vx-ease-spring), width var(--vx-dur-glide) var(--vx-ease-spring),
+              height var(--vx-dur-glide) var(--vx-ease-spring), opacity var(--vx-dur-fast);
+  will-change: transform;
+}
+.vx-glider.is-still { transition: none; }
+.vx-seg.vx-glide > .is-active { background: transparent; box-shadow: none; }
+.vx-seg .vx-glider { background: var(--vx-ink); box-shadow: 0 6px 14px -8px rgba(0, 0, 0, .6); }
+.vx-seg--light .vx-glider { background: #fff; box-shadow: 0 2px 8px -2px rgba(0, 0, 0, .15); }
+.vx-tabs.vx-glide > .is-active { border-color: transparent; }
+.vx-tabs .vx-glider { background: var(--vx-ink); border-radius: 2px; }
+.vx-nav.vx-glide > .is-active, .vx-nav.vx-glide > .is-active:hover { background: transparent; box-shadow: none; }
+.vx-nav .vx-glider { background: var(--vx-nav-active-bg); border-radius: var(--vx-r-sm); box-shadow: 0 8px 20px -8px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .3); }
+.vx-spatial__dock.vx-glide > .is-active, .vx-spatial__rail.vx-glide > .is-active { background: transparent; box-shadow: none; }
+.vx-spatial__dock .vx-glider, .vx-spatial__rail .vx-glider { background: #fff; box-shadow: 0 6px 16px -8px rgba(0, 0, 0, .4); }
+.vx-nav__item, .vx-spatial__dock a { transition: background var(--vx-dur-fast) var(--vx-ease), color var(--vx-dur-fast) var(--vx-ease); }
+
+/* 23.4 Glass light — cursor spotlight + lit border on .vx-glow; 3D tilt on .vx-tilt */
+@media (hover: hover) {
+  .vx-glow { position: relative; isolation: isolate; }
+  .vx-glow::before, .vx-glow::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    opacity: 0; transition: opacity var(--vx-dur-glide) var(--vx-ease-out);
+  }
+  .vx-glow::after {
+    z-index: -1;
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .42), transparent 62%);
+  }
+  .vx-glow::before {
+    padding: 1px; z-index: 2;
+    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .95), transparent 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+  }
+  .vx-glow:hover::before, .vx-glow:hover::after { opacity: 1; }
+  .vx-card--dark.vx-glow::after, .vx-card--feature.vx-glow::after {
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .14), transparent 62%);
+  }
+  [data-theme="evergreen"] .vx-glow::after {
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--vx-primary) 9%, transparent), transparent 62%);
+  }
+  [data-theme="evergreen"] .vx-glow::before {
+    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--vx-primary) 45%, transparent), transparent 70%);
+  }
+  .vx-tilt { transform-style: preserve-3d; will-change: transform; transition: transform var(--vx-dur-glide) var(--vx-ease-spring); }
+  .vx-tilt.is-tilting { transition: transform 120ms linear; }
+}
+
+/* 23.5 CTA sheen — one diagonal light sweep on hover (not on a loop) */
+.vx-btn--cta::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, .28) 50%, transparent 70%);
+  transform: translateX(-110%);
+}
+.vx-btn--cta:hover::after { transform: translateX(110%); transition: transform .7s var(--vx-ease-in-out); }
+
+/* 23.6 Loading: skeletons (shimmer is the one allowed infinite animation) + button spinner */
+@keyframes vx-shimmer { to { transform: translateX(100%); } }
+@keyframes vx-spin { to { transform: rotate(360deg); } }
+.vx-skeleton {
+  position: relative; overflow: hidden; display: block; min-height: 12px; border-radius: 8px;
+  background: var(--vx-chart-muted); color: transparent !important; user-select: none;
+}
+.vx-skeleton::after {
+  content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+  animation: vx-shimmer 1.4s var(--vx-ease-in-out) infinite;
+}
+.vx-skeleton--text { height: 12px; width: var(--w, 100%); border-radius: 6px; }
+.vx-skeleton--title { height: 18px; width: var(--w, 55%); }
+.vx-skeleton--value { height: 30px; width: var(--w, 60%); border-radius: 10px; }
+.vx-skeleton--circle { width: var(--s, 34px); height: var(--s, 34px); border-radius: 50%; }
+.vx-skeleton--block { height: var(--h, 160px); border-radius: var(--vx-r-md); }
+.vx-btn.is-loading { color: transparent !important; pointer-events: none; }
+.vx-btn.is-loading::before {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+  border-radius: 50%; border: 2px solid var(--vx-ink); border-right-color: transparent; animation: vx-spin .7s linear infinite;
+}
+.vx-btn.is-loading { position: relative; }
+.vx-btn--cta.is-loading::before { border-color: var(--vx-cta-ink); border-right-color: transparent; }
+.vx-btn--primary.is-loading::before { border-color: var(--vx-primary-ink); border-right-color: transparent; }
+
+/* 23.7 Toasts (VistaMotion.toast / data-vx-toast) */
+.vx-toasts {
+  position: fixed; z-index: 60; right: 20px; bottom: 20px; display: flex; flex-direction: column-reverse; gap: 10px;
+  width: min(360px, calc(100vw - 40px)); pointer-events: none;
+}
+.vx-toast {
+  pointer-events: auto; display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 14px;
+  border-radius: 18px; color: #fff; font-size: 13px; font-weight: 600;
+  background: rgba(16, 19, 28, .82); border: 1px solid rgba(255, 255, 255, .12);
+  backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: 0 20px 40px -18px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+.vx-toast__ico { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; flex: none; background: rgba(255, 255, 255, .12); }
+.vx-toast--success .vx-toast__ico { background: rgba(52, 211, 153, .2); color: #6ee7b7; }
+.vx-toast--warn .vx-toast__ico { background: rgba(245, 165, 36, .22); color: #fcd34d; }
+.vx-toast--danger .vx-toast__ico { background: rgba(229, 72, 77, .24); color: #fca5a5; }
+.vx-toast--info .vx-toast__ico { background: rgba(96, 140, 255, .24); color: #a5b8ff; }
+.vx-toast__body { flex: 1; min-width: 0; }
+.vx-toast__body span { display: block; font-size: 11.5px; font-weight: 500; color: rgba(255, 255, 255, .62); margin-top: 1px; }
+.vx-toast__x { border: 0; background: none; color: rgba(255, 255, 255, .55); width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; transition: background var(--vx-dur-fast), color var(--vx-dur-fast); }
+.vx-toast__x:hover { background: rgba(255, 255, 255, .1); color: #fff; }
+.vx-toast__bar { position: absolute; left: 14px; right: 14px; bottom: 5px; height: 2px; border-radius: 2px; background: rgba(255, 255, 255, .25); transform-origin: left; }
+.vx-toast { position: relative; overflow: hidden; }
+
+/* 23.8 Feedback when a value changes (VistaMotion.flash / countTo) */
+@keyframes vx-flash-bg { from { background-color: var(--vx-primary-soft); } }
+@keyframes vx-flash-ink { from { color: var(--vx-flash-ink); } }
+.vx-flash { animation: vx-flash-bg 1.2s var(--vx-ease-out); }                 /* new row / cell */
+.vx-flash--up { --vx-flash-ink: var(--vx-pos); animation: vx-flash-ink 1.2s var(--vx-ease-out); }   /* number went up */
+.vx-flash--down { --vx-flash-ink: var(--vx-neg); animation: vx-flash-ink 1.2s var(--vx-ease-out); }
+.vx-card--dark .vx-flash--up { --vx-flash-ink: #6ee7b7; }
+.vx-card--dark .vx-flash--down { --vx-flash-ink: #fca5a5; }
+
+/* 23.9 Keyboard focus ring settles in instead of popping */
+@keyframes vx-focus { from { outline-offset: 6px; outline-color: transparent; } }
+:focus-visible { animation: vx-focus var(--vx-dur) var(--vx-ease-out); }
+
+/* 23.10 Theme switch + optional page-to-page View Transitions */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .45s; animation-timing-function: var(--vx-ease-in-out); }
+@media (prefers-reduced-motion: no-preference) {
+  .vx-panel { view-transition-name: vx-panel; }
+  @keyframes vx-vt-out { to { opacity: 0; transform: translateY(-6px); } }
+  @keyframes vx-vt-in { from { opacity: 0; transform: translateY(14px) scale(.995); } }
+  ::view-transition-old(vx-panel) { animation: vx-vt-out var(--vx-dur-fast) var(--vx-ease-in) both; }
+  ::view-transition-new(vx-panel) { animation: vx-vt-in var(--vx-dur-enter) var(--vx-ease-out) both; }
+}
+
+/* 23.11 Reduced motion: no movement at all — final states only. Opacity fades stay off too. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  .vx-skeleton::after { display: none; }
+}
+html[data-vx-motion="off"] *, html[data-vx-motion="off"] *::before, html[data-vx-motion="off"] *::after { animation: none !important; transition: none !important; }
 
 /* ---------- 24. Responsive ------------------------------------------------ */
 @media (max-width: 1280px) {
