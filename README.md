@@ -1,10 +1,10 @@
 # admin-dashboard-vista
 
-**vista-ui** là một *skill* cho agent LLM (Claude Code, Codex, Cursor, Copilot, Windsurf… hoặc bất kỳ
-model nào đọc được markdown) giúp tạo ra giao diện dashboard **glassmorphism** đẹp như các shot trên Dribbble:
-panel kính mờ trên nền gradient, sidebar nổi, thẻ KPI số lớn, biểu đồ SVG mượt và các nút dạng viên thuốc (pill) —
-kèm **chuyển động chuyên nghiệp**: trang hiện ra theo một trình tự được dàn dựng, biểu đồ tự vẽ, số đếm lên,
-viên "active" trượt giữa các lựa chọn, ánh sáng chạy theo con trỏ trên mặt kính, toast/skeleton/undo mượt mà.
+**vista-ui** is a *skill* for LLM agents (Claude Code, Codex, Cursor, Copilot, Windsurf… or any model that can
+read markdown) that produces Dribbble-quality **glassmorphism** dashboard UIs: frosted glass panels over gradient
+backgrounds, a floating sidebar, big-number KPI cards, smooth SVG charts and pill-shaped buttons —
+plus **professional motion**: the page enters in a choreographed sequence, charts draw themselves, numbers count up,
+an "active" pill glides between options, light follows the cursor across the glass, and toasts/skeletons/undo feel fluid.
 
 | Lagoon | Indigo |
 |---|---|
@@ -18,112 +18,112 @@ viên "active" trượt giữa các lựa chọn, ánh sáng chạy theo con tr�
 | **Motion · Live operations** | **Entrance filmstrip (120 → 300 → 500 → 800 ms)** |
 | ![motion](docs/screenshots/lagoon-live-ops-motion-1440.png) | ![filmstrip](docs/screenshots/motion-entrance-filmstrip.png) |
 
-## Có gì bên trong
+## What's inside
 
 ```
 skills/vista-ui/
-├── SKILL.md                 # điểm vào: quy trình 7 bước cho agent
+├── SKILL.md                 # entry point: the 7-step workflow for the agent
 ├── assets/
-│   ├── vista.css            # design system: token, 10 theme, 3 shell, ~50 component (prefix vx-)
-│   ├── vista-charts.js      # biểu đồ SVG không phụ thuộc: bar, line, area, donut, gauge, ring, sparkline (có hiệu ứng vẽ)
-│   ├── vista-motion.js      # engine chuyển động: entrance, scroll reveal, count-up, glider, glow/tilt, toast, FLIP
-│   ├── vista.js             # icon + toggle cho segmented/chips/tabs/switch, đổi theme trực tiếp
-│   └── vendor/lucide.min.js # bộ icon Lucide (ISC) — chạy offline
-├── templates/               # khung trang: sidebar.html · notch.html · spatial.html
-├── examples/                # 9 trang hoàn chỉnh (8 theme, nhiều kiểu trang) + theme-gallery.html + index.html (gallery)
-├── references/              # tài liệu sâu, agent chỉ đọc khi cần
-│   ├── design-language.md   # "ADN" thị giác của phong cách, nên/không nên
-│   ├── themes.md            # 10 theme, chọn theme theo sản phẩm, generator, theme thương hiệu, dark mode
-│   ├── palettes.md / .json  # thư viện 53 bảng màu theo cảm xúc (tối giản, ấm, lạnh, rực rỡ, hiện đại)
-│   ├── components.md        # HTML copy‑paste cho mọi component
-│   ├── layouts.md           # các shell + công thức trang (overview, analytics, bảng, gallery, inbox…)
-│   ├── charts.md            # API biểu đồ
-│   ├── motion.md            # ngôn ngữ chuyển động: token, entrance, pattern, công thức, a11y
-│   ├── framework-port.md    # dùng trong React/Next, Vue, Svelte, Tailwind, shadcn
-│   └── checklist.md         # checklist QA trước khi giao
+│   ├── vista.css            # design system: tokens, 10 themes, 3 shells, ~50 components (vx- prefix)
+│   ├── vista-charts.js      # dependency-free SVG charts: bar, line, area, donut, gauge, ring, sparkline (with draw-in)
+│   ├── vista-motion.js      # motion engine: entrance, scroll reveal, count-up, glider, glow/tilt, toast, FLIP
+│   ├── vista.js             # icons + toggles for segmented/chips/tabs/switch, live theme switching
+│   └── vendor/lucide.min.js # Lucide icon set (ISC) — works offline
+├── templates/               # page shells: sidebar.html · notch.html · spatial.html
+├── examples/                # 9 complete pages (8 themes, many page types) + theme-gallery.html + index.html (gallery)
+├── references/              # in-depth docs, read by the agent only when needed
+│   ├── design-language.md   # the style's visual "DNA", do's and don'ts
+│   ├── themes.md            # 10 themes, picking a theme per product, generator, brand themes, dark mode
+│   ├── palettes.md / .json  # library of 53 mood-based palettes (minimal, warm, cool, vivid, modern)
+│   ├── components.md        # copy-paste HTML for every component
+│   ├── layouts.md           # shells + page recipes (overview, analytics, tables, gallery, inbox…)
+│   ├── charts.md            # chart API
+│   ├── motion.md            # motion language: tokens, entrance, patterns, recipes, a11y
+│   ├── framework-port.md    # using it with React/Next, Vue, Svelte, Tailwind, shadcn
+│   └── checklist.md         # pre-delivery QA checklist
 └── scripts/
-    ├── scaffold.py          # tạo trang mới từ template (copy hoặc nhúng asset)
-    ├── bundle.py            # gộp CSS/JS vào 1 file HTML duy nhất
-    ├── palette_theme.py     # bảng màu / mã hex → theme Vista đầy đủ + báo cáo độ tương phản
-    └── screenshot.py        # chụp PNG + báo lỗi console, icon sai tên, chart rỗng, placeholder sót; --frames = filmstrip motion
-adapters/system-prompt.md    # prompt rút gọn cho agent không đọc được thư mục skill
-install.sh                   # cài skill cho từng loại agent
-AGENTS.md                    # chỉ dẫn cho agent làm việc trong chính repo này
+    ├── scaffold.py          # create a new page from a template (copy or inline assets)
+    ├── bundle.py            # inline CSS/JS into a single HTML file
+    ├── palette_theme.py     # palette / hex codes → full Vista theme + contrast report
+    └── screenshot.py        # PNG capture + reports console errors, bad icon names, empty charts, leftover placeholders; --frames = motion filmstrip
+adapters/system-prompt.md    # condensed prompt for agents that can't read the skill folder
+install.sh                   # installs the skill for each agent type
+AGENTS.md                    # instructions for agents working in this repo itself
 ```
 
-## 10 theme
+## 10 themes
 
-![10 theme](docs/screenshots/themes-grid.png)
+![10 themes](docs/screenshots/themes-grid.png)
 
-| Theme | Cảm giác | Shell | Hợp với |
+| Theme | Feel | Shell | Good for |
 |---|---|---|---|
-| `lagoon` | kính xanh ngọc/cyan, nút CTA đen | sidebar | admin, bất động sản, B2B |
-| `indigo` | kính xanh hoàng gia, sidebar navy | sidebar | e‑commerce, analytics, SaaS |
-| `aurora` | kính ấm kiểu visionOS trên nền phòng | spatial (top bar + rail + dock) | tài chính cá nhân, consumer |
-| `evergreen` | khung xanh rêu, panel trắng, tab "notch" | notch | CRM, sales, productivity |
-| `graphite` | dark mode thật: than chì, điểm nhấn vàng chanh | sidebar | dev tools, monitoring, analytics |
-| `terracotta` | nâu than hồng, panel kem, cam đất | notch | nhà hàng, khách sạn, nội thất |
-| `lapis` | xanh lapis đêm, ánh tím mận, panel ngà | sidebar | tài sản, cao cấp, pháp lý |
-| `orchid` | tím rực → hồng, kính oải hương | sidebar | creator, support, AI |
-| `opaline` | sáng tối giản, xám ngọc trai, cam san hô | spatial / sidebar | settings, billing, SaaS tối giản |
-| `marina` | navy bến cảng, panel cát, điểm nhấn nâu | sidebar | du lịch, hàng hải, logistics |
+| `lagoon` | teal/cyan glass, black CTA | sidebar | admin, real estate, B2B |
+| `indigo` | royal blue glass, navy sidebar | sidebar | e‑commerce, analytics, SaaS |
+| `aurora` | warm visionOS-style glass over a room backdrop | spatial (top bar + rail + dock) | personal finance, consumer |
+| `evergreen` | moss-green frame, white panels, "notch" tabs | notch | CRM, sales, productivity |
+| `graphite` | true dark mode: graphite with lime-yellow accents | sidebar | dev tools, monitoring, analytics |
+| `terracotta` | rosy charcoal brown, cream panels, burnt orange | notch | restaurants, hotels, interiors |
+| `lapis` | midnight lapis blue, plum glow, ivory panels | sidebar | wealth, luxury, legal |
+| `orchid` | vivid purple → pink, lavender glass | sidebar | creators, support, AI |
+| `opaline` | light minimal, pearl gray, coral orange | spatial / sidebar | settings, billing, minimal SaaS |
+| `marina` | harbor navy, sand panels, brown accents | sidebar | travel, maritime, logistics |
 
-Đổi theme: `<html data-theme="indigo">`. Xem cả 10 theme: `examples/theme-gallery.html`.
+Switch themes: `<html data-theme="indigo">`. See all 10 themes: `examples/theme-gallery.html`.
 
-**Thêm màu sắc:** thư viện 53 bảng màu trong `references/palettes.md`, và một lệnh để biến bảng màu
-(hoặc mã màu thương hiệu) thành theme hoàn chỉnh:
+**More colors:** a library of 53 palettes in `references/palettes.md`, plus one command to turn a palette
+(or your brand colors) into a complete theme:
 ```bash
-python3 skills/vista-ui/scripts/palette_theme.py --list                     # duyệt 53 bảng màu
+python3 skills/vista-ui/scripts/palette_theme.py --list                     # browse the 53 palettes
 python3 skills/vista-ui/scripts/palette_theme.py 21 --name fireside --out fireside.css
 python3 skills/vista-ui/scripts/palette_theme.py "#0F4C81,#F2E8DC,#E07A5F" --name acme
 ```
 
-## Chuyển động
+## Motion
 
-Chỉ cần `<script src="vista-motion.js"></script>` trong `<head>` (template đã có sẵn):
+Just add `<script src="vista-motion.js"></script>` to `<head>` (the templates already include it):
 
-| Khoảnh khắc | Chuyển động |
+| Moment | Motion |
 |---|---|
-| Mở trang | sidebar trượt vào → panel lắng xuống → tiêu đề → các card nổi lên theo thứ tự đọc (stagger 45ms) |
-| Cuộn | card bên dưới nổi lên khi vào khung nhìn |
-| Số liệu | KPI đếm từ 0, giữ độ rộng để không xô lệch; cập nhật trực tiếp nháy xanh/đỏ (`countTo`) |
-| Biểu đồ | cột mọc lên kiểu lò xo, đường quét trái → phải, donut/gauge/ring quét vòng; đổi kỳ thì vẽ lại |
-| Chọn | segmented / tabs / nav / dock: một viên "active" trượt bằng spring |
-| Rê chuột | ánh sáng theo con trỏ + viền sáng (`vx-glow`), nghiêng 3D (`vx-tilt`), CTA lóe sáng |
-| Thao tác | nhấn co nhẹ; nút loading; toast kính có thanh đếm ngược, dừng khi hover, Undo; dòng mới trượt vào, các dòng khác dạt ra (FLIP) |
+| Page load | sidebar slides in → panel settles → heading → cards rise in reading order (45ms stagger) |
+| Scroll | cards below the fold rise as they enter the viewport |
+| Numbers | KPIs count up from 0 at a fixed width so nothing shifts; live updates flash green/red (`countTo`) |
+| Charts | bars spring up, lines sweep left → right, donut/gauge/ring sweep around; changing the period redraws |
+| Selection | segmented / tabs / nav / dock: an "active" pill glides on a spring |
+| Hover | cursor-following light + glowing border (`vx-glow`), 3D tilt (`vx-tilt`), CTA shine |
+| Actions | gentle press shrink; loading buttons; glass toasts with a countdown bar, pause on hover, Undo; new rows slide in while others make room (FLIP) |
 
-Mức độ: `<html data-vx-motion="subtle|standard|expressive|off">`. `prefers-reduced-motion` luôn được tôn trọng.
-Chi tiết: `skills/vista-ui/references/motion.md`; xem trực tiếp: `examples/lagoon-live-ops-motion.html`.
+Intensity: `<html data-vx-motion="subtle|standard|expressive|off">`. `prefers-reduced-motion` is always respected.
+Details: `skills/vista-ui/references/motion.md`; live demo: `examples/lagoon-live-ops-motion.html`.
 
-## Cài đặt
+## Installation
 
 ```bash
-./install.sh claude                 # Claude Code, dùng cho mọi project (~/.claude/skills/vista-ui)
-./install.sh claude-project ~/app   # Claude Code, chỉ một project
-./install.sh codex ~/app            # Codex / agent đọc AGENTS.md
+./install.sh claude                 # Claude Code, for all projects (~/.claude/skills/vista-ui)
+./install.sh claude-project ~/app   # Claude Code, a single project
+./install.sh codex ~/app            # Codex / agents that read AGENTS.md
 ./install.sh cursor ~/app           # Cursor (.cursor/rules/vista-ui.mdc)
 ./install.sh copilot ~/app          # GitHub Copilot (.github/copilot-instructions.md)
 ./install.sh windsurf ~/app         # Windsurf (.windsurf/rules)
 ```
-ChatGPT / Gemini / API thuần: dán `adapters/system-prompt.md` vào system prompt, đính kèm `vista.css` và một file ví dụ.
+ChatGPT / Gemini / raw API: paste `adapters/system-prompt.md` into the system prompt and attach `vista.css` plus one example file.
 
-## Dùng thử
+## Try it
 
-Sau khi cài, chỉ cần yêu cầu agent, ví dụ:
-> "Tạo dashboard quản lý phòng gym: hội viên, doanh thu tháng, lớp học hôm nay, theme evergreen."
+After installing, just ask your agent, for example:
+> "Build a gym management dashboard: members, monthly revenue, today's classes, evergreen theme."
 
-Hoặc tự làm bằng tay:
+Or do it by hand:
 ```bash
 python3 skills/vista-ui/scripts/scaffold.py --shell sidebar --theme lagoon --title "Gym — Overview" --out out/gym.html
-# sửa các [[placeholder]] …
-python3 skills/vista-ui/scripts/screenshot.py out/gym.html --full      # kiểm tra trực quan
-python3 skills/vista-ui/scripts/screenshot.py out/gym.html --frames 0,150,300,600   # filmstrip chuyển động
-python3 skills/vista-ui/scripts/bundle.py out/gym.html -o out/gym.single.html   # 1 file để chia sẻ
+# fill in the [[placeholders]] …
+python3 skills/vista-ui/scripts/screenshot.py out/gym.html --full      # visual check
+python3 skills/vista-ui/scripts/screenshot.py out/gym.html --frames 0,150,300,600   # motion filmstrip
+python3 skills/vista-ui/scripts/bundle.py out/gym.html -o out/gym.single.html   # single file for sharing
 ```
-Script chụp màn hình cần Playwright: `pip install playwright && python -m playwright install --with-deps chromium`.
+The screenshot script needs Playwright: `pip install playwright && python -m playwright install --with-deps chromium`.
 
-Xem nhanh các ví dụ: mở `skills/vista-ui/examples/index.html` trong trình duyệt.
+Quick look at the examples: open `skills/vista-ui/examples/index.html` in a browser.
 
-## Ghi chú
-- Font Plus Jakarta Sans tải từ Google Fonts (offline sẽ fallback sang Inter/system). Ảnh trong ví dụ lagoon lấy từ Unsplash.
-- Icon: Lucide (ISC, xem `assets/vendor/LUCIDE-LICENSE.txt`).
+## Notes
+- The Plus Jakarta Sans font loads from Google Fonts (offline it falls back to Inter/system). Photos in the lagoon example come from Unsplash.
+- Icons: Lucide (ISC, see `assets/vendor/LUCIDE-LICENSE.txt`).
