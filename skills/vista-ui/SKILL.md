@@ -1,6 +1,6 @@
 ---
 name: vista-ui
-description: Build polished glassmorphism dashboards and web-app UIs (frosted-glass panels, floating sidebar, KPI cards, SVG charts, pill controls) with smooth, professional motion (choreographed entrance, chart draw-in, count-up numbers, sliding active pills, glass light, toasts, skeletons) in ten ready themes — lagoon (teal glass), indigo (royal-blue), aurora (warm spatial window), evergreen (green frame + white panel), graphite (true dark mode, lime accent), terracotta (ember + cream), lapis (midnight jewel tones), orchid (vivid violet), opaline (light minimal) and marina (navy + sand) — plus 53 curated palettes and a generator that turns any palette or brand colours into a full theme. Use when the user asks for an admin dashboard, back-office, CRM, analytics, finance, e-commerce or SaaS screen, or for a "beautiful / modern / glass / Apple-like" interface, or wants an existing page restyled that way. Ships a CSS design system, a zero-dependency chart library, a motion engine, page templates, full examples and a screenshot self-check.
+description: Build polished glassmorphism dashboards and web-app UIs (frosted-glass panels, floating sidebar, KPI cards, SVG charts, pill controls) with smooth, GPU-friendly motion (choreographed entrance, chart draw-in and data morphing, odometer numbers, sliding active pills, glass light, modals/drawers/sheets, ⌘K command palette, drag-and-drop kanban, toasts, skeletons) plus animated walkthroughs that explain how a process works (run traces with play/pause/step, sequence diagrams, stage steppers, product-screen tours with spotlights) and adaptive glass that drops live blur on slow devices, in five shells (sidebar, notch, spatial, topnav, auth) and ten ready themes — lagoon (teal glass), indigo (royal-blue), aurora (warm spatial window), evergreen (green frame + white panel), graphite (true dark mode, lime accent), terracotta (ember + cream), lapis (midnight jewel tones), orchid (vivid violet), opaline (light minimal) and marina (navy + sand) — plus 53 curated palettes and a generator that turns any palette or brand colours into a full theme. Use when the user asks for an admin dashboard, back-office, CRM, analytics, finance, e-commerce or SaaS screen, project board / kanban, calendar / scheduling, live ops or deploy console, sign-in / onboarding screen, or asks to "show / animate / walk me through how X works" (pipelines, API handshakes, AI agent runs, checkout flows), or for a "beautiful / modern / glass / Apple-like" interface, or wants an existing page restyled that way. Ships a CSS design system, a zero-dependency chart library, a motion engine, page templates, full examples and a screenshot self-check.
 ---
 
 # Vista UI
@@ -18,16 +18,16 @@ agent. Paths below are relative to this skill's folder.
 
 | Path | What it is |
 |---|---|
-| `assets/vista.css` | The design system: tokens (incl. motion tokens), 10 themes, 3 shells, ~50 components (`vx-` prefix) |
-| `assets/vista-charts.js` | SVG charts: bar, line, area, donut, gauge, ring, sparkline (reads theme colors, draws in on view) |
-| `assets/vista-motion.js` | Motion engine: entrance choreography, scroll reveal, count-up, glider, glow/tilt, swap, FLIP insert/remove, toasts, loading |
+| `assets/vista.css` | The design system: tokens (incl. motion tokens), 10 themes, 5 shells, ~60 components (`vx-` prefix), lite-glass mode |
+| `assets/vista-charts.js` | SVG charts: bar, line, area, donut, gauge, ring, sparkline (theme colors, draw-in on view, morph on data change) |
+| `assets/vista-motion.js` | Motion engine: entrance, scroll reveal, count-up + odometer, glider, glow/tilt/magnetic/ripple, swap, FLIP insert/remove, dialogs, ⌘K palette, drag & drop, toasts, loading, adaptive glass, walkthrough sequences |
 | `assets/vista.js` | Icons bootstrap + toggles for segmented controls, chips, tabs, switches; theme switch |
 | `assets/vendor/lucide.min.js` | Lucide icon set (ISC), used as `<i data-lucide="name"></i>` |
-| `templates/{sidebar,notch,spatial}.html` | Page skeletons with `[[placeholders]]` |
-| `examples/*.html` | Nine finished pages across 8 themes and page types (overview, analytics, CRM, finance, live ops, reservations, support inbox, settings) — the quality bar; `theme-gallery.html` = all themes + palette library |
+| `templates/{sidebar,notch,spatial,topnav,auth}.html` | Page skeletons with `[[placeholders]]` (topnav ships the ⌘K palette + a drawer) |
+| `examples/*.html` | Fourteen finished pages across all 10 themes and page types (overview, analytics, CRM, finance, live ops, reservations, support inbox, settings, kanban board, calendar, deploy console, sign-in, agent walkthrough) — the quality bar; `theme-gallery.html` = all themes + palette library |
 | `scripts/scaffold.py` | New page from a template (copies or inlines assets) |
 | `scripts/bundle.py` | Inline local CSS/JS → one self-contained `.html` |
-| `scripts/screenshot.py` | Render pages to PNG + report console errors; `--frames` filmstrip of the motion (Playwright) |
+| `scripts/screenshot.py` | Render pages to PNG + report console errors; `--frames` filmstrip of the motion; `--perf` smoothness report (Playwright) |
 | `scripts/palette_theme.py` | Palette (id / name / hex list) → complete `[data-theme]` token block with contrast report; `--list`, `--preview` |
 | `references/*.md` | Deep docs — read only what the task needs (see below) |
 
@@ -47,10 +47,19 @@ agent. Paths below are relative to this skill's folder.
 | Creator tools, support desks, social, AI products — playful | `orchid` | `sidebar` |
 | Settings, billing, minimal SaaS, light UI requested | `opaline` | `spatial` or `sidebar` |
 | Travel, maritime, logistics, property | `marina` | `sidebar` |
+| Boards, calendars, wide tables, ≤ 6 top-level areas (any theme) | `marina` / `lapis` / `graphite` | `topnav` |
+| Sign in, sign up, 2FA, invite, onboarding (any theme) | match the app | `auth` |
 
 Brand colours given? Run `python3 scripts/palette_theme.py "#hex,#hex,…" --name brand` and paste the CSS
 (see `references/themes.md`). Only a mood given (“warm”, “calm”, “bold”…)? Pick from the 53 palettes in
 `references/palettes.md` when no built-in theme fits, and generate.
+
+Page types with their own recipe + example (`references/layouts.md`): overview, analytics, list/table, card gallery,
+inbox, goals, settings, feed, **board (kanban)**, **calendar**, **live console**, **sign-in**, **walkthrough**.
+
+Explaining *how something works* rather than showing data? Read `references/walkthroughs.md` first: pick the
+picture (run trace, sequence diagram, product screens, stages, story cards), write the stage list with durations,
+then drive it with one `[data-vx-sequence]` and a player (Run · Pause · Step · speed · Reset). Nothing auto-plays.
 
 ### 2. Start from a file, never from a blank page
 
@@ -98,17 +107,25 @@ motion **where it explains something** (`references/motion.md`):
 - period/metric switches: `data-vx-swap="#chart-id"` on the segmented control (chart replays).
 - live data: `VistaMotion.insert` / `remove` / `countTo` — never re-render a whole list.
 - slow loads: `vx-skeleton--*` then `VistaMotion.swap` to the content.
+- new data in a chart: `VistaCharts.update(el, {series})` or `data-vx-patch` on the period options → shapes morph.
+- live numbers: `data-vx-odometer` (digits roll on the compositor) + `countTo`.
+- details / edit forms: `<dialog class="vx-drawer|vx-modal|vx-sheet">` + `data-vx-open="#id"`; global search: ⌘K
+  palette (`dialog.vx-cmdk[data-vx-cmdk]`); reorderable things: `data-vx-sortable="group"` + `vx:sort`.
+- touch / tactile: `vx-ripple` on big buttons and tiles; `vx-magnetic` on the one hero CTA.
 
 ### 7. Verify visually — mandatory when you can run code
 
 ```
 python3 scripts/screenshot.py path/to/page.html --full      # writes page-1440.png (end state of all motion)
 python3 scripts/screenshot.py path/to/page.html --frames 0,150,300,500,900   # entrance filmstrip
+python3 scripts/screenshot.py path/to/page.html --perf     # frames (live blur vs lite glass), script & layout cost
 ```
 Open the PNG and compare with the example of the same theme. Fix anything on
 `references/checklist.md` (overflowing text, empty charts, cramped cards, console errors).
 Also check at `--width 1100` and `--width 390` when the page will be used on smaller screens.
-If Playwright is missing: `pip install playwright && python -m playwright install chromium`.
+If Playwright is missing: `pip install playwright && python -m playwright install chromium`
+(Linux without root and Chromium fails on a missing `libnspr4.so`/`libnss3.so`/…: `apt-get download` those
+packages, `dpkg -x` them into a folder and export `LD_LIBRARY_PATH=<folder>/usr/lib/x86_64-linux-gnu`).
 If it cannot run at all, re-read the checklist line by line instead.
 
 ### 8. Deliver
@@ -128,6 +145,7 @@ If it cannot run at all, re-read the checklist line by line instead.
 6. **Color discipline**: neutral glass + one accent (theme primary) + semantic green/red/amber only for meaning.
 7. **Use classes and tokens, not inline colors.** If something is missing, add a small class in a `<style>` block that uses `var(--vx-…)` tokens.
 8. **Motion has meaning and one rhythm.** Only transform/opacity, durations and easings from the `--vx-dur-*` / `--vx-ease-*` tokens, arrive with ease-out and leave faster, springs for things the user moves. No decorative loops. `prefers-reduced-motion` must still show every final state.
+9. **Smooth on weak hardware.** Never move, scale or animate anything that has `backdrop-filter` (fade it, move its content); keep `data-vx-glass` on `auto` so slow devices get lite glass; coalesce pointer/scroll handlers to one write per frame; read layout before writing it. Details: `references/motion.md` §7.
 
 ## Reference map (load on demand)
 
@@ -139,6 +157,7 @@ If it cannot run at all, re-read the checklist line by line instead.
 | HTML for every component | `references/components.md` |
 | Shells + page recipes | `references/layouts.md` |
 | Chart types & options | `references/charts.md` |
-| Motion: tokens, entrance, patterns, recipes, a11y | `references/motion.md` |
+| Motion: tokens, entrance, patterns, recipes, performance, a11y | `references/motion.md` |
+| Walkthroughs: explain a process step by step (traces, handshakes, tours, timings) | `references/walkthroughs.md` |
 | React / Next / Vue / Tailwind | `references/framework-port.md` |
 | Final QA | `references/checklist.md` |

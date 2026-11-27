@@ -1,0 +1,246 @@
+<!doctype html>
+<!-- VISTA UI · EXAMPLE — Ledgerline sign-in (theme: indigo, shell: auth).
+     Step 1: SSO / passkey / email + password → loading → toast. Step 2: two-factor code, swapped in
+     with VistaMotion.swap. ≤1100px the brand side hides and the form takes the full width. -->
+<html lang="en" data-theme="indigo">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in — Ledgerline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
+  <style>
+    /* Brand side: proof card is light glass, so it gets dark ink back */
+    .vx-auth__side .vx-auth__quote { color: var(--vx-on-dark); }
+    .vx-auth__side .vx-card { color: var(--vx-ink); background: var(--vx-panel-bg); border-color: var(--vx-panel-border); }
+    .vx-auth__side .vx-card .vx-stat__value { color: var(--vx-ink); }
+    .vx-auth__side .vx-card .vx-caption, .vx-auth__side .vx-card p { color: var(--vx-ink-2); }
+    .vx-signin__pitch { display: flex; flex-direction: column; gap: 22px; max-width: 520px; }
+    .vx-signin__lede { font-size: 14.5px; line-height: 1.55; max-width: 44ch; margin-top: -8px; }
+    .vx-signin__proof { max-width: 420px; }
+    .vx-signin__stats { padding-top: 22px; border-top: 1px solid var(--vx-chrome-border); }
+
+    /* Form column: form centered, legal footer pinned under it */
+    .vx-signin__main { grid-template-rows: minmax(0, 1fr) auto; gap: 28px; padding: 36px 28px 22px; }
+    .vx-signin__step { display: flex; flex-direction: column; gap: 16px; }
+    .vx-signin__step[hidden] { display: none; }
+    .vx-signin__mark { width: 44px; height: 44px; border-radius: 14px; margin-bottom: 18px; }
+    .vx-signin__mark svg { width: 20px; height: 20px; }
+    .vx-input .vx-iconbtn { margin-right: -6px; flex: none; }
+    .vx-signin__pwtoggle [hidden] { display: none; }
+    .vx-signin__foot { width: min(400px, 100%); justify-self: center; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .vx-signin__legal { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; }
+    .vx-signin__legal a { color: var(--vx-ink-3); text-decoration: none; }
+    .vx-signin__legal a:hover { color: var(--vx-ink); }
+    .vx-signin__lang { height: 32px; border-radius: var(--vx-r-pill); font-size: 12px; gap: 6px; cursor: pointer; }
+    .vx-signin__lang svg { width: 14px; height: 14px; }
+
+    /* One-time code */
+    .vx-otp { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+    .vx-otp__cell {
+      width: 100%; min-width: 0; height: 56px; border-radius: 14px; text-align: center;
+      font-family: inherit; font-size: 22px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; color: var(--vx-ink);
+      background: var(--vx-sunken); border: 1px solid var(--vx-card-border); outline: 0;
+      transition: border-color var(--vx-dur-fast), box-shadow var(--vx-dur-fast) var(--vx-ease-out);
+    }
+    .vx-otp__cell:focus-visible, .vx-otp__cell:focus { border-color: var(--vx-primary); box-shadow: 0 0 0 4px var(--vx-primary-soft); }
+    .vx-otp__cell.is-filled { border-color: color-mix(in srgb, var(--vx-primary) 40%, transparent); }
+
+    @media (max-width: 760px) {
+      .vx-signin__main { padding: 28px 18px 18px; }
+      .vx-otp { gap: 6px; }
+      .vx-signin__foot { justify-content: center; }
+      .vx-otp__cell { height: 50px; font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="vx-shell--auth">
+
+  <aside class="vx-auth__side vx-chrome">
+    <div class="vx-brand">
+      <div class="vx-brand__mark"><i data-lucide="wallet-cards"></i></div>
+      <div class="vx-brand__text"><div class="vx-brand__name">Ledgerline</div><div class="vx-brand__sub">Spend management for finance teams</div></div>
+    </div>
+
+    <div class="vx-signin__pitch">
+      <h2 class="vx-h1">Close the books in days, not weeks.</h2>
+      <p class="vx-signin__lede">Cards, bills and reimbursements in one ledger — every receipt matched, every policy enforced before the money moves.</p>
+      <div class="vx-card vx-signin__proof">
+        <div class="vx-stat__top">
+          <span class="vx-iconchip vx-iconchip--primary"><i data-lucide="trending-down"></i></span>
+          <span class="vx-stat__label">Spend under control</span>
+          <span class="vx-delta vx-delta--up"><i data-lucide="trending-down"></i>11.4%</span>
+        </div>
+        <div class="vx-stat__value vx-num" data-vx-count>$184,260<small>this quarter</small></div>
+        <div class="vx-caption">Out-of-policy spend down from $16,900 to $2,140</div>
+        <div class="vx-chart" style="--h:72px;margin-top:10px" data-vx-chart="area" data-vx='{"labels":["Jul","Aug","Sep","Oct","Nov","Dec"],"series":[{"name":"Spend","data":[212,206,199,193,188,184],"color":"chart-1"}],"xAxis":false,"yAxis":false,"grid":false,"padLeft":0,"min":176,"max":216,"endDot":true,"yFormat":{"prefix":"$","suffix":"K"}}'></div>
+      </div>
+    </div>
+
+    <div>
+      <p class="vx-auth__quote">“We cut month-end close from nine days to three, and nobody chases receipts on a Friday night anymore.”</p>
+      <div class="vx-row" style="margin-top:16px"><span class="vx-avatar vx-avatar--sky">MO</span><div><b>Maya Okonkwo</b><div class="vx-caption">VP Finance, Northwind Freight</div></div></div>
+    </div>
+
+    <div class="vx-grid-3 vx-signin__stats">
+      <div><div class="vx-stat__value" data-vx-count>4,800</div><div class="vx-caption">finance teams</div></div>
+      <div><div class="vx-stat__value" data-vx-count>$12.6B</div><div class="vx-caption">spend processed</div></div>
+      <div><div class="vx-stat__value" data-vx-count>4.8</div><div class="vx-caption">average rating</div></div>
+    </div>
+  </aside>
+
+  <main class="vx-panel vx-auth__main vx-signin__main">
+    <form class="vx-auth__form" id="signin" data-vx-reveal novalidate>
+
+      <!-- Step 1: credentials -->
+      <div class="vx-signin__step" id="step-credentials">
+        <div>
+          <span class="vx-iconchip vx-iconchip--primary vx-signin__mark"><i data-lucide="wallet-cards"></i></span>
+          <h1 class="vx-h1">Welcome back</h1>
+          <p class="vx-sub" style="margin-top:6px">Sign in to Ledgerline to review approvals and today's card spend.</p>
+        </div>
+        <div class="vx-grid-2">
+          <button type="button" class="vx-btn vx-btn--lg vx-ripple" data-vx-toast="Redirecting to your identity provider" data-vx-toast-tone="info" data-vx-toast-sub="Single sign-on for ledgerline.app"><i data-lucide="building-2"></i>Continue with SSO</button>
+          <button type="button" class="vx-btn vx-btn--lg vx-ripple" data-vx-toast="Waiting for your passkey" data-vx-toast-tone="info" data-vx-toast-sub="Follow the prompt on this device"><i data-lucide="key-round"></i>Continue with passkey</button>
+        </div>
+        <div class="vx-auth__divider">or with email</div>
+        <div class="vx-field"><label for="email">Work email</label><span class="vx-input vx-input--lg"><i data-lucide="mail"></i><input id="email" name="email" type="email" autocomplete="email" placeholder="maya@northwind.co"></span></div>
+        <div class="vx-field"><label for="pw">Password</label>
+          <span class="vx-input vx-input--lg"><i data-lucide="lock"></i><input id="pw" name="password" type="password" autocomplete="current-password" placeholder="••••••••">
+            <button type="button" class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm vx-signin__pwtoggle" id="pw-toggle" aria-label="Show password" aria-pressed="false" aria-controls="pw">
+              <span data-eye="show"><i data-lucide="eye"></i></span><span data-eye="hide" hidden><i data-lucide="eye-off"></i></span>
+            </button>
+          </span>
+        </div>
+        <div class="vx-row vx-row--between">
+          <label class="vx-row" style="gap:8px;font-size:13px" id="remember-label"><span class="vx-check is-on" role="checkbox" aria-checked="true" aria-labelledby="remember-label" tabindex="0"><i data-lucide="check"></i></span>Keep me signed in for 30 days</label>
+          <a href="#" class="vx-accent" style="font-size:13px;font-weight:600">Forgot password?</a>
+        </div>
+        <button type="submit" id="signin-btn" class="vx-btn vx-btn--cta vx-btn--lg vx-btn--block vx-ripple" data-vx-loading="1100" data-vx-toast="Signed in" data-vx-toast-sub="Redirecting to Ledgerline…">Sign in</button>
+        <p class="vx-caption" style="text-align:center">New to Ledgerline? <a href="#" class="vx-accent" style="font-weight:600">Book a demo</a></p>
+      </div>
+
+      <!-- Step 2: two-factor (swapped in after sign-in) -->
+      <div class="vx-signin__step" id="step-otp" hidden>
+        <div>
+          <span class="vx-iconchip vx-iconchip--primary vx-signin__mark"><i data-lucide="smartphone"></i></span>
+          <h1 class="vx-h1">Check your phone</h1>
+          <p class="vx-sub" style="margin-top:6px">We sent a 6-digit code to the number ending in <b style="white-space:nowrap">•• 4127</b>. It expires in 10 minutes.</p>
+        </div>
+        <fieldset class="vx-field" style="border:0;padding:0;margin:0">
+          <legend class="vx-caption" style="font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Verification code</legend>
+          <div class="vx-otp" id="otp">
+            <input class="vx-otp__cell" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1" pattern="[0-9]" aria-label="Digit 1">
+            <input class="vx-otp__cell" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 2">
+            <input class="vx-otp__cell" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 3">
+            <input class="vx-otp__cell" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 4">
+            <input class="vx-otp__cell" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 5">
+            <input class="vx-otp__cell" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 6">
+          </div>
+        </fieldset>
+        <button type="button" id="verify-btn" class="vx-btn vx-btn--cta vx-btn--lg vx-btn--block vx-ripple" disabled><i data-lucide="shield-check"></i>Verify</button>
+        <div class="vx-row vx-row--between" style="font-size:13px">
+          <a href="#" class="vx-accent" style="font-weight:600">Use a recovery code</a>
+          <a href="#" class="vx-muted" id="otp-back" style="display:inline-flex;align-items:center;gap:6px"><i data-lucide="arrow-left" style="width:14px;height:14px"></i>Back</a>
+        </div>
+        <p class="vx-caption" style="text-align:center">Didn't get it? <a href="#" class="vx-accent" style="font-weight:600" data-vx-toast="New code sent" data-vx-toast-tone="info" data-vx-toast-sub="To the number ending in 4127">Resend code</a></p>
+      </div>
+    </form>
+
+    <footer class="vx-signin__foot">
+      <nav class="vx-signin__legal" aria-label="Legal">
+        <a href="#">Terms</a><a href="#">Privacy</a><a href="#">Security</a><a href="#">Status</a>
+      </nav>
+      <button type="button" class="vx-select vx-signin__lang" aria-label="Language: English (US)"><i data-lucide="globe"></i>English (US)<i data-lucide="chevron-down"></i></button>
+    </footer>
+  </main>
+</div>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+<script>
+(function () {
+  "use strict";
+  var form = document.getElementById("signin");
+  var step1 = document.getElementById("step-credentials");
+  var step2 = document.getElementById("step-otp");
+  var cells = Array.prototype.slice.call(document.querySelectorAll(".vx-otp__cell"));
+  var verify = document.getElementById("verify-btn");
+  var swap = function (fn) { return window.VistaMotion ? VistaMotion.swap(form, fn) : (fn(), Promise.resolve()); };
+
+  /* show / hide password */
+  var pw = document.getElementById("pw"), tg = document.getElementById("pw-toggle");
+  tg.addEventListener("click", function () {
+    var show = pw.type === "password";
+    pw.type = show ? "text" : "password";
+    tg.setAttribute("aria-pressed", String(show));
+    tg.setAttribute("aria-label", show ? "Hide password" : "Show password");
+    tg.querySelector('[data-eye="show"]').hidden = show;
+    tg.querySelector('[data-eye="hide"]').hidden = !show;
+  });
+
+  /* keyboard toggle for the remember-me checkbox (vista.js handles clicks) */
+  document.querySelectorAll('.vx-check[tabindex]').forEach(function (c) {
+    c.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); c.click(); } });
+  });
+
+  /* step 1 → step 2: the CTA's data-vx-loading spinner runs 1100ms, then swap */
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!step2.hidden) return;
+    setTimeout(function () {
+      swap(function () { step1.hidden = true; step2.hidden = false; cells[0].focus({ preventScroll: true }); });
+    }, 1150);
+  });
+  document.getElementById("otp-back").addEventListener("click", function (e) {
+    e.preventDefault();
+    swap(function () { step2.hidden = true; step1.hidden = false; resetOtp(); pw.focus({ preventScroll: true }); });
+  });
+
+  /* one-time code: digits only, auto-advance, backspace goes back, paste fills all */
+  function code() { return cells.map(function (c) { return c.value; }).join(""); }
+  function sync() {
+    cells.forEach(function (c) { c.classList.toggle("is-filled", c.value !== ""); });
+    verify.disabled = !/^\d{6}$/.test(code());
+  }
+  function resetOtp() { cells.forEach(function (c) { c.value = ""; }); sync(); }
+  function fill(from, digits) {
+    for (var i = 0; i < digits.length && from + i < cells.length; i++) cells[from + i].value = digits.charAt(i);
+    cells[Math.min(from + digits.length, cells.length - 1)].focus();
+    sync();
+  }
+  cells.forEach(function (c, i) {
+    c.addEventListener("input", function () {
+      var d = c.value.replace(/\D/g, "");
+      c.value = "";
+      if (d) fill(i, d); else sync();
+    });
+    c.addEventListener("keydown", function (e) {
+      if (e.key === "Backspace" && !c.value && i > 0) { e.preventDefault(); cells[i - 1].value = ""; cells[i - 1].focus(); sync(); }
+      else if (e.key === "ArrowLeft" && i > 0) { e.preventDefault(); cells[i - 1].focus(); }
+      else if (e.key === "ArrowRight" && i < cells.length - 1) { e.preventDefault(); cells[i + 1].focus(); }
+      else if (e.key === "Enter" && !verify.disabled) { e.preventDefault(); verify.click(); }
+    });
+    c.addEventListener("paste", function (e) {
+      var d = ((e.clipboardData || window.clipboardData).getData("text") || "").replace(/\D/g, "").slice(0, 6);
+      if (!d) return;
+      e.preventDefault();
+      fill(i, d);
+    });
+    c.addEventListener("focus", function () { c.select(); });
+  });
+
+  verify.addEventListener("click", function () {
+    if (verify.disabled || !window.VistaMotion) return;
+    VistaMotion.loading(verify, 900).then(function () {
+      VistaMotion.toast("Verified", { tone: "success", sub: "Welcome back, Maya — opening your dashboard" });
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en" data-theme="lapis" data-vx-motion="subtle">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meridian Private — Calendar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
+  <style>
+    /* Page-level helpers (tokens only) */
+    /* taller hours so titles can wrap; weekend columns narrower so weekdays get the width */
+    .vx-cal { --hour: 80px; grid-template-columns: 54px repeat(5, minmax(0, 1fr)) repeat(2, minmax(0, .5fr)); }
+    .vx-event b { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-height: 1.3; margin-bottom: 2px; }
+    .vx-event span { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+    /* overlapping event: indented over the one it collides with (the earlier title stays readable) */
+    .vx-event--b { left: 16%; z-index: 1; background: color-mix(in srgb, var(--c) 17%, var(--vx-dialog-bg)); box-shadow: -6px 0 14px -8px rgba(0, 0, 0, .25), 0 0 0 2px color-mix(in srgb, var(--vx-neg) 45%, transparent); }
+    /* time column on the left of an agenda row */
+    .vx-agenda__time { width: 46px; flex: none; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--vx-ink); }
+    .vx-agenda__time small { display: block; font-size: 10.5px; font-weight: 600; color: var(--vx-ink-3); }
+    .vx-agenda__bar { width: 3px; align-self: stretch; border-radius: 3px; background: var(--c, var(--vx-chart-1)); flex: none; }
+    .vx-list__item.is-past { opacity: .55; }
+    /* key / value rows inside the event modal */
+    .vx-kv { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px 10px; align-items: start; font-size: 13px; color: var(--vx-ink-2); }
+    .vx-kv > i, .vx-kv > svg { width: 16px; height: 16px; margin-top: 2px; color: var(--vx-ink-3); }
+    .vx-kv b { color: var(--vx-ink); font-weight: 700; }
+    /* once the split stacks (<=1100px): calendar first, the three side cards in one row */
+    @media (max-width: 1100px) {
+      .vx-split--rev > .vx-stack { order: 2; }
+      .vx-split--rev > .vx-stack:has(.vx-minical) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 760px) {
+      .vx-split--rev > .vx-stack:has(.vx-minical) { grid-template-columns: minmax(0, 1fr); }
+    }
+    .vx-note { padding: 12px 14px; border-radius: var(--vx-r-md); background: var(--vx-sunken); font-size: 12.5px; line-height: 1.55; color: var(--vx-ink-2); }
+  </style>
+</head>
+<body>
+<div class="vx-shell--sidebar">
+
+  <aside class="vx-sidebar vx-chrome">
+    <div class="vx-brand">
+      <div class="vx-brand__mark"><i data-lucide="gem"></i></div>
+      <div class="vx-brand__text"><div class="vx-brand__name">Meridian Private</div><div class="vx-brand__sub">Advisory desk · London</div></div>
+    </div>
+    <nav class="vx-nav" data-vx-group>
+      <div class="vx-nav__label">Workspace</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="house"></i><span>Overview</span></a>
+      <a class="vx-nav__item is-active" href="#"><i data-lucide="calendar-days"></i><span>Calendar</span><span class="vx-nav__badge">1</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="inbox"></i><span>Requests</span><span class="vx-nav__badge">4</span></a>
+      <div class="vx-nav__label">Clients</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="users"></i><span>Households</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="chart-pie"></i><span>Portfolios</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="file-text"></i><span>Documents</span></a>
+      <div class="vx-nav__label">Firm</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="shield-check"></i><span>Compliance</span><span class="vx-nav__badge">2</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="chart-line"></i><span>Reports</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="settings"></i><span>Settings</span></a>
+    </nav>
+    <div class="vx-plan">
+      <div class="vx-plan__row"><b>Week capacity</b><span>19.5 of 30 h</span></div>
+      <div class="vx-progress"><i style="--v:65%"></i></div>
+    </div>
+  </aside>
+
+  <header class="vx-topbar vx-chrome">
+    <button class="vx-search" data-vx-open="#cmdk" aria-label="Open command palette"><i data-lucide="search"></i><span style="flex:1;text-align:left">Search meetings, clients, rooms…</span><span class="vx-kbd">⌘K</span></button>
+    <div class="vx-topbar__spacer"></div>
+    <button class="vx-iconbtn vx-iconbtn--primary" aria-label="Assistant"><i data-lucide="sparkles"></i></button>
+    <button class="vx-iconbtn vx-iconbtn--light" aria-label="Notifications"><i data-lucide="bell"></i><span class="vx-ping"></span></button>
+    <div class="vx-user"><span class="vx-avatar vx-avatar--violet">EH</span><div><div class="vx-user__name">Eleanor Hale</div><div class="vx-user__role">Senior advisor</div></div></div>
+  </header>
+
+  <main class="vx-panel">
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <div class="vx-eyebrow">Calendar <span class="sep">/</span> Nov 23 – 29, 2026</div>
+        <h1 class="vx-h1">This week</h1>
+        <p class="vx-sub"><b>17 meetings</b> · <b>19.5 hours</b> booked · <b>1 conflict</b> on Thursday afternoon</p>
+      </div>
+      <div class="vx-page-head__actions">
+        <div class="vx-seg vx-seg--light" data-vx-group data-vx-swap="#cal-body"><button>Day</button><button class="is-active">Week</button><button>Month</button></div>
+        <button class="vx-iconbtn vx-iconbtn--sm" aria-label="Previous week" data-vx-toast="Nov 16 – 22"><i data-lucide="chevron-left"></i></button>
+        <button class="vx-btn vx-btn--ghost">Today</button>
+        <button class="vx-iconbtn vx-iconbtn--sm" aria-label="Next week" data-vx-toast="Nov 30 – Dec 6"><i data-lucide="chevron-right"></i></button>
+        <button class="vx-btn vx-btn--cta vx-magnetic" data-vx-open="#new"><i data-lucide="plus"></i>New meeting</button>
+      </div>
+    </div>
+
+    <div class="vx-split vx-split--rev vx-section">
+      <div class="vx-stack">
+        <section class="vx-card">
+          <div class="vx-card__head" style="flex-wrap:nowrap">
+            <div class="vx-card__title"><h2 class="vx-h2">November 2026</h2><div class="vx-caption">22 working days</div></div>
+            <span style="flex:1"></span>
+            <div class="vx-row" style="gap:4px">
+              <button class="vx-iconbtn vx-iconbtn--sm" aria-label="Previous month"><i data-lucide="chevron-left"></i></button>
+              <button class="vx-iconbtn vx-iconbtn--sm" aria-label="Next month"><i data-lucide="chevron-right"></i></button>
+            </div>
+          </div>
+          <div class="vx-minical">
+            <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+            <button class="is-muted">26</button><button class="is-muted">27</button><button class="is-muted">28</button><button class="is-muted">29</button><button class="is-muted">30</button><button class="is-muted">31</button><button>1</button>
+            <button>2</button><button>3</button><button>4</button><button>5</button><button>6</button><button>7</button><button>8</button>
+            <button>9</button><button>10</button><button>11</button><button>12</button><button>13</button><button>14</button><button>15</button>
+            <button>16</button><button>17</button><button>18</button><button>19</button><button>20</button><button>21</button><button>22</button>
+            <button>23</button><button>24</button><button>25</button><button class="is-active" aria-current="date">26</button><button>27</button><button>28</button><button>29</button>
+            <button>30</button><button class="is-muted">1</button><button class="is-muted">2</button><button class="is-muted">3</button><button class="is-muted">4</button><button class="is-muted">5</button><button class="is-muted">6</button>
+          </div>
+        </section>
+
+        <section class="vx-card">
+          <div class="vx-card__head">
+            <div class="vx-card__title"><h2 class="vx-h2">Today</h2><div class="vx-caption">Thursday · 5 meetings · 1 in progress</div></div>
+            <span style="flex:1"></span><span class="vx-live">Live</span>
+          </div>
+          <div class="vx-list">
+            <div class="vx-list__item is-past"><div class="vx-agenda__time">09:00<small>1 h</small></div><span class="vx-agenda__bar"></span><div class="vx-list__body"><div class="vx-list__title">Morning markets brief</div><div class="vx-list__sub">Boardroom · 6 advisors</div></div></div>
+            <div class="vx-list__item is-past"><div class="vx-agenda__time">11:00<small>1 h</small></div><span class="vx-agenda__bar" style="--c:var(--vx-chart-2)"></span><div class="vx-list__body"><div class="vx-list__title">Onboarding · Castellane family</div><div class="vx-list__sub">Zoom · KYC pack signed</div></div></div>
+            <div class="vx-list__item"><div class="vx-agenda__time">14:00<small>1.5 h</small></div><span class="vx-agenda__bar" style="--c:var(--vx-chart-3)"></span><div class="vx-list__body"><div class="vx-list__title">Hartley Trust rebalancing</div><div class="vx-list__sub">Suite 4 · in progress</div></div><span class="vx-status vx-status--info">Now</span></div>
+            <div class="vx-list__item"><div class="vx-agenda__time">15:00<small>1 h</small></div><span class="vx-agenda__bar" style="--c:var(--vx-chart-4)"></span><div class="vx-list__body"><div class="vx-list__title">Compliance attestation</div><div class="vx-list__sub">Zoom · overlaps 30 min</div></div><span class="vx-status vx-status--danger">Conflict</span></div>
+            <div class="vx-list__item"><div class="vx-agenda__time">16:30<small>1 h</small></div><span class="vx-agenda__bar" style="--c:var(--vx-chart-5)"></span><div class="vx-list__body"><div class="vx-list__title">Call · Inès Moreau</div><div class="vx-list__sub">Phone · pension drawdown</div></div></div>
+          </div>
+        </section>
+
+        <section class="vx-card">
+          <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">Time by client type</h2><div class="vx-caption">Booked hours this week</div></div></div>
+          <div class="vx-chart" style="--h:160px" data-vx-chart="donut" data-vx='{
+            "data":[{"label":"Private families","value":8.5,"color":"chart-3"},{"label":"Trusts &amp; estates","value":5,"color":"chart-4"},{"label":"Prospects","value":2.5,"color":"chart-6"},{"label":"Internal","value":3.5,"color":"chart-1"}],
+            "format":{"suffix":" h","decimals":1},"center":{"value":"19.5 h","label":"booked"}}'></div>
+          <div class="vx-grid-2 vx-section" style="gap:8px 18px;font-size:12px">
+            <div class="vx-row vx-row--between"><span class="vx-row"><i class="vx-dot" style="color:var(--vx-chart-3)"></i>Families</span><b>8.5 h</b></div>
+            <div class="vx-row vx-row--between"><span class="vx-row"><i class="vx-dot" style="color:var(--vx-chart-4)"></i>Trusts</span><b>5 h</b></div>
+            <div class="vx-row vx-row--between"><span class="vx-row"><i class="vx-dot" style="color:var(--vx-chart-6)"></i>Prospects</span><b>2.5 h</b></div>
+            <div class="vx-row vx-row--between"><span class="vx-row"><i class="vx-dot" style="color:var(--vx-chart-1)"></i>Internal</span><b>3.5 h</b></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="vx-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title"><h2 class="vx-h2">Week 48</h2><div class="vx-caption">Eleanor Hale · Europe/London · click a meeting for details</div></div>
+          <span style="flex:1"></span>
+          <div class="vx-legend"><span><i style="--c:var(--vx-chart-1)"></i>Internal</span><span><i style="--c:var(--vx-chart-3)"></i>Reviews</span><span><i style="--c:var(--vx-chart-2)"></i>Onboarding</span><span><i style="--c:var(--vx-chart-4)"></i>Compliance</span><span><i style="--c:var(--vx-chart-5)"></i>Calls</span><span><i style="--c:var(--vx-chart-6)"></i>Prospects</span></div>
+        </div>
+        <div id="cal-body">
+          <div class="vx-cal-wrap">
+            <div class="vx-cal" style="--from:8;--hours:11">
+              <div></div>
+              <div class="vx-cal__day">Mon <b>23</b></div>
+              <div class="vx-cal__day">Tue <b>24</b></div>
+              <div class="vx-cal__day">Wed <b>25</b></div>
+              <div class="vx-cal__day is-today">Thu <b>26</b></div>
+              <div class="vx-cal__day">Fri <b>27</b></div>
+              <div class="vx-cal__day">Sat <b>28</b></div>
+              <div class="vx-cal__day">Sun <b>29</b></div>
+
+              <div class="vx-cal__times"><span>08:00</span><span>09:00</span><span>10:00</span><span>11:00</span><span>12:00</span><span>13:00</span><span>14:00</span><span>15:00</span><span>16:00</span><span>17:00</span><span>18:00</span></div>
+
+              <div class="vx-cal__col">
+                <button class="vx-event" style="--s:9;--l:1" data-vx-open="#event"><b>Investment committee</b><span>09:00 – 10:00 · Boardroom</span></button>
+                <button class="vx-event vx-event--3" style="--s:11;--l:1.5" data-vx-open="#event"><b>Ashford family review</b><span>11:00 – 12:30 · Suite 4</span></button>
+                <button class="vx-event vx-event--4" style="--s:14;--l:1" data-vx-open="#event"><b>Compliance check-in</b><span>14:00 – 15:00 · Zoom</span></button>
+              </div>
+              <div class="vx-cal__col">
+                <button class="vx-event vx-event--2" style="--s:8.5;--l:1" data-vx-open="#event"><b>Onboarding · Okafor Trust</b><span>08:30 – 09:30 · Zoom</span></button>
+                <button class="vx-event" style="--s:10;--l:1.5" data-vx-open="#event"><b>Portfolio rebalancing Q4</b><span>10:00 – 11:30 · Boardroom</span></button>
+                <button class="vx-event vx-event--3" style="--s:15;--l:1.5" data-vx-open="#event"><b>Estate planning · Lindqvist</b><span>15:00 – 16:30 · Suite 2</span></button>
+              </div>
+              <div class="vx-cal__col">
+                <button class="vx-event vx-event--3" style="--s:9.5;--l:1.5" data-vx-open="#event"><b>Client review · Pemberton</b><span>09:30 – 11:00 · Suite 4</span></button>
+                <button class="vx-event vx-event--5" style="--s:13;--l:1" data-vx-open="#event"><b>Tax-loss harvesting sync</b><span>13:00 – 14:00 · Zoom</span></button>
+                <button class="vx-event vx-event--6" style="--s:16;--l:1" data-vx-open="#event"><b>Prospect intro · Vance Holdings</b><span>16:00 – 17:00 · Suite 1</span></button>
+              </div>
+              <div class="vx-cal__col is-today">
+                <button class="vx-event" style="--s:9;--l:1" data-vx-open="#event"><b>Morning markets brief</b><span>09:00 – 10:00 · Boardroom</span></button>
+                <button class="vx-event vx-event--2" style="--s:11;--l:1" data-vx-open="#event"><b>Onboarding · Castellane</b><span>11:00 – 12:00 · Zoom</span></button>
+                <button class="vx-event vx-event--3" style="--s:14;--l:1.5" data-vx-open="#event"><b>Hartley Trust rebalancing</b><span>14:00 – 15:30 · Suite 4</span></button>
+                <button class="vx-event vx-event--4 vx-event--b" style="--s:15;--l:1" data-vx-open="#event"><b>Compliance attestation</b><span>15:00 – 16:00 · Zoom</span></button>
+                <button class="vx-event vx-event--5" style="--s:16.5;--l:1" data-vx-open="#event"><b>Call · Inès Moreau</b><span>16:30 – 17:30 · Phone</span></button>
+                <div class="vx-cal__now" style="--t:14.33"></div>
+              </div>
+              <div class="vx-cal__col">
+                <button class="vx-event vx-event--3" style="--s:10;--l:1" data-vx-open="#event"><b>Quarterly review · Reyes</b><span>10:00 – 11:00 · Suite 2</span></button>
+                <button class="vx-event vx-event--6" style="--s:12.5;--l:1" data-vx-open="#event"><b>Lunch · Bellamy Partners</b><span>12:30 – 13:30 · The Delaunay</span></button>
+                <button class="vx-event" style="--s:15;--l:1" data-vx-open="#event"><b>Week wrap &amp; pipeline</b><span>15:00 – 16:00 · Boardroom</span></button>
+              </div>
+              <div class="vx-cal__col"></div>
+              <div class="vx-cal__col"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="vx-grid-3 vx-section">
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--primary"><i data-lucide="calendar-check"></i></span><span class="vx-stat__label">Meetings this week</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>+3</span></div>
+        <div class="vx-stat__value vx-num" data-vx-odometer>17</div>
+        <div class="vx-caption">vs 14 last week · 11 with clients</div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--primary"><i data-lucide="hourglass"></i></span><span class="vx-stat__label">Billable hours</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>8.2%</span></div>
+        <div class="vx-stat__value vx-num" data-vx-odometer>14.5</div>
+        <div class="vx-caption">of 19.5 h booked · target 16 h</div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--primary"><i data-lucide="clock-3"></i></span><span class="vx-stat__label">Avg. response time</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-down"></i>-0.6 h</span></div>
+        <div class="vx-stat__value vx-num"><span data-vx-odometer>2.4</span> h</div>
+        <div class="vx-caption">to client meeting requests · SLA 4 h</div>
+      </div>
+    </div>
+
+    <div class="vx-split vx-section">
+      <section class="vx-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title"><h2 class="vx-h2">Meetings per day</h2><div class="vx-caption">Thursday is the busiest day this week</div></div>
+          <span style="flex:1"></span>
+          <div class="vx-legend"><span><i style="--c:var(--vx-chart-3)"></i>Client</span><span><i style="--c:var(--vx-chart-1)"></i>Internal</span></div>
+        </div>
+        <div class="vx-chart" style="--h:200px" data-vx-chart="bar" data-vx='{
+          "labels":["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+          "series":[{"name":"Internal","data":[2,1,1,2,1,0,0],"color":"chart-1"},{"name":"Client","data":[1,2,2,3,2,0,0],"color":"chart-3"}],
+          "stacked":true,"barRatio":0.42,"radius":8,"ticks":3,"max":6}'></div>
+      </section>
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">Needs attention</h2><div class="vx-caption">Before Friday close</div></div></div>
+        <div class="vx-list">
+          <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--neg"><i data-lucide="triangle-alert"></i></span><div class="vx-list__body"><div class="vx-list__title">Thu 15:00 overlaps Hartley Trust</div><div class="vx-list__sub">Move compliance attestation to 15:30</div></div></div>
+          <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--warn"><i data-lucide="mail"></i></span><div class="vx-list__body"><div class="vx-list__title">2 RSVPs pending</div><div class="vx-list__sub">Vance Holdings · Bellamy Partners</div></div></div>
+          <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--info"><i data-lucide="file-text"></i></span><div class="vx-list__body"><div class="vx-list__title">Reyes review pack</div><div class="vx-list__sub">Performance report due Fri 09:00</div></div></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<!-- command palette -->
+<dialog class="vx-cmdk" id="cmdk" data-vx-cmdk aria-label="Command palette">
+  <div class="vx-cmdk__search"><i data-lucide="search"></i><input placeholder="Type a command or search…" aria-label="Search commands"></div>
+  <div class="vx-cmdk__list" role="listbox">
+    <div class="vx-cmdk__group">Actions</div>
+    <button class="vx-cmdk__item" role="option" data-vx-open="#new" data-keywords="create schedule book"><span class="vx-iconchip"><i data-lucide="calendar-plus"></i></span><span>New meeting<small>Book a client or internal meeting</small></span><span class="vx-kbd">N</span></button>
+    <button class="vx-cmdk__item" role="option" data-vx-toast="Compliance attestation moved to 15:30" data-keywords="conflict resolve reschedule"><span class="vx-iconchip"><i data-lucide="triangle-alert"></i></span><span>Resolve Thursday conflict<small>Move compliance attestation to 15:30</small></span></button>
+    <button class="vx-cmdk__item" role="option" data-vx-toast="Availability link copied" data-keywords="share slots booking"><span class="vx-iconchip"><i data-lucide="calendar-clock"></i></span><span>Share my availability<small>Copy a booking link for next week</small></span></button>
+    <div class="vx-cmdk__group">Jump to</div>
+    <button class="vx-cmdk__item" role="option" data-keywords="today agenda"><span class="vx-iconchip"><i data-lucide="calendar-days"></i></span><span>Today<small>Thursday, Nov 26</small></span><span class="vx-kbd">T</span></button>
+    <button class="vx-cmdk__item" role="option" data-keywords="client family household"><span class="vx-iconchip"><i data-lucide="users"></i></span><span>Hartley Trust<small>Household · 3 portfolios</small></span></button>
+    <button class="vx-cmdk__item" role="option" data-keywords="kyc compliance"><span class="vx-iconchip"><i data-lucide="shield-check"></i></span><span>Compliance queue<small>2 attestations due this week</small></span></button>
+    <button class="vx-cmdk__item" role="option" data-keywords="report export"><span class="vx-iconchip"><i data-lucide="chart-line"></i></span><span>Weekly advisor report<small>Hours, meetings, response times</small></span></button>
+  </div>
+  <div class="vx-cmdk__empty" hidden>No results — try another word.</div>
+  <div class="vx-cmdk__foot"><span><span class="vx-kbd">↑↓</span>navigate</span><span><span class="vx-kbd">↵</span>open</span><span><span class="vx-kbd">esc</span>close</span></div>
+</dialog>
+
+<!-- event details -->
+<dialog class="vx-modal" id="event" aria-labelledby="event-title">
+  <div class="vx-dialog__head">
+    <div><div class="vx-eyebrow">Meeting</div><h2 class="vx-h2" id="event-title">Meeting</h2></div>
+    <button class="vx-iconbtn vx-iconbtn--sm" data-vx-close aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div class="vx-dialog__body vx-stack">
+    <div class="vx-kv">
+      <i data-lucide="clock"></i><div><b id="event-time">—</b><div class="vx-caption">Week 48 · reminder 15 min before</div></div>
+      <i data-lucide="users"></i><div class="vx-row"><div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--violet">EH</span><span class="vx-avatar vx-avatar--sm vx-avatar--amber">JH</span><span class="vx-avatar vx-avatar--sm vx-avatar--sky">MH</span><span class="vx-avatar vx-avatar--sm vx-avatar--mint">RO</span></div><span>Eleanor Hale, Rafael Ortiz + 2 client guests</span></div>
+      <i data-lucide="map-pin"></i><div>12 Albemarle Street, London · dial-in sent with the invite</div>
+    </div>
+    <div class="vx-note">Prep: the review pack, last meeting notes and current risk profile are attached to the client file. Advisors join five minutes early; minutes go to compliance within 24 hours.</div>
+  </div>
+  <div class="vx-dialog__foot">
+    <button class="vx-btn vx-btn--ghost" data-vx-open="#new"><i data-lucide="repeat"></i>Reschedule</button>
+    <button class="vx-btn vx-btn--cta" data-vx-close data-vx-toast="Joining call…" data-vx-toast-sub="Your camera is off"><i data-lucide="video"></i>Join call</button>
+  </div>
+</dialog>
+
+<!-- new meeting sheet -->
+<dialog class="vx-sheet" id="new" aria-labelledby="new-title">
+  <div class="vx-sheet__grip"></div>
+  <div class="vx-dialog__head">
+    <div><div class="vx-eyebrow">Calendar</div><h2 class="vx-h2" id="new-title">New meeting</h2></div>
+    <button class="vx-iconbtn vx-iconbtn--sm" data-vx-close aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div class="vx-dialog__body vx-stack">
+    <div class="vx-field"><label for="nm-title">Title</label><span class="vx-input"><input id="nm-title" placeholder="e.g. Annual review · Pemberton family"></span></div>
+    <div class="vx-grid-3" style="gap:12px">
+      <div class="vx-field"><label for="nm-date">Date</label><span class="vx-input"><i data-lucide="calendar"></i><input id="nm-date" value="Fri, Nov 27"></span></div>
+      <div class="vx-field"><label for="nm-from">From</label><span class="vx-input"><i data-lucide="clock"></i><input id="nm-from" value="11:00"></span></div>
+      <div class="vx-field"><label for="nm-to">To</label><span class="vx-input"><i data-lucide="clock"></i><input id="nm-to" value="12:00"></span></div>
+    </div>
+    <div class="vx-field"><label>Duration</label><div class="vx-seg vx-seg--light" data-vx-group><button>30 min</button><button class="is-active">1 h</button><button>1.5 h</button><button>2 h</button></div></div>
+    <div class="vx-field"><label for="nm-who">Attendees</label><span class="vx-input"><i data-lucide="user-plus"></i><input id="nm-who" placeholder="Add clients or colleagues" value="Eleanor Hale, Rafael Ortiz"></span></div>
+  </div>
+  <div class="vx-dialog__foot">
+    <button class="vx-btn vx-btn--ghost" data-vx-close>Cancel</button>
+    <button class="vx-btn vx-btn--cta" data-vx-close data-vx-toast="Meeting scheduled" data-vx-toast-sub="Invites sent to 2 attendees"><i data-lucide="calendar-check"></i>Schedule</button>
+  </div>
+</dialog>
+
+<script>
+  /* fill the event modal from the clicked calendar event */
+  document.addEventListener("click", function (e) {
+    var ev = e.target.closest && e.target.closest(".vx-event");
+    if (!ev) return;
+    var b = ev.querySelector("b"), s = ev.querySelector("span");
+    document.getElementById("event-title").textContent = b ? b.textContent : "";
+    document.getElementById("event-time").textContent = s ? s.textContent : "";
+  }, true);
+</script>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+</body>
+</html>

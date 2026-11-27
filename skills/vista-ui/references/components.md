@@ -6,7 +6,8 @@ Copy-paste HTML. All classes live in `assets/vista.css`. Icons: `<i data-lucide=
 ## Contents
 Surfaces · Page head · Stat/KPI cards · Buttons · Segmented & tabs · Chips, badges, status ·
 Inputs · Avatars & people · Tables · Lists · Progress & meters · Quick actions · Insights strip ·
-Media cards · Feature & dark cards · Chat · Toggles · Add tile · Utilities
+Media cards · Feature & dark cards · Chat · Toggles · Add tile · Dialogs (modal, drawer, sheet) ·
+Command palette · Board (kanban) · Calendar · Auth form · Walkthroughs · Motion & feedback · Utilities
 
 ---
 
@@ -96,6 +97,8 @@ Delta variants: `vx-delta--up|down|flat`.
 <button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm"><i data-lucide="more-horizontal"></i></button> <!-- on cards -->
 <!-- also: vx-iconbtn--primary | --cta | --rainbow (assistant orb) -->
 ```
+
+Also: `vx-btn--danger` (destructive confirm), `:disabled` / `aria-disabled="true"` dims and blocks a button; `vx-table--nowrap` keeps cells on one line (table scrolls).
 
 ## Segmented & tabs
 ```html
@@ -247,7 +250,112 @@ Skeletons (loading > ~1s), swapped for content with `VistaMotion.swap(box, updat
 ```
 Button busy state: `btn.classList.add("is-loading")` (or `VistaMotion.loading(btn, promise)`).
 Toast from JS: `VistaMotion.toast("Invoice archived", {tone:"success", sub:"INV-0042", action:{label:"Undo", onClick}})`.
-Gliders (the sliding active pill) are automatic on `.vx-seg`, `.vx-tabs`, sidebar `.vx-nav`, dock and rail.
+Gliders (the sliding active pill) are automatic on `.vx-seg`, `.vx-tabs`, sidebar / topnav `.vx-nav`, dock, rail and the command list.
+```html
+<div class="vx-stat__value vx-num" data-vx-odometer>48,212</div>      <!-- digits roll (count-up + countTo) -->
+<button class="vx-btn vx-btn--cta vx-magnetic vx-ripple">Deploy</button>  <!-- leans toward cursor · ink ripple -->
+<div class="vx-seg" data-vx-group data-vx-swap="#latency">               <!-- chart morphs to each option's data -->
+  <button data-vx-patch='{"series":[{"name":"p95","data":[180,176,190,201]}]}'>1H</button> …
+</div>
+<section class="vx-card vx-defer">…long table below the fold…</section>  <!-- skip rendering until near -->
+```
+
+## Dialogs: modal · drawer · sheet (native `<dialog>`, opened by `vista-motion.js`)
+```html
+<button class="vx-btn" data-vx-open="#member">Edit member</button>
+<dialog class="vx-modal" id="member" aria-labelledby="member-t">      <!-- or vx-drawer (right), vx-drawer vx-drawer--left, vx-sheet (bottom), vx-modal--lg -->
+  <div class="vx-sheet__grip"></div>                                  <!-- sheets only -->
+  <div class="vx-dialog__head">
+    <div><div class="vx-eyebrow">Team</div><h2 class="vx-h2" id="member-t">Noah Larsen</h2></div>
+    <button class="vx-iconbtn vx-iconbtn--sm" data-vx-close aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div class="vx-dialog__body vx-stack">…fields, lists, cards…</div>
+  <div class="vx-dialog__foot">
+    <button class="vx-btn vx-btn--ghost" data-vx-close>Cancel</button>
+    <button class="vx-btn vx-btn--cta" data-vx-close data-vx-toast="Member updated">Save</button>
+  </div>
+</dialog>
+```
+Esc and a backdrop click close with the exit animation. A `data-vx-open` inside an open dialog closes it
+first (drawer → confirm modal). `<form method="dialog">` also animates out. JS: `VistaMotion.open("#member")`.
+
+## Command palette (⌘K / Ctrl+K)
+```html
+<button class="vx-search" data-vx-open="#cmdk"><i data-lucide="search"></i><span>Search or jump to…</span><span class="vx-kbd">⌘K</span></button>
+<dialog class="vx-cmdk" id="cmdk" data-vx-cmdk aria-label="Command palette">
+  <div class="vx-cmdk__search"><i data-lucide="search"></i><input placeholder="Type a command or search…" aria-label="Search commands"></div>
+  <div class="vx-cmdk__list" role="listbox">
+    <div class="vx-cmdk__group">Jump to</div>
+    <button class="vx-cmdk__item" role="option" data-keywords="money revenue"><span class="vx-iconchip"><i data-lucide="wallet"></i></span><span>Payouts<small>Balances and transfers</small></span><span class="vx-kbd">G P</span></button>
+    <button class="vx-cmdk__item" role="option" data-vx-open="#invite"><span class="vx-iconchip"><i data-lucide="user-plus"></i></span><span>Invite teammate</span></button>
+  </div>
+  <div class="vx-cmdk__empty" hidden>No results — try another word.</div>
+  <div class="vx-cmdk__foot"><span><span class="vx-kbd">↑↓</span>navigate</span><span><span class="vx-kbd">↵</span>open</span><span><span class="vx-kbd">esc</span>close</span></div>
+</dialog>
+```
+Typing filters items by text + `data-keywords`; ↑↓ move the gliding highlight; Enter clicks the item; picking an
+item closes the palette (add `data-vx-keep` to keep it open). Put links (`<a class="vx-cmdk__item" href>`) or buttons with
+`data-vx-open` / `data-vx-toast` / your own click handlers in it.
+
+## Board (kanban, drag & drop)
+```html
+<div class="vx-board">
+  <section class="vx-card vx-board__col">
+    <div class="vx-board__head"><span class="vx-dot" style="--c:var(--vx-chart-2)"></span>In progress<span class="vx-board__count">3</span></div>
+    <div class="vx-board__list" data-vx-sortable="sprint">       <!-- same group name = cards can move between these lists -->
+      <article class="vx-kcard" tabindex="0" data-id="HB-231">
+        <div class="vx-kcard__tags"><span class="vx-tag">Billing</span><span class="vx-status vx-status--warn">High</span></div>
+        <div class="vx-kcard__title">Migrate billing settings to the new form kit</div>
+        <div class="vx-progress"><i style="--v:60%"></i></div>
+        <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Nov 29</span><span><i data-lucide="message-square"></i>4</span>
+          <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--sky">NL</span></div></div>
+      </article>
+      <button class="vx-board__add" data-vx-fixed><i data-lucide="plus"></i>Add card</button>   <!-- data-vx-fixed: not draggable, stays last -->
+    </div>
+  </section>
+</div>
+```
+Mouse/pen drag anywhere on the card (buttons/links/inputs inside are not grab areas); add a `[data-vx-handle]`
+element to limit the grab area and to enable touch dragging. Keyboard: focus a card, Alt+↑↓ / Alt+←→. Esc cancels
+a drag. Listen to `vx:sort` (`detail: {item, from, to, index}`) to update counts and save.
+
+## Calendar (week view)
+```html
+<div class="vx-cal-wrap"><div class="vx-cal" style="--from:8;--hours:10">   <!-- 08:00–18:00; --hour sets the row height (52px) -->
+  <div></div>                                                            <!-- corner -->
+  <div class="vx-cal__day">Mon <b>24</b></div> … <div class="vx-cal__day is-today">Thu <b>27</b></div> …
+  <div class="vx-cal__times"><span>08:00</span><span>09:00</span>…</div>
+  <div class="vx-cal__col">
+    <button class="vx-event vx-event--3" style="--s:9.5;--l:1.5" data-vx-open="#event"><b>Portfolio review</b><span>09:30 – 11:00 · Room 2</span></button>
+  </div>
+  <div class="vx-cal__col is-today"><div class="vx-cal__now" style="--t:14.33"></div>…</div>
+  …7 columns…
+</div></div>
+```
+`--s` = start hour (decimals: 9.5 = 09:30), `--l` = length in hours, `vx-event--2…6` = chart colours. `--days:5` for a
+work week. Mini month picker: `<div class="vx-minical"><span>M</span>…<button class="is-muted">30</button><button class="is-active">27</button>…</div>`.
+
+## Auth form
+See `templates/auth.html`: `.vx-shell--auth` → `.vx-auth__side.vx-chrome` (brand, quote, proof numbers) +
+`.vx-panel.vx-auth__main` → `.vx-auth__form` (H1, SSO buttons, `.vx-auth__divider`, `.vx-input--lg` fields, CTA).
+Large inputs get a focus ring from `:focus-within`.
+
+## Walkthroughs (run trace, sequence diagram, stepper, screens)
+Full markup, timings and rules: `walkthroughs.md`. In short:
+```html
+<section class="vx-card" data-vx-sequence data-vx-done="Deployed">
+  <div class="vx-player">…[data-vx-run="play|pause|step|reset"] · [data-vx-run-speed] seg · <span class="vx-run__status" data-vx-run-status></span></div>
+  <ol class="vx-stepper"><li>Build</li><li>Test</li><li>Ship</li></ol>
+  <ol class="vx-steps">
+    <li class="vx-step" data-vx-step data-ms="700" data-vx-stage="0"><span class="vx-step__ico"><i data-lucide="package"></i></span>
+      <details class="vx-step__body"><summary><span class="vx-step__name">Build image</span><span class="vx-step__sub">412 MB · cache hit 86%</span></summary><pre class="vx-code">…</pre></details>
+      <span class="vx-step__meta"></span></li>
+  </ol>
+</section>
+<div class="vx-seq"><div class="vx-seq__lanes"><span>App</span><span>API</span></div>
+  <ol class="vx-seq__msgs"><li class="vx-seq__msg" data-vx-step data-from="1" data-to="2"><b>POST /login</b>email=…</li></ol></div>
+<span class="vx-dots"><i></i><i></i><i></i></span>       <!-- inline "working" dots -->
+```
 
 ## Theme swatches & palette strips
 ```html

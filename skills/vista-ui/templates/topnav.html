@@ -1,0 +1,102 @@
+<!doctype html>
+<!-- VISTA UI · TOPNAV SHELL — horizontal glass bar + full-width panel. Best with "marina", "lapis",
+     "graphite" or "lagoon"; good for boards, calendars, wide tables and anything that needs width.
+     Replace every [[…]] placeholder. Includes a ⌘K command palette and a detail drawer — delete
+     either if the page does not need it (keep ids in sync with the data-vx-open buttons). -->
+<html lang="en" data-theme="marina">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[[App name]] — [[Page]]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
+</head>
+<body>
+<div class="vx-shell--topnav">
+
+  <header class="vx-topnav vx-chrome">
+    <div class="vx-brand">
+      <div class="vx-brand__mark"><i data-lucide="[[brand-icon]]"></i></div>
+      <div class="vx-brand__text"><div class="vx-brand__name">[[App name]]</div></div>
+    </div>
+    <nav class="vx-nav" data-vx-group>
+      <a class="vx-nav__item is-active" href="#"><i data-lucide="layout-dashboard"></i><span>[[Overview]]</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="[[icon]]"></i><span>[[Item]]</span><span class="vx-nav__badge">[[n]]</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="[[icon]]"></i><span>[[Item]]</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="[[icon]]"></i><span>[[Item]]</span></a>
+    </nav>
+    <div class="vx-topnav__spacer"></div>
+    <button class="vx-search" data-vx-open="#cmdk" aria-label="Open command palette"><i data-lucide="search"></i><span style="flex:1;text-align:left">Search or jump to…</span><span class="vx-kbd">⌘K</span></button>
+    <button class="vx-iconbtn vx-iconbtn--light" aria-label="Notifications"><i data-lucide="bell"></i><span class="vx-ping"></span></button>
+    <div class="vx-user"><span class="vx-avatar vx-avatar--peach">[[AB]]</span><div><div class="vx-user__name">[[Full name]]</div><div class="vx-user__role">[[Role]]</div></div></div>
+  </header>
+
+  <main class="vx-panel">
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <div class="vx-eyebrow">[[Group]] <span class="sep">/</span> [[Page]]</div>
+        <h1 class="vx-h1">[[Page title]]</h1>
+        <p class="vx-sub">[[One line that summarises what needs attention, with <b>bold counts</b>.]]</p>
+      </div>
+      <div class="vx-page-head__actions">
+        <div class="vx-seg vx-seg--light" data-vx-group><button class="is-active">[[View A]]</button><button>[[View B]]</button></div>
+        <button class="vx-btn vx-btn--cta vx-magnetic" data-vx-open="#detail"><i data-lucide="plus"></i>[[Primary action]]</button>
+      </div>
+    </div>
+
+    <!-- KPI row — numbers roll like a counter with data-vx-odometer -->
+    <div class="vx-grid-4">
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip"><i data-lucide="[[icon]]"></i></span><span class="vx-stat__label">[[Metric]]</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>[[4.1%]]</span></div>
+        <div class="vx-stat__value vx-num" data-vx-odometer>[[1,284]]</div>
+        <div class="vx-caption">[[vs 1,233 last week]]</div>
+      </div>
+      <!-- …repeat 3× -->
+    </div>
+
+    <!-- main content: board / calendar / wide table — see examples/marina-project-board.html -->
+    <section class="vx-card vx-section">
+      <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">[[Section]]</h2><div class="vx-caption">[[hint]]</div></div></div>
+      [[content]]
+    </section>
+  </main>
+</div>
+
+<!-- ⌘K command palette -->
+<dialog class="vx-cmdk" id="cmdk" data-vx-cmdk aria-label="Command palette">
+  <div class="vx-cmdk__search"><i data-lucide="search"></i><input placeholder="Type a command or search…" aria-label="Search commands"></div>
+  <div class="vx-cmdk__list" role="listbox">
+    <div class="vx-cmdk__group">Jump to</div>
+    <button class="vx-cmdk__item" role="option"><span class="vx-iconchip"><i data-lucide="layout-dashboard"></i></span><span>[[Overview]]<small>[[Page description]]</small></span><span class="vx-kbd">G O</span></button>
+    <button class="vx-cmdk__item" role="option" data-keywords="[[synonyms]]"><span class="vx-iconchip"><i data-lucide="[[icon]]"></i></span><span>[[Page]]<small>[[Page description]]</small></span></button>
+    <div class="vx-cmdk__group">Actions</div>
+    <button class="vx-cmdk__item" role="option" data-vx-open="#detail"><span class="vx-iconchip"><i data-lucide="plus"></i></span><span>[[Create something]]</span><span class="vx-kbd">C</span></button>
+    <button class="vx-cmdk__item" role="option" data-vx-toast="[[Done]]"><span class="vx-iconchip"><i data-lucide="[[icon]]"></i></span><span>[[Action]]</span></button>
+  </div>
+  <div class="vx-cmdk__empty" hidden>No results — try another word.</div>
+  <div class="vx-cmdk__foot"><span><span class="vx-kbd">↑↓</span>navigate</span><span><span class="vx-kbd">↵</span>open</span><span><span class="vx-kbd">esc</span>close</span></div>
+</dialog>
+
+<!-- detail drawer (also: .vx-modal centered, .vx-sheet bottom) -->
+<dialog class="vx-drawer" id="detail" aria-labelledby="detail-title">
+  <div class="vx-dialog__head">
+    <div><div class="vx-eyebrow">[[Kind]]</div><h2 class="vx-h2" id="detail-title">[[Title]]</h2></div>
+    <button class="vx-iconbtn vx-iconbtn--sm" data-vx-close aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div class="vx-dialog__body vx-stack">
+    <div class="vx-field"><label for="f1">[[Field]]</label><span class="vx-input"><input id="f1" placeholder="[[placeholder]]"></span></div>
+  </div>
+  <div class="vx-dialog__foot">
+    <button class="vx-btn vx-btn--ghost" data-vx-close>Cancel</button>
+    <button class="vx-btn vx-btn--cta" data-vx-close data-vx-toast="[[Saved]]">[[Save]]</button>
+  </div>
+</dialog>
+
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+</body>
+</html>

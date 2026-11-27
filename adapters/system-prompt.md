@@ -43,7 +43,21 @@ segmented controls / tabs / nav use ONE sliding active pill (spring ~420ms); hov
 glass cards catch a cursor spotlight; toasts rise with a spring and exit faster (≈60% of enter); skeletons for
 loads > 1s; new rows slide in while siblings glide (FLIP). Only transform/opacity, shared duration/easing tokens,
 no decorative loops, full `prefers-reduced-motion` support. If `vista-motion.js` is available, use it instead of
-writing animations.
+writing animations (it also gives modals/drawers/sheets via `<dialog>` + `data-vx-open`, a ⌘K palette, drag-and-drop
+lists with `data-vx-sortable`, odometer numbers with `data-vx-odometer`, chart morphing via `VistaCharts.update`,
+and step-by-step walkthroughs with `data-vx-sequence`: run traces, sequence diagrams, steppers, product screens).
+
+**Explaining a process** ("show how X works"): first pick the picture — run trace for jobs/pipelines/agent runs,
+sequence diagram for systems talking, device + screens for user flows, stepper for phases, story cards for
+narratives. Write the stage list with durations (checks 150–300ms, APIs 500–1200ms, model calls 1.8–3.5s, ±15%
+jitter, < 20s total), mark parallel groups, loops and branches, use realistic payloads, give it a player
+(Run · Pause · Step · speed · Reset), never auto-play and never scroll the page from a step.
+
+**Performance (no jank):** never move or scale an element that has `backdrop-filter` — fade it and move its
+content instead; never animate `backdrop-filter`, `box-shadow`, `width/height/top/left`; coalesce pointer and
+scroll handlers to one DOM write per `requestAnimationFrame`; read layout (getBoundingClientRect, offsetWidth)
+before writing, never inside a write loop; on slow devices drop live blur (`html[data-vx-glass="lite"]`) —
+over smooth gradient backdrops it looks almost the same and paints ~5× faster.
 
 **Output:** semantic HTML + CSS variables (tokens for ink, panel, card, chrome, primary, CTA, chart-1..6);
 keep all styling in classes, not inline colors. Make it responsive (sidebar → icon rail → hidden).

@@ -37,6 +37,21 @@ Run `python3 scripts/screenshot.py page.html --full` and go through this list wi
 - [ ] Live updates use `VistaMotion.insert/remove/countTo`, not a full re-render.
 - [ ] `vx-tilt` on at most two hero cards; no custom infinite animations except loaders; no animating width/height/top/left.
 - [ ] Custom transitions use `--vx-dur-*` / `--vx-ease-*` tokens; exits faster than entrances.
+- [ ] Data updates call `VistaCharts.update` (morph) — not `innerHTML` + `renderAll`; live counters use `data-vx-odometer`.
+- [ ] Dialogs are `<dialog class="vx-modal|vx-drawer|vx-sheet|vx-cmdk">` with `aria-labelledby`/`aria-label`; drag lists have a keyboard path.
+
+## Walkthroughs (if the page explains a process)
+- [ ] Representation chosen on purpose; stage list with durations written first (`walkthroughs.md` §2–3).
+- [ ] Nothing auto-plays (except a small `data-vx-autoplay` diagram); controls disable by state; status ends with the result.
+- [ ] Parallel / loop / branch / fail / skip are visible; payloads realistic; the page never scrolls by itself.
+
+## Performance
+- [ ] `--perf`: no `[warn]` lines (script during load < 250ms, < 120 layouts).
+- [ ] Nothing with `backdrop-filter` is moved or scaled by your own code (fade it; move its content).
+- [ ] No page-level `mousemove`/`scroll` handler that writes the DOM on every event — coalesce with `requestAnimationFrame`.
+- [ ] No layout reads (`getBoundingClientRect`, `offsetWidth`) after writes inside loops.
+- [ ] Live timers stop when `document.hidden`; long below-the-fold sections use `.vx-defer`.
+- [ ] Don't set `data-vx-glass="full"` unless the page must always show live blur (it disables the slow-device fallback).
 
 ## Delivery
 - [ ] Assets resolve from the output location (or the file was bundled with `scripts/bundle.py`).

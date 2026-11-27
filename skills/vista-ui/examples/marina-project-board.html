@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en" data-theme="marina">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Harbor — Sprint 24 board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
+</head>
+<body>
+<div class="vx-shell--topnav">
+
+  <header class="vx-topnav vx-chrome">
+    <div class="vx-brand">
+      <div class="vx-brand__mark"><i data-lucide="anchor"></i></div>
+      <div class="vx-brand__text"><div class="vx-brand__name">Harbor</div></div>
+    </div>
+    <nav class="vx-nav" data-vx-group>
+      <a class="vx-nav__item is-active" href="#"><i data-lucide="square-kanban"></i><span>Board</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="chart-gantt"></i><span>Roadmap</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="list-todo"></i><span>My tasks</span><span class="vx-nav__badge">6</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="file-text"></i><span>Docs</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="chart-no-axes-column"></i><span>Insights</span></a>
+    </nav>
+    <div class="vx-topnav__spacer"></div>
+    <button class="vx-search" data-vx-open="#cmdk" aria-label="Open command palette"><i data-lucide="search"></i><span style="flex:1;text-align:left">Search or jump to…</span><span class="vx-kbd">⌘K</span></button>
+    <button class="vx-iconbtn vx-iconbtn--light" aria-label="Notifications"><i data-lucide="bell"></i><span class="vx-ping"></span></button>
+    <div class="vx-user"><span class="vx-avatar vx-avatar--peach">MO</span><div><div class="vx-user__name">Maya Okonkwo</div><div class="vx-user__role">Engineering lead</div></div></div>
+  </header>
+
+  <main class="vx-panel">
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <div class="vx-eyebrow">Projects <span class="sep">/</span> Harbor Web <span class="pill">● Day 8 of 10</span></div>
+        <h1 class="vx-h1">Sprint 24 board</h1>
+        <p class="vx-sub">Sprint 24 · Nov 18 – Dec 1 · <b>42 points</b> left, <b>2 tasks</b> blocked and <b>3 reviews</b> waiting.</p>
+      </div>
+      <div class="vx-page-head__actions">
+        <div class="vx-seg vx-seg--light" data-vx-group><button class="is-active">Board</button><button>List</button><button>Timeline</button></div>
+        <button class="vx-btn vx-btn--ghost"><i data-lucide="sliders-horizontal"></i>Filter</button>
+        <button class="vx-btn vx-btn--cta vx-magnetic" data-vx-open="#task"><i data-lucide="plus"></i>New task</button>
+      </div>
+    </div>
+
+    <!-- KPI row -->
+    <div class="vx-grid-4">
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip"><i data-lucide="list-todo"></i></span><span class="vx-stat__label">Open tasks</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-down"></i>5</span></div>
+        <div class="vx-stat__value vx-num" id="kpi-open" data-vx-odometer>12</div>
+        <div class="vx-caption">down from 17 on Monday</div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--pos"><i data-lucide="circle-check-big"></i></span><span class="vx-stat__label">Story points done</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>12%</span></div>
+        <div class="vx-stat__value vx-num" id="kpi-points" data-vx-odometer>86<small>of 128</small></div>
+        <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[0,7,16,27,35,48,65,86]}'></div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--info"><i data-lucide="timer"></i></span><span class="vx-stat__label">Cycle time</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-down"></i>0.6 days</span></div>
+        <div class="vx-stat__value vx-num" data-vx-odometer>3.4<small>days</small></div>
+        <div class="vx-caption">vs 4.0 days in Sprint 23</div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--neg"><i data-lucide="octagon-alert"></i></span><span class="vx-stat__label">Blocked</span><span class="vx-delta vx-delta--down"><i data-lucide="trending-up"></i>1</span></div>
+        <div class="vx-stat__value vx-num" data-vx-odometer>2</div>
+        <div class="vx-caption">waiting on API and legal copy</div>
+      </div>
+    </div>
+
+    <!-- Board -->
+    <div class="vx-board vx-section" id="board">
+      <section class="vx-card vx-board__col" data-col="Backlog">
+        <div class="vx-board__head"><span class="vx-dot" style="--c:var(--vx-chart-5)"></span>Backlog<span class="vx-board__count">4</span></div>
+        <div class="vx-board__list" role="list" data-vx-sortable="sprint">
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-431" data-points="5">
+            <div class="vx-kcard__tags"><span class="vx-tag vx-tag--primary">Billing</span><span class="vx-tag">5 pts</span></div>
+            <div class="vx-kcard__title">Migrate billing settings to new form kit</div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Nov 30</span><span><i data-lucide="message-square"></i>4</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--sky">DL</span></div></div>
+          </article>
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-437" data-points="3">
+            <div class="vx-kcard__tags"><span class="vx-tag">Design system</span><span class="vx-tag">3 pts</span></div>
+            <div class="vx-kcard__title">Add dense variant to data table rows</div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Dec 1</span><span><i data-lucide="message-square"></i>2</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--violet">IR</span></div></div>
+          </article>
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-440" data-points="2">
+            <div class="vx-kcard__tags"><span class="vx-tag vx-tag--neg">Bug</span><span class="vx-tag">2 pts</span></div>
+            <div class="vx-kcard__title">Comment thread loses scroll position on reply</div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Dec 1</span><span><i data-lucide="message-square"></i>1</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--lime">TS</span></div></div>
+          </article>
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-442" data-points="3">
+            <div class="vx-kcard__tags"><span class="vx-tag vx-tag--warn">Research</span><span class="vx-tag">3 pts</span></div>
+            <div class="vx-kcard__title">Spike: offline mode for shared canvases</div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Dec 1</span><span><i data-lucide="paperclip"></i>2</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--peach">MO</span><span class="vx-avatar vx-avatar--sm vx-avatar--mint">AK</span></div></div>
+          </article>
+          <button class="vx-board__add" data-vx-fixed data-vx-open="#task"><i data-lucide="plus"></i>Add task</button>
+        </div>
+      </section>
+
+      <section class="vx-card vx-board__col" data-col="In progress">
+        <div class="vx-board__head"><span class="vx-dot" style="--c:var(--vx-chart-1)"></span>In progress<span class="vx-board__count">5</span></div>
+        <div class="vx-board__list" role="list" data-vx-sortable="sprint">
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-418" data-points="5">
+            <div class="vx-kcard__tags"><span class="vx-tag vx-tag--neg">Bug</span><span class="vx-status vx-status--danger">Blocked</span></div>
+            <div class="vx-kcard__title">Fix ⌘K focus trap in Safari</div>
+            <div class="vx-progress"><i style="--v:40%;--c:var(--vx-neg)"></i></div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Nov 27</span><span><i data-lucide="message-square"></i>9</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--rose">JN</span></div></div>
+          </article>
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-422" data-points="8">
+            <div class="vx-kcard__tags"><span class="vx-tag vx-tag--primary">Editor</span><span class="vx-tag">8 pts</span></div>
+            <div class="vx-kcard__title">Multi-select on canvas with shift-drag marquee</div>
+            <div class="vx-progress"><i style="--v:70%"></i></div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Nov 30</span><span><i data-lucide="message-square"></i>6</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--mint">AK</span><span class="vx-avatar vx-avatar--sm vx-avatar--sky">DL</span></div></div>
+          </article>
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-425" data-points="3">
+            <div class="vx-kcard__tags"><span class="vx-tag">Onboarding</span><span class="vx-status vx-status--danger">Blocked</span></div>
+            <div class="vx-kcard__title">Rewrite empty states for new workspaces</div>
+            <div class="vx-progress"><i style="--v:55%;--c:var(--vx-neg)"></i></div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Nov 28</span><span><i data-lucide="message-square"></i>3</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--amber">PS</span></div></div>
+          </article>
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-427" data-points="5">
+            <div class="vx-kcard__tags"><span class="vx-tag vx-tag--pos">Performance</span><span class="vx-tag">5 pts</span></div>
+            <div class="vx-kcard__title">Lazy-load comment avatars in large files</div>
+            <div class="vx-progress"><i style="--v:25%"></i></div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Dec 1</span><span><i data-lucide="message-square"></i>2</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--lime">TS</span></div></div>
+          </article>
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-429" data-points="2">
+            <div class="vx-kcard__tags"><span class="vx-tag">Design system</span><span class="vx-tag">2 pts</span></div>
+            <div class="vx-kcard__title">Tokenise focus ring colours for dark mode</div>
+            <div class="vx-progress"><i style="--v:85%"></i></div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Nov 27</span><span><i data-lucide="message-square"></i>1</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--violet">IR</span></div></div>
+          </article>
+          <button class="vx-board__add" data-vx-fixed data-vx-open="#task"><i data-lucide="plus"></i>Add task</button>
+        </div>
+      </section>
+
+      <section class="vx-card vx-board__col" data-col="In review">
+        <div class="vx-board__head"><span class="vx-dot" style="--c:var(--vx-chart-4)"></span>In review<span class="vx-board__count">3</span></div>
+        <div class="vx-board__list" role="list" data-vx-sortable="sprint">
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-409" data-points="5">
+            <div class="vx-kcard__tags"><span class="vx-tag vx-tag--primary">Sharing</span><span class="vx-status vx-status--info">PR #2184</span></div>
+            <div class="vx-kcard__title">Link permissions: view, comment, edit</div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Nov 27</span><span><i data-lucide="message-square"></i>12</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--sky">DL</span><span class="vx-avatar vx-avatar--sm vx-avatar--peach">MO</span></div></div>
+          </article>
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-414" data-points="3">
+            <div class="vx-kcard__tags"><span class="vx-tag">Billing</span><span class="vx-status vx-status--warn">Changes requested</span></div>
+            <div class="vx-kcard__title">Show prorated amount before seat upgrade</div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Nov 28</span><span><i data-lucide="message-square"></i>5</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--amber">PS</span></div></div>
+          </article>
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-416" data-points="2">
+            <div class="vx-kcard__tags"><span class="vx-tag vx-tag--neg">Bug</span><span class="vx-status vx-status--info">PR #2191</span></div>
+            <div class="vx-kcard__title">Export to PNG ignores frame clip content</div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Nov 29</span><span><i data-lucide="message-square"></i>3</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--rose">JN</span></div></div>
+          </article>
+          <button class="vx-board__add" data-vx-fixed data-vx-open="#task"><i data-lucide="plus"></i>Add task</button>
+        </div>
+      </section>
+
+      <section class="vx-card vx-board__col" data-col="Done">
+        <div class="vx-board__head"><span class="vx-dot" style="--c:var(--vx-chart-3)"></span>Done<span class="vx-board__count">4</span></div>
+        <div class="vx-board__list" role="list" data-vx-sortable="sprint">
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-398" data-points="8">
+            <div class="vx-kcard__tags"><span class="vx-tag vx-tag--primary">Editor</span><span class="vx-status vx-status--success">Shipped</span></div>
+            <div class="vx-kcard__title">Auto layout: wrap and gap controls</div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Nov 25</span><span><i data-lucide="message-square"></i>14</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--mint">AK</span></div></div>
+          </article>
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-402" data-points="3">
+            <div class="vx-kcard__tags"><span class="vx-tag">Design system</span><span class="vx-status vx-status--success">Shipped</span></div>
+            <div class="vx-kcard__title">Replace legacy tooltip with popover primitive</div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Nov 24</span><span><i data-lucide="message-square"></i>4</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--violet">IR</span></div></div>
+          </article>
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-405" data-points="2">
+            <div class="vx-kcard__tags"><span class="vx-tag vx-tag--neg">Bug</span><span class="vx-status vx-status--success">Shipped</span></div>
+            <div class="vx-kcard__title">Version history shows wrong author on restore</div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Nov 23</span><span><i data-lucide="message-square"></i>2</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--lime">TS</span></div></div>
+          </article>
+          <article class="vx-kcard" tabindex="0" role="listitem" data-id="HAR-407" data-points="5">
+            <div class="vx-kcard__tags"><span class="vx-tag vx-tag--pos">Performance</span><span class="vx-status vx-status--success">Shipped</span></div>
+            <div class="vx-kcard__title">Cut cold start of the file browser to 1.2s</div>
+            <div class="vx-kcard__meta"><span><i data-lucide="calendar"></i>Nov 20</span><span><i data-lucide="message-square"></i>7</span>
+              <div class="vx-avatars"><span class="vx-avatar vx-avatar--sm vx-avatar--sky">DL</span><span class="vx-avatar vx-avatar--sm vx-avatar--rose">JN</span></div></div>
+          </article>
+          <button class="vx-board__add" data-vx-fixed data-vx-open="#task"><i data-lucide="plus"></i>Add task</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Burndown + activity -->
+    <div class="vx-split vx-section">
+      <section class="vx-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title">
+            <div class="vx-caption">Sprint burndown · points remaining</div>
+            <div class="vx-row" style="margin-top:6px"><span class="vx-stat__value vx-num" style="margin:0">42</span><span class="vx-delta vx-delta--down"><i data-lucide="trending-up"></i>14 over ideal</span></div>
+            <div class="vx-caption">128 committed · 5 added mid-sprint · 2 working days left</div>
+          </div>
+          <div class="vx-legend"><span><i class="line" style="--c:var(--vx-chart-1)"></i>Actual</span><span><i class="dash" style="--c:var(--vx-chart-5)"></i>Ideal</span></div>
+        </div>
+        <div class="vx-chart" id="burndown" style="--h:250px" data-vx-chart="line" data-vx='{
+          "labels":["Nov 18","Nov 19","Nov 20","Nov 23","Nov 24","Nov 25","Nov 26","Nov 27","Nov 30","Dec 1"],
+          "series":[
+            {"name":"Actual","data":[128,121,112,101,93,80,63,42,null,null],"area":true},
+            {"name":"Ideal","data":[128,114,100,85,71,57,43,28,14,0],"dashed":true,"color":"chart-5"}],
+          "points":10,"min":0,"max":140,"endDot":true,"yFormat":{"suffix":" pts"},"padLeft":52}'></div>
+      </section>
+
+      <section class="vx-card">
+        <div class="vx-card__head"><div class="vx-card__title"><h2 class="vx-h2">Activity</h2><div class="vx-caption">Harbor Web · today</div></div></div>
+        <div class="vx-list">
+          <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--pos"><i data-lucide="git-merge"></i></span><div class="vx-list__body"><div class="vx-list__title">Akira merged PR #2179</div><div class="vx-list__sub">Auto layout wrap controls · 12 min ago</div></div></div>
+          <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--warn"><i data-lucide="git-pull-request"></i></span><div class="vx-list__body"><div class="vx-list__title">Priya was asked for changes</div><div class="vx-list__sub">Prorated amount before upgrade · 40 min ago</div></div></div>
+          <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--neg"><i data-lucide="octagon-alert"></i></span><div class="vx-list__body"><div class="vx-list__title">Jonah flagged a blocker</div><div class="vx-list__sub">Safari 18.2 drops focus inside dialogs · 1 h ago</div></div></div>
+          <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--info"><i data-lucide="message-square"></i></span><div class="vx-list__body"><div class="vx-list__title">Dana commented on HAR-409</div><div class="vx-list__sub">“Edit links should expire after 30 days” · 2 h ago</div></div></div>
+          <div class="vx-list__item"><span class="vx-iconchip vx-iconchip--primary"><i data-lucide="plus"></i></span><div class="vx-list__body"><div class="vx-list__title">Maya added 5 points to scope</div><div class="vx-list__sub">Spike: offline mode for shared canvases · 3 h ago</div></div></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<!-- ⌘K command palette -->
+<dialog class="vx-cmdk" id="cmdk" data-vx-cmdk aria-label="Command palette">
+  <div class="vx-cmdk__search"><i data-lucide="search"></i><input placeholder="Type a command or search…" aria-label="Search commands"></div>
+  <div class="vx-cmdk__list" role="listbox">
+    <div class="vx-cmdk__group">Jump to</div>
+    <button class="vx-cmdk__item" role="option" data-keywords="kanban sprint"><span class="vx-iconchip"><i data-lucide="square-kanban"></i></span><span>Board<small>Sprint 24 · 16 tasks</small></span><span class="vx-kbd">G B</span></button>
+    <button class="vx-cmdk__item" role="option" data-keywords="timeline plan quarter"><span class="vx-iconchip"><i data-lucide="chart-gantt"></i></span><span>Roadmap<small>Q1 2027 · 9 initiatives</small></span><span class="vx-kbd">G R</span></button>
+    <button class="vx-cmdk__item" role="option" data-keywords="spec wiki notes"><span class="vx-iconchip"><i data-lucide="file-text"></i></span><span>Docs<small>Specs, decisions and release notes</small></span><span class="vx-kbd">G D</span></button>
+    <button class="vx-cmdk__item" role="option" data-keywords="assigned mine"><span class="vx-iconchip"><i data-lucide="list-todo"></i></span><span>My tasks<small>6 assigned to you</small></span></button>
+    <div class="vx-cmdk__group">Actions</div>
+    <button class="vx-cmdk__item" role="option" data-keywords="new add issue" data-vx-open="#task"><span class="vx-iconchip"><i data-lucide="plus"></i></span><span>Create task</span><span class="vx-kbd">C</span></button>
+    <button class="vx-cmdk__item" role="option" data-keywords="demo retro meeting" data-vx-toast="Sprint review started" data-vx-toast-sub="Invites sent to 7 people · Room Bridge"><span class="vx-iconchip"><i data-lucide="presentation"></i></span><span>Start sprint review</span></button>
+    <button class="vx-cmdk__item" role="option" data-keywords="close finish" data-vx-toast="Sprint 25 drafted" data-vx-toast-tone="info" data-vx-toast-sub="4 unfinished tasks carried over"><span class="vx-iconchip"><i data-lucide="milestone"></i></span><span>Plan Sprint 25</span></button>
+  </div>
+  <div class="vx-cmdk__empty" hidden>No results — try another word.</div>
+  <div class="vx-cmdk__foot"><span><span class="vx-kbd">↑↓</span>navigate</span><span><span class="vx-kbd">↵</span>open</span><span><span class="vx-kbd">esc</span>close</span></div>
+</dialog>
+
+<!-- task drawer: "New task" form, also opened with a card's title -->
+<dialog class="vx-drawer" id="task" aria-labelledby="task-title">
+  <div class="vx-dialog__head">
+    <div><div class="vx-eyebrow" id="task-kind">Sprint 24 · Harbor Web</div><h2 class="vx-h2" id="task-title">New task</h2></div>
+    <button class="vx-iconbtn vx-iconbtn--sm" data-vx-close aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div class="vx-dialog__body vx-stack">
+    <div class="vx-field"><label for="task-name">Title</label><span class="vx-input"><input id="task-name" placeholder="e.g. Add keyboard shortcut for duplicate frame"></span></div>
+    <div class="vx-grid-2">
+      <div class="vx-field"><label>Status</label><div class="vx-select" id="task-status">Backlog <i data-lucide="chevron-down"></i></div></div>
+      <div class="vx-field"><label>Due</label><div class="vx-select">Dec 1 <i data-lucide="calendar"></i></div></div>
+    </div>
+    <div class="vx-field"><label>Assignees</label>
+      <div class="vx-row">
+        <div class="vx-avatars"><span class="vx-avatar vx-avatar--peach">MO</span><span class="vx-avatar vx-avatar--sky">DL</span></div>
+        <button class="vx-btn vx-btn--sm"><i data-lucide="user-plus"></i>Add</button>
+      </div>
+    </div>
+    <div class="vx-field"><label>Story points</label>
+      <div class="vx-seg vx-seg--block" data-vx-group><button>1</button><button>2</button><button class="is-active">3</button><button>5</button><button>8</button></div>
+    </div>
+    <div class="vx-field"><label>Labels</label>
+      <div class="vx-chips" data-vx-group><span class="vx-chip is-active">Editor</span><span class="vx-chip">Billing</span><span class="vx-chip">Design system</span><span class="vx-chip">Bug</span></div>
+    </div>
+  </div>
+  <div class="vx-dialog__foot">
+    <button class="vx-btn vx-btn--ghost" data-vx-close>Cancel</button>
+    <button class="vx-btn vx-btn--cta" data-vx-close data-vx-toast="Task saved" data-vx-toast-sub="Added to Sprint 24">Save task</button>
+  </div>
+</dialog>
+
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+<script>
+  (function () {
+    var M = window.VistaMotion;
+    var board = document.getElementById("board");
+    var openEl = document.getElementById("kpi-open"), pointsEl = document.getElementById("kpi-points");
+    var openTasks = 12, pointsDone = 86;
+
+    function colOf(list) { return list.closest(".vx-board__col"); }
+    function titleOf(card) { return card.querySelector(".vx-kcard__title").textContent; }
+
+    // after a drop: recount every column, tell the user, keep the KPIs honest
+    document.addEventListener("vx:sort", function (e) {
+      var d = e.detail;
+      board.querySelectorAll(".vx-board__col").forEach(function (col) {
+        col.querySelector(".vx-board__count").textContent = col.querySelectorAll(".vx-board__list > .vx-kcard").length;
+      });
+      var from = colOf(d.from).getAttribute("data-col"), to = colOf(d.to).getAttribute("data-col");
+      if (from === to) return;
+      M.toast("Moved “" + titleOf(d.item) + "” to " + to, { tone: "info" });
+      var pts = parseInt(d.item.getAttribute("data-points"), 10) || 0;
+      if (to === "Done") { pointsDone += pts; openTasks -= 1; }
+      else if (from === "Done") { pointsDone -= pts; openTasks += 1; }
+      else return;
+      M.countTo(pointsEl, pointsDone);
+      M.countTo(openEl, openTasks);
+    });
+
+    // reset the drawer for a fresh task
+    function fillDrawer(card) {
+      document.getElementById("task-kind").textContent = card ? card.getAttribute("data-id") + " · " + colOf(card.parentElement).getAttribute("data-col") : "Sprint 24 · Harbor Web";
+      document.getElementById("task-title").textContent = card ? titleOf(card) : "New task";
+      document.getElementById("task-name").value = card ? titleOf(card) : "";
+      document.getElementById("task-status").firstChild.nodeValue = (card ? colOf(card.parentElement).getAttribute("data-col") : "Backlog") + " ";
+    }
+    document.querySelectorAll('[data-vx-open="#task"]').forEach(function (b) { b.addEventListener("click", function () { fillDrawer(null); }); });
+
+    // a plain click (not a drag — vista-motion swallows the click after a drop) opens the card
+    board.addEventListener("click", function (e) {
+      var card = e.target.closest(".vx-kcard");
+      if (!card) return;
+      fillDrawer(card);
+      M.open("#task");
+    });
+    board.addEventListener("keydown", function (e) {
+      var card = e.target.closest(".vx-kcard");
+      if (card && e.key === "Enter" && !e.altKey) { e.preventDefault(); fillDrawer(card); M.open("#task"); }
+    });
+  })();
+</script>
+</body>
+</html>

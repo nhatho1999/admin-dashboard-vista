@@ -29,6 +29,22 @@ Floating window over a scene. Top pill (avatar · "Welcome, Kai" · assistant pr
 left vertical icon rail, bottom tab dock with a `+` button. No sidebar: navigation = dock tabs.
 Use `.vx-scene` for a CSS-only room, or a real photo on `html`.
 
+### Topnav shell (`marina`, `lapis`, `graphite`) — `templates/topnav.html`
+```
+┌ brand · Overview · Board · Calendar · Docs (sliding pill) ········ [Search ⌘K] (bell) (avatar) ┐  sticky glass bar
+┌──────────────────────────── panel (full width) ─────────────────────────────────────────────────┐
+│ page head · KPI row · wide content (board, calendar, big table, timeline)                       │
+└─────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+`<div class="vx-shell--topnav"> <header class="vx-topnav vx-chrome"> … <main class="vx-panel">`. Use when content needs
+width (kanban, week calendar, wide tables) or the app has ≤ 6 top-level areas. The search pill opens the ⌘K palette.
+≤1100px hides the search pill; ≤760px nav items become icons.
+
+### Auth shell (any theme) — `templates/auth.html`
+Two columns: glass brand side (logo, one strong customer quote, 2–3 proof numbers or a tiny chart) + the panel
+with the form (H1, sub, SSO buttons, divider, fields, remember/forgot, one CTA, sign-up link). ≤1100px the side hides.
+Multi-step flows (2FA, onboarding): swap the form content with `VistaMotion.swap(form, update)`.
+
 ## Page recipes
 
 Each recipe lists sections top → bottom. `split` = `vx-split` (2:1).
@@ -80,8 +96,42 @@ Each recipe lists sections top → bottom. `split` = `vx-split` (2:1).
 1. Page head + CTA. 2. `vx-seg vx-seg--block` filter with counts.
 3. Stack of cards: title + status tag right, body text, footer row with audience tag, date, read-progress bar, actions (Pin, Send now, delete icon).
 
+### Board / sprint (kanban)
+1. Page head: sprint name + dates, summary with bold counts, seg (Board / List / Timeline), filter, CTA "New task" (opens a drawer).
+2. KPI row with `data-vx-odometer` values (open, done points, cycle time, blocked).
+3. `vx-board` with 3–5 columns (`.vx-card.vx-board__col`), 3–6 cards each, `+ Add card` (`data-vx-fixed`) last.
+4. split: burndown line (ideal dashed vs actual) | activity list or workload meters.
+Example: `examples/marina-project-board.html`.
+
+### Calendar / scheduling
+1. Page head: "This week", bold counts (meetings, hours, conflicts), Day/Week/Month seg, prev/next, CTA "New meeting" (sheet).
+2. `vx-split--rev`: left stack (mini month, today's agenda, time breakdown donut) | week `vx-cal` with now-line.
+3. Event click → modal with details; KPI row under or above.
+Example: `examples/lapis-team-calendar.html`.
+
+### Live console (deploys, incidents, trading, logistics)
+1. Page head with `vx-live` pill; period seg whose options carry `data-vx-patch` (chart morphs).
+2. KPI row with odometers updated by `countTo` every few seconds (pause when the tab is hidden).
+3. split: morphing area chart | live feed (`VistaMotion.insert` / `remove`).
+4. Table with row actions → confirm modal → toast with Undo.
+Example: `examples/graphite-deploy-console.html`.
+
+### Sign in / sign up / 2FA
+Auth shell; after the CTA's loading state, swap to the next step (OTP inputs) instead of navigating.
+Example: `examples/indigo-sign-in.html`.
+
+### Walkthrough / "how it works"
+1. Page head that names the process and its headline numbers (median time, success rate).
+2. One `[data-vx-sequence]` spanning a split: run trace with player + stepper | device mockup with `.vx-screens` (or a
+   `.vx-seq` handshake). Steps switch screens (`data-vx-screen`) and spotlight the control that acts next.
+3. Optional second, smaller sequence (handshake diagram) with `data-vx-autoplay`.
+Example: `examples/orchid-agent-walkthrough.html`. Planning and timings: `walkthroughs.md`.
+
 ## Responsive rules (built in)
 - `vx-grid-4/5` → 2/3 columns at ≤1100–1280px, 1 column at ≤760px.
 - `vx-split*` → single column at ≤1100px.
 - Sidebar → icon rail (≤1100px) → hidden (≤760px). Spatial rail + prompt hidden on mobile; dock scrolls.
+- Topnav: search pill hidden ≤1100px, icon-only nav ≤760px. Auth: brand side hidden ≤1100px.
+- Board scrolls horizontally; calendar keeps a 720px minimum inside `.vx-cal-wrap` (scrolls on phones);
+  drawers become full-screen ≤760px.
 - For mobile-first apps, also add a bottom dock (`vx-spatial__dock` works in any shell).

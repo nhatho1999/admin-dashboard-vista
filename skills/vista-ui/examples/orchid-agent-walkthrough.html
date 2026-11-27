@@ -1,0 +1,406 @@
+<!doctype html>
+<!-- Walkthrough page: explains how an automated process runs, step by step, with a player.
+     The split below is ONE [data-vx-sequence] root, so the run trace (.vx-steps with a parallel block,
+     a failed-and-continued call, a retry loop and a branch), the stage stepper (.vx-stepper via
+     data-vx-stage), the customer's app (.vx-screens via data-vx-screen) and two spotlights
+     (data-vx-spot + data-vx-coach) all play from the same clock. Controls: data-vx-run="play | pause |
+     step | reset", a data-vx-run-speed seg and data-vx-run-status. Finished rows expand to show payloads.
+     The handshake card is a second, independent sequence (.vx-seq diagram) that autoplays when visible. -->
+<html lang="en" data-theme="orchid">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Relay — How the refund agent works</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
+  <style>
+
+    /* customer app mock inside .vx-device */
+    .vx-app { display: flex; flex-direction: column; gap: 12px; padding: 14px; height: 100%; }
+    .vx-app__top { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+    .vx-app__top svg { width: 16px; height: 16px; color: var(--vx-ink-3); }
+    .vx-app__top small { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--vx-ink-3); }
+    .vx-app__order { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 14px; background: var(--vx-sunken); font-size: 12px; }
+    .vx-app__order b { display: block; font-size: 12.5px; color: var(--vx-ink); }
+    .vx-app__order span { color: var(--vx-ink-3); }
+    .vx-app .vx-bubble { max-width: 88%; font-size: 12px; padding: 9px 12px; }
+    .vx-app__typing { display: inline-flex; align-items: center; font-size: 11.5px; color: var(--vx-primary); font-weight: 600; }
+    .vx-app__hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 6px; padding: 8px 4px; }
+    .vx-app__hero .vx-iconchip { margin-bottom: 6px; }
+    .vx-app__amount { font-size: 30px; font-weight: 800; letter-spacing: -.02em; color: var(--vx-ink); font-variant-numeric: tabular-nums; }
+    .vx-app__list { width: 100%; display: flex; flex-direction: column; gap: 6px; margin-top: 8px; font-size: 11.5px; }
+    .vx-app__list > div { display: flex; justify-content: space-between; gap: 8px; padding: 7px 10px; border-radius: 10px; background: var(--vx-sunken); color: var(--vx-ink-3); }
+    .vx-app__list b { color: var(--vx-ink); font-weight: 650; }
+
+    .vx-run__foot { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--vx-line); font-size: 11.5px; color: var(--vx-ink-3); }
+    .vx-run__foot b { color: var(--vx-ink-2); font-weight: 650; }
+    .vx-seq-card .vx-seq { margin-top: 4px; }
+    /* handshake: un-played messages stay as a faint preview instead of an empty card */
+    /* desktop: the trace fills its card so both columns end together */
+    @media (min-width: 1101px) {
+      .vx-run { display: flex; flex-direction: column; }
+      .vx-run .vx-run__scroll { flex: 1 1 0; min-height: 360px; max-height: none; }
+    }
+    @media (max-width: 760px) {
+      .vx-seq-card .vx-seq__lanes > * { padding: 6px 10px; font-size: 11px; white-space: nowrap; }
+      .vx-seq-card .vx-seq__lanes svg { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="vx-shell--sidebar">
+
+  <aside class="vx-sidebar vx-chrome">
+    <div class="vx-brand">
+      <div class="vx-brand__mark"><i data-lucide="bot"></i></div>
+      <div class="vx-brand__text"><div class="vx-brand__name">Relay</div><div class="vx-brand__sub">Northpine support · Admin</div></div>
+    </div>
+    <nav class="vx-nav" data-vx-group>
+      <div class="vx-nav__label">Support</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="inbox"></i><span>Conversations</span><span class="vx-nav__badge">23</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="book-open-text"></i><span>Knowledge</span></a>
+      <a class="vx-nav__item is-active" href="#"><i data-lucide="workflow"></i><span>Automations</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="scroll-text"></i><span>Run logs</span></a>
+      <div class="vx-nav__label">Insights</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="chart-pie"></i><span>Reports</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="users"></i><span>Team</span><span class="vx-nav__badge">4</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="settings"></i><span>Settings</span></a>
+    </nav>
+    <div class="vx-plan">
+      <div class="vx-plan__row"><b>Agent runs</b><span>38,410 of 50,000</span></div>
+      <div class="vx-progress"><i style="--v:77%"></i></div>
+    </div>
+  </aside>
+
+  <header class="vx-topbar vx-chrome">
+    <label class="vx-search"><i data-lucide="search"></i><input placeholder="Search runs, orders, customers…"><span class="vx-kbd">⌘K</span></label>
+    <div class="vx-topbar__spacer"></div>
+    <button class="vx-iconbtn vx-iconbtn--primary" aria-label="Assistant"><i data-lucide="sparkles"></i></button>
+    <button class="vx-iconbtn vx-iconbtn--light" aria-label="Notifications"><i data-lucide="bell"></i><span class="vx-ping"></span></button>
+    <div class="vx-user"><span class="vx-avatar vx-avatar--violet">JO</span><div><div class="vx-user__name">Jonah Okafor</div><div class="vx-user__role">Support ops lead</div></div></div>
+  </header>
+
+  <main class="vx-panel">
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <div class="vx-eyebrow">Automations <span class="sep">/</span> Refund agent</div>
+        <h1 class="vx-h1">How the refund agent works</h1>
+        <p class="vx-sub">One real run replayed step by step: median <b>4.2s</b> end to end, <b>92%</b> of refund requests resolved without a human.</p>
+      </div>
+      <div class="vx-page-head__actions">
+        <button class="vx-btn vx-btn--ghost"><i data-lucide="scroll-text"></i>View logs</button>
+        <button class="vx-btn vx-btn--cta"><i data-lucide="workflow"></i>Open in builder</button>
+      </div>
+    </div>
+
+    <div class="vx-grid-4">
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--primary"><i data-lucide="activity"></i></span><span class="vx-stat__label">Runs today</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>8.1%</span></div>
+        <div class="vx-stat__value vx-num" data-vx-odometer>1,284</div>
+        <div class="vx-caption">peak 212 / hour at 10:00</div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--pos"><i data-lucide="circle-check"></i></span><span class="vx-stat__label">Auto-resolved</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>1.4 pts</span></div>
+        <div class="vx-stat__value vx-num" data-vx-odometer>92%</div>
+        <div class="vx-caption">1,181 refunds closed by the agent</div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--info"><i data-lucide="timer"></i></span><span class="vx-stat__label">Median time</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-down"></i>0.6s</span></div>
+        <div class="vx-stat__value vx-num" data-vx-odometer>4.2s</div>
+        <div class="vx-caption">p95 9.8s · LLM draft is 41%</div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--warn"><i data-lucide="user-round-check"></i></span><span class="vx-stat__label">Escalations</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-down"></i>5</span></div>
+        <div class="vx-stat__value vx-num" data-vx-odometer>37</div>
+        <div class="vx-caption">22 fraud holds · 15 over $500</div>
+      </div>
+    </div>
+
+    <!-- ONE sequence root drives the trace, the stepper, the device screens and the spotlights -->
+    <section class="vx-split vx-section" data-vx-sequence data-vx-done="Refund sent" data-vx-failed="Escalated to a human">
+      <div class="vx-card vx-run">
+        <div class="vx-run__head">
+          <div class="vx-card__title"><h2 class="vx-h2">Run trace</h2><div class="vx-caption">run_8f2c41 · started 14:02:11 UTC</div></div>
+          <div class="vx-player">
+            <button class="vx-btn vx-btn--cta vx-btn--sm" data-vx-run="play"><i data-lucide="play"></i><span data-vx-run-label>Run</span></button>
+            <button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm" data-vx-run="pause" aria-label="Pause"><i data-lucide="pause"></i></button>
+            <button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm" data-vx-run="step" aria-label="Next step"><i data-lucide="step-forward"></i></button>
+            <button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm" data-vx-run="reset" aria-label="Reset" id="vx-trace-reset"><i data-lucide="rotate-ccw"></i></button>
+            <div class="vx-seg vx-seg--light" data-vx-group data-vx-run-speed aria-label="Playback speed"><button data-speed="0.5">0.5×</button><button class="is-active" data-speed="1">1×</button><button data-speed="2">2×</button></div>
+            <span class="vx-run__status" data-vx-run-status>Ready · 11 steps</span>
+          </div>
+        </div>
+
+        <ol class="vx-stepper vx-run__stages">
+          <li>Understand</li><li>Verify</li><li>Decide</li><li>Resolve</li>
+        </ol>
+
+        <div class="vx-run__scroll" style="--h:460px">
+          <ol class="vx-steps">
+            <li class="vx-step" data-vx-step data-ms="480" data-vx-stage="0" data-vx-screen="#scr-chat" data-vx-spot="#msg-customer" data-vx-coach="The agent starts from the customer's own words">
+              <span class="vx-step__ico"><i data-lucide="tag"></i></span>
+              <details class="vx-step__body"><summary><span class="vx-step__name">Classify intent</span><span class="vx-step__sub">refund_request · confidence 0.97</span></summary>
+<pre class="vx-code">{
+  "intent": "refund_request",
+  "confidence": 0.97,
+  "secondary": [{ "intent": "damaged_item", "confidence": 0.88 }],
+  "language": "en",
+  "sentiment": "frustrated",
+  "entities": { "order_id": "A-20931", "item": "Ridgeline 2L hydration pack" },
+  "model": "relay-classify-1",
+  "tokens": { "in": 212, "out": 38 }
+}</pre></details>
+              <span class="vx-step__meta"></span>
+            </li>
+            <li class="vx-step" data-vx-step data-ms="720" data-vx-stage="0">
+              <span class="vx-step__ico"><i data-lucide="book-open"></i></span>
+              <details class="vx-step__body"><summary><span class="vx-step__name">Retrieve policy docs</span><span class="vx-step__sub">3 passages · 1,204 tokens</span></summary>
+<pre class="vx-code">{
+  "index": "northpine-help-v14",
+  "query": "refund damaged item within return window",
+  "passages": [
+    { "doc": "returns-policy.md#damaged", "score": 0.91, "tokens": 486 },
+    { "doc": "returns-policy.md#window", "score": 0.87, "tokens": 402 },
+    { "doc": "payments/refund-methods.md", "score": 0.79, "tokens": 316 }
+  ],
+  "total_tokens": 1204
+}</pre></details>
+              <span class="vx-step__meta"></span>
+            </li>
+            <li>
+              <div class="vx-steps__fork">In parallel</div>
+              <ol class="vx-steps" data-vx-parallel>
+                <li class="vx-step" data-vx-step data-ms="820" data-vx-stage="1">
+                  <span class="vx-step__ico"><i data-lucide="package"></i></span>
+                  <details class="vx-step__body"><summary><span class="vx-step__name">Fetch order</span><span class="vx-step__sub">GET /orders/A-20931 · 200</span></summary>
+<pre class="vx-code">{
+  "id": "A-20931",
+  "placed_at": "2026-11-12T09:41:07Z",
+  "delivered_at": "2026-11-18T16:20:44Z",
+  "items": [{ "sku": "RL-HP2-SLT", "name": "Ridgeline 2L hydration pack", "qty": 1, "price": 84.00 }],
+  "total": 84.00,
+  "currency": "USD",
+  "customer": { "id": "cus_51Hq7", "name": "Dana Whitfield", "orders": 7 },
+  "days_since_delivery": 9
+}</pre></details>
+                  <span class="vx-step__meta"></span>
+                </li>
+                <li class="vx-step" data-vx-step data-ms="560" data-vx-stage="1">
+                  <span class="vx-step__ico"><i data-lucide="shield-check"></i></span>
+                  <details class="vx-step__body"><summary><span class="vx-step__name">Fraud score</span><span class="vx-step__sub">risk 0.04 · low</span></summary>
+<pre class="vx-code">{
+  "score": 0.04,
+  "band": "low",
+  "signals": {
+    "refunds_last_90d": 0,
+    "account_age_days": 812,
+    "address_match": true,
+    "device_seen_before": true
+  },
+  "threshold_hold": 0.65
+}</pre></details>
+                  <span class="vx-step__meta"></span>
+                </li>
+                <li class="vx-step" data-vx-step data-ms="900" data-vx-stage="1" data-vx-result="fail" data-vx-continue>
+                  <span class="vx-step__ico"><i data-lucide="credit-card"></i></span>
+                  <details class="vx-step__body"><summary><span class="vx-step__name">Payment status</span><span class="vx-step__sub">GET /payments/pi_3QxA20931 · 503 timeout</span></summary>
+<pre class="vx-code">{
+  "request": "GET /v1/payments/pi_3QxA20931",
+  "status": 503,
+  "error": "upstream_timeout",
+  "elapsed_ms": 900,
+  "retry_policy": { "max_attempts": 3, "backoff_ms": 250 }
+}</pre></details>
+                  <span class="vx-step__meta"></span>
+                </li>
+              </ol>
+            </li>
+            <li class="vx-step" data-vx-step data-ms="640" data-vx-stage="1">
+              <span class="vx-step__ico"><i data-lucide="refresh-cw"></i></span>
+              <details class="vx-step__body"><summary><span class="vx-step__name">Retry payment status <span class="vx-status vx-status--warn">Loop 2</span></span><span class="vx-step__sub">captured · Visa •• 4127 · 200</span></summary>
+<pre class="vx-code">{
+  "attempt": 2,
+  "status": 200,
+  "payment": {
+    "id": "pi_3QxA20931",
+    "state": "captured",
+    "amount": 84.00,
+    "method": "visa",
+    "last4": "4127",
+    "captured_at": "2026-11-12T09:41:12Z",
+    "refunded": 0.00
+  }
+}</pre></details>
+              <span class="vx-step__meta"></span>
+            </li>
+            <li class="vx-step" data-vx-step data-ms="380" data-vx-stage="2" data-vx-screen="#scr-refund">
+              <span class="vx-step__ico"><i data-lucide="git-branch"></i></span>
+              <details class="vx-step__body"><summary><span class="vx-step__name">Decide eligibility <span class="vx-status vx-status--info">→ Eligible</span></span><span class="vx-step__sub">damaged item · day 9 of 30 · under $500 auto limit</span></summary>
+<pre class="vx-code">{
+  "rule_set": "refunds/v7",
+  "checks": {
+    "within_window": { "pass": true, "days": 9, "limit": 30 },
+    "amount_under_auto_limit": { "pass": true, "amount": 84.00, "limit": 500.00 },
+    "fraud_band_ok": { "pass": true, "band": "low" },
+    "not_refunded_yet": { "pass": true }
+  },
+  "branch": "eligible",
+  "action": "full_refund",
+  "return_required": false
+}</pre></details>
+              <span class="vx-step__meta"></span>
+            </li>
+            <li class="vx-step" data-vx-step data-ms="2400" data-vx-stage="2">
+              <span class="vx-step__ico"><i data-lucide="pen-line"></i></span>
+              <details class="vx-step__body"><summary><span class="vx-step__name">Draft reply</span><span class="vx-step__sub">relay-agent-3 · 1,642 in / 118 out tokens</span></summary>
+<pre class="vx-code">{
+  "model": "relay-agent-3",
+  "temperature": 0.3,
+  "tokens": { "in": 1642, "out": 118 },
+  "latency_ms": 2380,
+  "tone": "warm_concise",
+  "draft": "Sorry about the torn strap, Dana. I've refunded the full $84.00 to your Visa ending 4127. It usually shows up in 3 to 5 business days, and there's no need to send the pack back."
+}</pre></details>
+              <span class="vx-step__meta"></span>
+            </li>
+            <li class="vx-step" data-vx-step data-ms="320" data-vx-stage="2">
+              <span class="vx-step__ico"><i data-lucide="scale"></i></span>
+              <details class="vx-step__body"><summary><span class="vx-step__name">Policy check</span><span class="vx-step__sub">4 of 4 guardrails passed</span></summary>
+<pre class="vx-code">{
+  "guardrails": [
+    { "id": "amount_matches_decision", "pass": true },
+    { "id": "no_promises_outside_policy", "pass": true },
+    { "id": "pii_redacted", "pass": true },
+    { "id": "tone_ok", "pass": true, "score": 0.93 }
+  ],
+  "blocked": false
+}</pre></details>
+              <span class="vx-step__meta"></span>
+            </li>
+            <li class="vx-step" data-vx-step data-ms="940" data-vx-stage="3" data-vx-spot="#vx-app-amount" data-vx-coach="Same amount the customer sees in the app">
+              <span class="vx-step__ico"><i data-lucide="banknote"></i></span>
+              <details class="vx-step__body"><summary><span class="vx-step__name">Issue refund</span><span class="vx-step__sub">re_3NfK8Wp · $84.00 · Visa •• 4127</span></summary>
+<pre class="vx-code">{
+  "request": "POST /v1/refunds",
+  "idempotency_key": "rf_7Qd2Lx-A20931",
+  "body": { "payment": "pi_3QxA20931", "amount": 84.00, "reason": "damaged_item" },
+  "response": {
+    "id": "re_3NfK8Wp",
+    "status": "pending",
+    "created_at": "2026-11-27T14:02:15Z",
+    "eta_business_days": "3-5"
+  }
+}</pre></details>
+              <span class="vx-step__meta"></span>
+            </li>
+            <li class="vx-step" data-vx-step data-ms="420" data-vx-stage="3" data-vx-screen="#scr-done">
+              <span class="vx-step__ico"><i data-lucide="send"></i></span>
+              <details class="vx-step__body"><summary><span class="vx-step__name">Send reply</span><span class="vx-step__sub">in-app chat + email · conversation closed</span></summary>
+<pre class="vx-code">{
+  "channels": ["in_app", "email"],
+  "conversation": "cnv_A20931_01",
+  "status": "solved",
+  "tags": ["refund", "damaged_item", "auto_resolved"],
+  "sent_at": "2026-11-27T14:02:16Z",
+  "csat_survey": "scheduled_24h"
+}</pre></details>
+              <span class="vx-step__meta"></span>
+            </li>
+          </ol>
+        </div>
+        <div class="vx-run__foot"><span>Model <b>relay-agent-3</b></span><span>Tokens <b>3,214</b></span><span>Tool calls <b>6</b></span><span>Cost <b>$0.0041</b></span></div>
+      </div>
+
+      <div class="vx-stack">
+        <section class="vx-card">
+          <div class="vx-card__head">
+            <div class="vx-card__title"><h2 class="vx-h2">Conversation</h2><div class="vx-caption">Dana Whitfield · order #A-20931</div></div>
+            <span class="vx-status vx-status--success">Solved</span>
+          </div>
+          <div class="vx-chat">
+            <div class="vx-bubble" id="msg-customer">Hi, my hydration pack from order A-20931 arrived with a torn shoulder strap. I'd like a refund please, I don't need a replacement.<div class="vx-bubble__meta">Dana · 14:02</div></div>
+            <div class="vx-bubble vx-bubble--me">Sorry about the torn strap, Dana. I've refunded the full $84.00 to your Visa ending 4127. It usually shows up in 3 to 5 business days, and there's no need to send the pack back.<div class="vx-bubble__meta">Relay agent · 14:02 · 4.6s after the message</div></div>
+          </div>
+        </section>
+
+        <section class="vx-card">
+          <div class="vx-card__head">
+            <div class="vx-card__title"><h2 class="vx-h2">What the customer sees</h2><div class="vx-caption">Northpine app · follows the run</div></div>
+          </div>
+          <div class="vx-device">
+            <div class="vx-device__bar"><i></i><i></i><i></i><span>northpine.example/help</span></div>
+            <div class="vx-device__view" style="--h:300px">
+              <div class="vx-screens" style="height:100%">
+                <div class="vx-screen is-active" id="scr-chat">
+                  <div class="vx-app">
+                    <div class="vx-app__top"><i data-lucide="chevron-left"></i>Order help<small>Relay agent</small></div>
+                    <div class="vx-app__order"><span class="vx-iconchip"><i data-lucide="package"></i></span><div><b>Ridgeline 2L hydration pack</b><span>#A-20931 · $84.00 · delivered Nov 18</span></div></div>
+                    <div class="vx-bubble vx-bubble--me" style="align-self:flex-end">My pack arrived with a torn shoulder strap. I'd like a refund please.</div>
+                    <div class="vx-app__typing"><span class="vx-dots" aria-hidden="true"><i></i><i></i><i></i></span>Checking your order</div>
+                  </div>
+                </div>
+                <div class="vx-screen" id="scr-refund">
+                  <div class="vx-app">
+                    <div class="vx-app__top"><i data-lucide="chevron-left"></i>Order help<small>#A-20931</small></div>
+                    <div class="vx-app__hero">
+                      <span class="vx-iconchip vx-iconchip--lg vx-iconchip--round vx-iconchip--primary"><i data-lucide="receipt"></i></span>
+                      <div class="vx-caption">Refund approved</div>
+                      <div class="vx-app__amount" id="vx-app-amount">$84.00</div>
+                      <div class="vx-caption">to Visa •• 4127 · no return needed</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="vx-screen" id="scr-done">
+                  <div class="vx-app">
+                    <div class="vx-app__top"><i data-lucide="chevron-left"></i>Order help<small>Solved</small></div>
+                    <div class="vx-app__hero">
+                      <span class="vx-iconchip vx-iconchip--lg vx-iconchip--round vx-iconchip--pos"><i data-lucide="circle-check-big"></i></span>
+                      <h3 class="vx-h3">Money on its way</h3>
+                      <div class="vx-caption">$84.00 back to Visa •• 4127 in 3–5 business days</div>
+                      <div class="vx-app__list">
+                        <div><span>Requested</span><b>Nov 27, 14:02</b></div>
+                        <div><span>Refund issued</span><b>re_3NfK8Wp</b></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- second, independent sequence: the payment handshake behind "Issue refund" -->
+    <section class="vx-card vx-section vx-seq-card" data-vx-sequence data-vx-autoplay data-vx-done="Refund settled">
+      <div class="vx-run__head">
+        <div class="vx-card__title"><h2 class="vx-h2">Refund handshake</h2><div class="vx-caption">What happens behind “Issue refund” · re_3NfK8Wp</div></div>
+        <div class="vx-player">
+          <button class="vx-btn vx-btn--sm" data-vx-run="play"><i data-lucide="play"></i><span data-vx-run-label="Play">Play</span></button>
+          <button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm" data-vx-run="reset" aria-label="Reset handshake"><i data-lucide="rotate-ccw"></i></button>
+          <span class="vx-run__status" data-vx-run-status>Ready · 7 messages</span>
+        </div>
+      </div>
+      <div class="vx-seq">
+        <div class="vx-seq__lanes"><span><i data-lucide="bot"></i>Relay agent</span><span><i data-lucide="credit-card"></i>Payments API</span><span><i data-lucide="landmark"></i>Card network</span></div>
+        <ol class="vx-seq__msgs">
+          <li class="vx-seq__msg" data-vx-step data-from="1" data-to="2" data-ms="700"><b>POST /v1/refunds</b>order=A-20931 · amount=84.00</li>
+          <li class="vx-seq__msg" data-vx-step data-from="2" data-to="2" data-ms="300"><b>idempotency key stored</b>rf_7Qd2Lx-A20931 · 24h</li>
+          <li class="vx-seq__msg" data-vx-step data-from="2" data-to="3" data-ms="800"><b>refund.authorize</b>Visa •• 4127 · 84.00 USD</li>
+          <li class="vx-seq__msg" data-vx-step data-from="3" data-to="2" data-ms="600"><b>200 approved</b>arn=74512346331020931 · 412ms</li>
+          <li class="vx-seq__msg" data-vx-step data-from="2" data-to="1" data-ms="500"><b>201 Created</b>refund=re_3NfK8Wp · status=pending</li>
+          <li class="vx-seq__msg" data-vx-step data-from="3" data-to="2" data-ms="700"><b>settlement.posted</b>batch 2026-11-27 · 84.00 USD</li>
+          <li class="vx-seq__msg" data-vx-step data-from="2" data-to="1" data-ms="500"><b>webhook refund.succeeded</b>re_3NfK8Wp · 2026-11-27T14:02:19Z</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+</body>
+</html>

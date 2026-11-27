@@ -1,6 +1,7 @@
 # Charts (`assets/vista-charts.js`)
 
-Zero dependencies, SVG, theme-aware, responsive (re-renders on resize), hover tooltips, animated draw-in.
+Zero dependencies, SVG, theme-aware, responsive (re-renders at most once per frame on resize), hover
+tooltips, animated draw-in, and shape morphing when the data changes.
 
 ```html
 <div class="vx-chart" style="--h:240px" data-vx-chart="TYPE" data-vx='{ JSON CONFIG }'></div>
@@ -8,7 +9,9 @@ Zero dependencies, SVG, theme-aware, responsive (re-renders on resize), hover to
 - Height comes from `--h` (default 240px); width fills the container.
 - JSON must be valid (double quotes, no trailing commas). Long configs can go in a child
   `<script type="application/json">{…}</script>` instead of `data-vx`.
-- JS API: `VistaCharts.render(el, "bar", cfg)`, `VistaCharts.renderAll(rootEl)` (call after injecting HTML).
+- JS API: `VistaCharts.render(el, "bar", cfg)`, `VistaCharts.renderAll(rootEl)` (call after injecting HTML),
+  `VistaCharts.update(el, {series, labels, …})` (merge + morph), `VistaCharts.replay(el)`, `VistaCharts.escape(text)`.
+- Labels, series names and donut labels are HTML-escaped in tooltips and centers, so data from users/APIs is safe.
 - Colors: omit for palette order, or `"color": "chart-3"` (theme token), `"--my-var"`, or any CSS color.
 
 ## Motion
@@ -16,11 +19,16 @@ Each chart draws itself the first time it is 20% visible: bars grow from the bas
 left → right (stacked segments build upward); lines and areas sweep left → right; donut slices fill in
 order; gauge and ring arcs sweep; the end dot pops; pills fade up; the donut/gauge center counts up.
 When `vista-motion.js` is present the draw-in waits for its card to land (synced, +120ms).
-- `render(el, type, cfg)` on an element that already played = data update → quick replay (0.7× time).
+- `render(el, type, cfg)` / `update(el, patch)` on a chart that already played = data update → the old bars,
+  lines and areas **morph** into the new ones (same type, same number of series and points; browsers that can
+  animate the SVG `d` property — Chromium, Firefox). Otherwise (donut/gauge/ring, changed point count, Safari)
+  it falls back to a quick replay (0.7× time).
+- Declarative: put `data-vx-patch='{"series":[…]}'` on each option of a `data-vx-group data-vx-swap="#chart"` control.
 - `VistaCharts.replay(el)` replays with the current config; `VistaCharts.flush()` plays every waiting chart now.
 - Off: `"animate": false` in the config, `renderAll(root, {animate:false})`, `<html data-vx-motion="off">`
   or the user's reduced-motion setting.
-- Hover: bars dim the others, donut slices thicken, the tooltip glides between points — all with transitions.
+- Hover: bars dim the others, donut slices thicken, the tooltip glides between points (`translate`, compositor) —
+  one DOM update per frame, none while the pointer stays on the same point.
 
 ## Common options (bar / line / area)
 | Option | Default | Meaning |

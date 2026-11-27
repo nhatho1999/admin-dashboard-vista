@@ -1,0 +1,365 @@
+<!doctype html>
+<!-- Live motion page in the dark theme: everything on screen that changes does it with the motion API.
+     Declarative: data-vx-odometer (rolling digits), data-vx-swap + data-vx-patch (chart morphs between
+     periods), data-vx-open / data-vx-close (⌘K palette, rollback dialog), data-vx-loading + data-vx-toast,
+     .vx-magnetic / .vx-ripple on the CTA, .vx-glow on the KPI row.
+     Scripted (bottom of the file): VistaMotion.countTo / insert / remove / swap / toast / open / close.
+     Timers stop while the tab is hidden, so a background tab costs nothing. -->
+<html lang="en" data-theme="graphite">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Northwind Cloud — Deploy console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
+  <style>
+    /* page-only additions (tokens only) */
+    .vx-eyebrow .vx-live { margin-left: 4px; color: var(--vx-pos); letter-spacing: .08em; }
+    .vx-diff { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: var(--vx-r-md); background: var(--vx-sunken); border: 1px solid var(--vx-line); }
+    .vx-diff > div { flex: 1; min-width: 0; }
+    .vx-diff b { display: block; font-size: 15px; font-family: var(--vx-font-num); }
+    .vx-diff svg { flex: none; color: var(--vx-ink-3); }
+    .vx-feed-end { text-align: right; font-size: 11.5px; color: var(--vx-on-dark-3, rgba(255,255,255,.6)); white-space: nowrap; }
+    .vx-search__label { flex: 1; min-width: 0; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .vx-feed-end .vx-status { display: inline-flex; margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+<div class="vx-shell--sidebar">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="vx-sidebar vx-chrome">
+    <div class="vx-brand">
+      <div class="vx-brand__mark"><i data-lucide="cloud-cog"></i></div>
+      <div class="vx-brand__text"><div class="vx-brand__name">Northwind Cloud</div><div class="vx-brand__sub">Platform team · prod</div></div>
+    </div>
+    <nav class="vx-nav" data-vx-group>
+      <div class="vx-nav__label">Release</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="layout-dashboard"></i><span>Overview</span></a>
+      <a class="vx-nav__item is-active" href="#"><i data-lucide="rocket"></i><span>Deploys</span><span class="vx-nav__badge">3</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="siren"></i><span>Incidents</span><span class="vx-nav__badge">1</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="server"></i><span>Services</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="workflow"></i><span>Pipelines</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="flag"></i><span>Feature flags</span></a>
+      <div class="vx-nav__label">Team</div>
+      <a class="vx-nav__item" href="#"><i data-lucide="phone-call"></i><span>On-call</span></a>
+      <a class="vx-nav__item" href="#"><i data-lucide="settings"></i><span>Settings</span></a>
+    </nav>
+    <div class="vx-plan">
+      <div class="vx-plan__row"><b>Build minutes</b><span>8,420 of 12,000</span></div>
+      <div class="vx-progress"><i style="--v:70%"></i></div>
+    </div>
+  </aside>
+
+  <!-- ============ TOPBAR ============ -->
+  <header class="vx-topbar vx-chrome">
+    <button class="vx-search" data-vx-open="#cmdk" aria-label="Open command palette"><i data-lucide="search"></i><span class="vx-search__label">Search or run a command…</span><span class="vx-kbd">⌘K</span></button>
+    <div class="vx-topbar__spacer"></div>
+    <button class="vx-iconbtn" aria-label="Runbooks" data-vx-toast="Runbooks synced" data-vx-toast-tone="info" data-vx-toast-sub="42 pages · last edit 3 h ago"><i data-lucide="book-open"></i></button>
+    <button class="vx-iconbtn vx-iconbtn--light" aria-label="Alerts"><i data-lucide="bell"></i><span class="vx-ping"></span></button>
+    <div class="vx-user"><span class="vx-avatar vx-avatar--lime">MC</span><div><div class="vx-user__name">Mira Chen</div><div class="vx-user__role">SRE · on-call</div></div></div>
+  </header>
+
+  <!-- ============ PANEL ============ -->
+  <main class="vx-panel">
+    <div class="vx-page-head">
+      <div class="vx-page-head__text">
+        <div class="vx-eyebrow">Release <span class="sep">/</span> Deploys <span class="vx-live">Live</span></div>
+        <h1 class="vx-h1">Deploy console</h1>
+        <p class="vx-sub"><b>3 rollouts</b> in progress, <b>1 incident</b> open on payments-api and <b>2 services</b> burning error budget.</p>
+      </div>
+      <div class="vx-page-head__actions">
+        <div class="vx-seg" data-vx-group data-vx-swap="#latency">
+          <button data-vx-patch='{"labels":["10:05","10:10","10:15","10:20","10:25","10:30","10:35","10:40","10:45","10:50","10:55","11:00"],"series":[{"name":"p95","data":[176,181,179,188,194,186,183,190,201,192,185,182]},{"name":"p50","data":[61,63,62,66,68,65,64,67,71,68,65,64],"color":"chart-2"}]}'>1H</button>
+          <button class="is-active" data-vx-patch='{"labels":["00:00","02:00","04:00","06:00","08:00","10:00","12:00","14:00","16:00","18:00","20:00","22:00"],"series":[{"name":"p95","data":[142,136,131,139,168,184,196,212,205,188,171,158]},{"name":"p50","data":[48,46,44,47,58,64,69,74,72,66,60,54],"color":"chart-2"}]}'>24H</button>
+          <button data-vx-patch='{"labels":["Nov 21","","Nov 22","","Nov 23","","Nov 24","","Nov 25","","Nov 26",""],"series":[{"name":"p95","data":[204,192,231,214,188,176,249,226,198,183,192,182]},{"name":"p50","data":[72,69,81,76,66,62,88,79,70,65,67,64],"color":"chart-2"}]}'>7D</button>
+        </div>
+        <button class="vx-btn vx-btn--cta vx-magnetic vx-ripple" id="deploy-btn" data-vx-loading="1200" data-vx-toast="Deploy #4812 started" data-vx-toast-sub="api-gateway · canary 10%"><i data-lucide="rocket"></i>Deploy</button>
+      </div>
+    </div>
+
+    <!-- KPI row — odometer digits roll on every live update -->
+    <div class="vx-grid-4">
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip"><i data-lucide="activity"></i></span><span class="vx-stat__label">Requests / s</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>6.4%</span></div>
+        <div class="vx-stat__value vx-num" id="kpi-rps" data-vx-odometer>48,212</div>
+        <div class="vx-caption">peak today 61,904 at 14:12</div>
+        <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[39,41,40,44,43,46,45,47,48.2]}'></div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip"><i data-lucide="timer"></i></span><span class="vx-stat__label">p95 latency</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-down"></i>9 ms</span></div>
+        <div class="vx-stat__value vx-num" id="kpi-p95" data-vx-odometer>182 ms</div>
+        <div class="vx-caption">SLO 250 ms · 27% headroom</div>
+        <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[201,196,198,190,192,187,185,184,182],"color":"chart-2"}'></div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip vx-iconchip--warn"><i data-lucide="triangle-alert"></i></span><span class="vx-stat__label">Error rate</span><span class="vx-delta vx-delta--down"><i data-lucide="trending-up"></i>0.06 pts</span></div>
+        <div class="vx-stat__value vx-num" id="kpi-err" data-vx-odometer>0.21%</div>
+        <div class="vx-caption">budget left this month 64%</div>
+        <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[0.14,0.15,0.13,0.16,0.15,0.18,0.17,0.2,0.21],"color":"chart-4"}'></div>
+      </div>
+      <div class="vx-card vx-stat vx-glow">
+        <div class="vx-stat__top"><span class="vx-iconchip"><i data-lucide="git-commit-horizontal"></i></span><span class="vx-stat__label">Deploys today</span><span class="vx-delta vx-delta--up"><i data-lucide="trending-up"></i>12</span></div>
+        <div class="vx-stat__value vx-num" id="kpi-deploys" data-vx-odometer>37</div>
+        <div class="vx-caption">2 rolled back · median 6m 40s</div>
+        <div class="vx-stat__spark" data-vx-chart="sparkline" data-vx='{"data":[18,22,25,21,28,30,26,33,37],"color":"chart-3"}'></div>
+      </div>
+    </div>
+
+    <div class="vx-split vx-section">
+      <section class="vx-card">
+        <div class="vx-card__head">
+          <div class="vx-card__title"><h2 class="vx-h2">Latency p50 / p95</h2><div class="vx-caption">All production traffic · edge to origin</div></div>
+          <div class="vx-legend"><span><i style="--c:var(--vx-chart-1)"></i>p95</span><span><i style="--c:var(--vx-chart-2)"></i>p50</span></div>
+        </div>
+        <div class="vx-chart" id="latency" style="--h:300px" data-vx-chart="area" data-vx='{
+          "labels":["00:00","02:00","04:00","06:00","08:00","10:00","12:00","14:00","16:00","18:00","20:00","22:00"],
+          "series":[{"name":"p95","data":[142,136,131,139,168,184,196,212,205,188,171,158]},
+                    {"name":"p50","data":[48,46,44,47,58,64,69,74,72,66,60,54],"color":"chart-2"}],
+          "yFormat":{"suffix":" ms"},"endDot":true}'></div>
+      </section>
+
+      <section class="vx-card vx-card--dark">
+        <div class="vx-card__head">
+          <div class="vx-card__title"><h2 class="vx-h2">Live deploys</h2><div class="vx-caption">Streaming from all pipelines</div></div>
+          <span class="vx-live">Live</span>
+        </div>
+        <div class="vx-list" id="feed">
+          <div class="vx-list__item"><span class="vx-iconchip"><i data-lucide="rocket"></i></span><div class="vx-list__body"><div class="vx-list__title">notifications v4.0.2</div><div class="vx-list__sub">#4811 · Rolling 3 of 8 pods · Priya Raman</div></div><div class="vx-feed-end"><span class="vx-status vx-status--info">Rolling</span><br>1 min ago</div></div>
+          <div class="vx-list__item"><span class="vx-iconchip"><i data-lucide="circle-check"></i></span><div class="vx-list__body"><div class="vx-list__title">auth-service v5.8.1</div><div class="vx-list__sub">#4810 · eu-west-1 · Jonas Ortiz</div></div><div class="vx-feed-end"><span class="vx-status vx-status--success">Live</span><br>4 min ago</div></div>
+          <div class="vx-list__item"><span class="vx-iconchip"><i data-lucide="git-branch"></i></span><div class="vx-list__body"><div class="vx-list__title">api-gateway v2.42.0</div><div class="vx-list__sub">#4809 · Canary 25% · Mira Chen</div></div><div class="vx-feed-end"><span class="vx-status vx-status--info">Canary</span><br>9 min ago</div></div>
+          <div class="vx-list__item"><span class="vx-iconchip"><i data-lucide="rotate-ccw"></i></span><div class="vx-list__body"><div class="vx-list__title">payments-api v2.7.5</div><div class="vx-list__sub">#4807 · Auto-rollback on 5xx spike · bot</div></div><div class="vx-feed-end"><span class="vx-status vx-status--warn">Rolled back</span><br>18 min ago</div></div>
+          <div class="vx-list__item"><span class="vx-iconchip"><i data-lucide="circle-check"></i></span><div class="vx-list__body"><div class="vx-list__title">edge-cache v9.12.7</div><div class="vx-list__sub">#4806 · global · Leo Kim</div></div><div class="vx-feed-end"><span class="vx-status vx-status--success">Live</span><br>26 min ago</div></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="vx-card vx-section">
+      <div class="vx-card__head">
+        <div class="vx-card__title"><h2 class="vx-h2">Services</h2><div class="vx-caption">8 production services · sorted by owner team</div></div>
+        <button class="vx-btn vx-btn--sm vx-btn--ghost" id="refresh"><i data-lucide="refresh-cw"></i>Refresh</button>
+      </div>
+      <div class="vx-table-wrap">
+        <table class="vx-table vx-table--nowrap">
+          <thead><tr><th>Service</th><th>Version</th><th>Region</th><th>Status</th><th class="r">p95</th><th class="r">Errors</th><th>Owner</th><th class="r"></th></tr></thead>
+          <tbody id="services">
+            <tr data-svc="api-gateway"><td><div class="vx-person__name">api-gateway</div><div class="vx-person__sub">northwind/gateway</div></td><td class="id">v2.42.0</td><td>us-east-1</td><td><span class="vx-status vx-status--info">Canary 25%</span></td><td class="r vx-num vx-strong">164 ms</td><td class="r vx-num">0.18%</td><td><span class="vx-avatar vx-avatar--sm vx-avatar--lime" title="Mira Chen">MC</span></td><td class="r"><button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm" aria-label="Roll back api-gateway" data-vx-open="#rollback" data-rb-svc="api-gateway" data-rb-from="v2.42.0" data-rb-to="v2.41.3"><i data-lucide="rotate-ccw"></i></button></td></tr>
+            <tr data-svc="auth-service"><td><div class="vx-person__name">auth-service</div><div class="vx-person__sub">northwind/identity</div></td><td class="id">v5.8.1</td><td>eu-west-1</td><td><span class="vx-status vx-status--success">Healthy</span></td><td class="r vx-num vx-strong">92 ms</td><td class="r vx-num">0.04%</td><td><span class="vx-avatar vx-avatar--sm vx-avatar--sky" title="Jonas Ortiz">JO</span></td><td class="r"><button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm" aria-label="Roll back auth-service" data-vx-open="#rollback" data-rb-svc="auth-service" data-rb-from="v5.8.1" data-rb-to="v5.8.0"><i data-lucide="rotate-ccw"></i></button></td></tr>
+            <tr data-svc="billing-worker"><td><div class="vx-person__name">billing-worker</div><div class="vx-person__sub">northwind/billing</div></td><td class="id">v1.19.4</td><td>us-east-1</td><td><span class="vx-status vx-status--warn">Degraded</span></td><td class="r vx-num vx-strong">412 ms</td><td class="r vx-num">1.62%</td><td><span class="vx-avatar vx-avatar--sm vx-avatar--amber" title="Ada Nwosu">AN</span></td><td class="r"><button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm" aria-label="Roll back billing-worker" data-vx-open="#rollback" data-rb-svc="billing-worker" data-rb-from="v1.19.4" data-rb-to="v1.19.2"><i data-lucide="rotate-ccw"></i></button></td></tr>
+            <tr data-svc="search-indexer"><td><div class="vx-person__name">search-indexer</div><div class="vx-person__sub">northwind/search</div></td><td class="id">v3.3.0</td><td>ap-south-1</td><td><span class="vx-status vx-status--success">Healthy</span></td><td class="r vx-num vx-strong">238 ms</td><td class="r vx-num">0.09%</td><td><span class="vx-avatar vx-avatar--sm vx-avatar--violet" title="Leo Kim">LK</span></td><td class="r"><button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm" aria-label="Roll back search-indexer" data-vx-open="#rollback" data-rb-svc="search-indexer" data-rb-from="v3.3.0" data-rb-to="v3.2.9"><i data-lucide="rotate-ccw"></i></button></td></tr>
+            <tr data-svc="notifications"><td><div class="vx-person__name">notifications</div><div class="vx-person__sub">northwind/notify</div></td><td class="id">v4.0.2</td><td>eu-central-1</td><td><span class="vx-status vx-status--info">Rolling 3/8</span></td><td class="r vx-num vx-strong">121 ms</td><td class="r vx-num">0.11%</td><td><span class="vx-avatar vx-avatar--sm vx-avatar--rose" title="Priya Raman">PR</span></td><td class="r"><button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm" aria-label="Roll back notifications" data-vx-open="#rollback" data-rb-svc="notifications" data-rb-from="v4.0.2" data-rb-to="v4.0.1"><i data-lucide="rotate-ccw"></i></button></td></tr>
+            <tr data-svc="edge-cache"><td><div class="vx-person__name">edge-cache</div><div class="vx-person__sub">northwind/edge</div></td><td class="id">v9.12.7</td><td>global</td><td><span class="vx-status vx-status--success">Healthy</span></td><td class="r vx-num vx-strong">18 ms</td><td class="r vx-num">0.01%</td><td><span class="vx-avatar vx-avatar--sm vx-avatar--violet" title="Leo Kim">LK</span></td><td class="r"><button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm" aria-label="Roll back edge-cache" data-vx-open="#rollback" data-rb-svc="edge-cache" data-rb-from="v9.12.7" data-rb-to="v9.12.5"><i data-lucide="rotate-ccw"></i></button></td></tr>
+            <tr data-svc="payments-api"><td><div class="vx-person__name">payments-api</div><div class="vx-person__sub">northwind/payments</div></td><td class="id">v2.7.4</td><td>us-west-2</td><td><span class="vx-status vx-status--danger">Incident</span></td><td class="r vx-num vx-strong">688 ms</td><td class="r vx-num">3.40%</td><td><span class="vx-avatar vx-avatar--sm vx-avatar--mint" title="Sam Okoro">SO</span></td><td class="r"><button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm" aria-label="Roll back payments-api" data-vx-open="#rollback" data-rb-svc="payments-api" data-rb-from="v2.7.4" data-rb-to="v2.7.2"><i data-lucide="rotate-ccw"></i></button></td></tr>
+            <tr data-svc="media-transcoder"><td><div class="vx-person__name">media-transcoder</div><div class="vx-person__sub">northwind/media</div></td><td class="id">v0.31.0</td><td>us-east-2</td><td><span class="vx-status vx-status--neutral">Paused</span></td><td class="r vx-num vx-strong">1.42 s</td><td class="r vx-num">0.27%</td><td><span class="vx-avatar vx-avatar--sm vx-avatar--peach" title="Hana Ito">HI</span></td><td class="r"><button class="vx-iconbtn vx-iconbtn--ink vx-iconbtn--sm" aria-label="Roll back media-transcoder" data-vx-open="#rollback" data-rb-svc="media-transcoder" data-rb-from="v0.31.0" data-rb-to="v0.30.6"><i data-lucide="rotate-ccw"></i></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ⌘K command palette -->
+<dialog class="vx-cmdk" id="cmdk" data-vx-cmdk aria-label="Command palette">
+  <div class="vx-cmdk__search"><i data-lucide="search"></i><input placeholder="Type a command or a service…" aria-label="Search commands"></div>
+  <div class="vx-cmdk__list" role="listbox">
+    <div class="vx-cmdk__group">Jump to service</div>
+    <button class="vx-cmdk__item" role="option" data-jump="api-gateway" data-keywords="gateway edge ingress"><span class="vx-iconchip"><i data-lucide="network"></i></span><span>api-gateway<small>v2.42.0 · canary 25% · us-east-1</small></span><span class="vx-kbd">G A</span></button>
+    <button class="vx-cmdk__item" role="option" data-jump="payments-api" data-keywords="incident billing card"><span class="vx-iconchip"><i data-lucide="siren"></i></span><span>payments-api<small>Incident open · 3.40% errors</small></span></button>
+    <button class="vx-cmdk__item" role="option" data-jump="billing-worker" data-keywords="queue jobs"><span class="vx-iconchip"><i data-lucide="database"></i></span><span>billing-worker<small>Degraded · p95 412 ms</small></span></button>
+    <button class="vx-cmdk__item" role="option" data-jump="search-indexer" data-keywords="index elastic"><span class="vx-iconchip"><i data-lucide="server"></i></span><span>search-indexer<small>Healthy · ap-south-1</small></span></button>
+    <div class="vx-cmdk__group">Actions</div>
+    <button class="vx-cmdk__item" role="option" data-vx-open="#rollback" data-rb-svc="api-gateway" data-rb-from="v2.42.0" data-rb-to="v2.41.3" data-keywords="revert undo"><span class="vx-iconchip"><i data-lucide="rotate-ccw"></i></span><span>Roll back api-gateway<small>v2.42.0 → v2.41.3</small></span><span class="vx-kbd">R</span></button>
+    <button class="vx-cmdk__item" role="option" data-vx-toast="Paged on-call: Priya Raman" data-vx-toast-tone="info" data-vx-toast-sub="Escalates to Jonas Ortiz in 10 min" data-keywords="pager alert escalate"><span class="vx-iconchip"><i data-lucide="bell-ring"></i></span><span>Page on-call<small>Primary: Priya Raman</small></span></button>
+    <button class="vx-cmdk__item" role="option" data-cmd="pause" data-keywords="stop stream live freeze"><span class="vx-iconchip"><i data-lucide="radio"></i></span><span>Pause live updates<small>Freeze the stream and KPI counters</small></span></button>
+    <button class="vx-cmdk__item" role="option" data-cmd="motion" data-keywords="animation accessibility calm"><span class="vx-iconchip"><i data-lucide="accessibility"></i></span><span>Toggle reduced motion<small>Final states only, no movement</small></span></button>
+    <button class="vx-cmdk__item" role="option" data-vx-toast="Runbook opened" data-vx-toast-tone="info" data-vx-toast-sub="payments-api · 5xx spike" data-keywords="docs help"><span class="vx-iconchip"><i data-lucide="book-open"></i></span><span>Open incident runbook<small>payments-api · 5xx spike</small></span></button>
+  </div>
+  <div class="vx-cmdk__empty" hidden>No results — try another word.</div>
+  <div class="vx-cmdk__foot"><span><span class="vx-kbd">↑↓</span>navigate</span><span><span class="vx-kbd">↵</span>run</span><span><span class="vx-kbd">esc</span>close</span></div>
+</dialog>
+
+<!-- rollback confirm -->
+<dialog class="vx-modal" id="rollback" aria-labelledby="rb-title">
+  <div class="vx-dialog__head">
+    <div><div class="vx-eyebrow">Production · <span id="rb-region">us-east-1</span></div><h2 class="vx-h2" id="rb-title">Roll back <span id="rb-svc">api-gateway</span>?</h2></div>
+    <button class="vx-iconbtn vx-iconbtn--sm" data-vx-close aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div class="vx-dialog__body vx-stack">
+    <p class="vx-sub" style="margin:0">Traffic shifts to the previous build in about <b>90 seconds</b>. The current canary is stopped and its pods drain.</p>
+    <div class="vx-diff">
+      <div><span class="vx-caption">Running now</span><b id="rb-from">v2.42.0</b></div>
+      <i data-lucide="arrow-right"></i>
+      <div><span class="vx-caption">Roll back to</span><b id="rb-to">v2.41.3</b></div>
+    </div>
+    <div class="vx-row"><button class="vx-check is-on" id="rb-notify" aria-label="Notify #platform"><i data-lucide="check" style="width:12px;height:12px"></i></button><div><b class="vx-h3">Notify #platform</b><div class="vx-caption">Post the rollback and reason to the team channel</div></div></div>
+  </div>
+  <div class="vx-dialog__foot">
+    <button class="vx-btn vx-btn--ghost" data-vx-close>Cancel</button>
+    <button class="vx-btn vx-btn--danger" id="rb-confirm"><i data-lucide="rotate-ccw"></i>Roll back</button>
+  </div>
+</dialog>
+
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+<script>
+  /* Live wiring — every change goes through the motion API; dynamic text only via textContent. */
+  (function () {
+    var M = window.VistaMotion, doc = document;
+    var $ = function (s) { return doc.querySelector(s); };
+    var rps = $("#kpi-rps"), p95 = $("#kpi-p95"), deploys = $("#kpi-deploys"), feed = $("#feed");
+    var state = { rps: 48212, p95: 182, deploys: 37, n: 4813, paused: false, shipped: false };
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+
+    function el(tag, cls, text) {
+      var n = doc.createElement(tag);
+      if (cls) n.className = cls;
+      if (text !== undefined) n.textContent = text;
+      return n;
+    }
+    function icon(name) { var i = doc.createElement("i"); i.setAttribute("data-lucide", name); return i; }
+
+    /* ---- live deploy feed: new row in, oldest out beyond 5 ---- */
+    var EVENTS = [
+      { svc: "search-indexer", ver: "v3.3.1", sub: "ap-south-1 · Leo Kim", tone: "success", label: "Live", ico: "circle-check" },
+      { svc: "api-gateway", ver: "v2.42.0", sub: "Canary 50% · Mira Chen", tone: "info", label: "Canary", ico: "git-branch" },
+      { svc: "billing-worker", ver: "v1.19.5", sub: "Rolling 2 of 6 pods · Ada Nwosu", tone: "info", label: "Rolling", ico: "rocket" },
+      { svc: "auth-service", ver: "v5.8.2", sub: "Health check failed · bot", tone: "danger", label: "Failed", ico: "circle-x" },
+      { svc: "notifications", ver: "v4.0.2", sub: "eu-central-1 · Priya Raman", tone: "success", label: "Live", ico: "circle-check" },
+      { svc: "media-transcoder", ver: "v0.31.1", sub: "Queued behind freeze · Hana Ito", tone: "neutral", label: "Queued", ico: "clock" }
+    ];
+    var ev = 0;
+    function feedRow(e, num) {
+      var row = el("div", "vx-list__item"), chip = el("span", "vx-iconchip"), body = el("div", "vx-list__body"), end = el("div", "vx-feed-end");
+      chip.appendChild(icon(e.ico));
+      body.appendChild(el("div", "vx-list__title", e.svc + " " + e.ver));
+      body.appendChild(el("div", "vx-list__sub", "#" + num + " · " + e.sub));
+      end.appendChild(el("span", "vx-status vx-status--" + e.tone, e.label));
+      end.appendChild(el("br"));
+      end.appendChild(doc.createTextNode("just now"));
+      row.appendChild(chip); row.appendChild(body); row.appendChild(end);
+      return row;
+    }
+    function pushFeed(row) {
+      M.insert(feed, row);
+      var rows = feed.querySelectorAll(":scope > .vx-list__item");
+      for (var i = 5; i < rows.length; i++) M.remove(rows[i]);
+    }
+
+    /* ---- ticks ---- */
+    function tickFast() {                                   // every 2.4s
+      state.rps = Math.max(30000, Math.round(state.rps + rnd(-900, 1100)));
+      M.countTo(rps, state.rps);
+      if (Math.random() < 0.3) { state.deploys++; }
+      M.countTo(deploys, state.deploys, { flash: false });
+    }
+    function tickP95() {                                    // every 6s
+      state.p95 = Math.round(Math.min(240, Math.max(150, state.p95 + rnd(-9, 9))));
+      M.countTo(p95, state.p95);
+    }
+    function tickFeed() {                                   // every 5s
+      pushFeed(feedRow(EVENTS[ev++ % EVENTS.length], state.n++));
+    }
+
+    /* ---- timers stop when the tab is hidden or the stream is paused ---- */
+    var timers = [];
+    function start() {
+      if (timers.length || state.paused || doc.hidden) return;
+      timers = [setInterval(tickFast, 2400), setInterval(tickP95, 6000), setInterval(tickFeed, 5000)];
+    }
+    function stop() { timers.forEach(clearInterval); timers = []; }
+    doc.addEventListener("visibilitychange", function () { if (doc.hidden) stop(); else start(); });
+    start();
+
+    /* ---- Deploy CTA: the toast comes from data-vx-toast; the feed gets the row once ---- */
+    $("#deploy-btn").addEventListener("click", function () {
+      if (state.shipped) return;
+      state.shipped = true;
+      setTimeout(function () {
+        pushFeed(feedRow({ svc: "api-gateway", ver: "v2.42.1", sub: "Canary 10% · Mira Chen", tone: "info", label: "Canary", ico: "rocket" }, 4812));
+        state.deploys++; M.countTo(deploys, state.deploys);
+      }, 1200);
+    });
+
+    /* ---- rollback dialog: filled from the button that opened it ---- */
+    var rb = { svc: "api-gateway", from: "v2.42.0", to: "v2.41.3" };
+    doc.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-rb-svc]");
+      if (!b) return;
+      rb = { svc: b.getAttribute("data-rb-svc"), from: b.getAttribute("data-rb-from"), to: b.getAttribute("data-rb-to") };
+      var tr = $('#services tr[data-svc="' + rb.svc + '"]');
+      $("#rb-svc").textContent = rb.svc; $("#rb-from").textContent = rb.from; $("#rb-to").textContent = rb.to;
+      if (tr) $("#rb-region").textContent = tr.children[2].textContent;
+    }, true);
+    $("#rb-confirm").addEventListener("click", function () {
+      var tr = $('#services tr[data-svc="' + rb.svc + '"]'), cur = Object.assign({}, rb);
+      var pill = tr && tr.querySelector(".vx-status"), ver = tr && tr.querySelector(".id");
+      var before = pill ? { cls: pill.className, text: pill.textContent, ver: ver.textContent } : null;
+      M.close("#rollback");
+      if (pill) {
+        M.swap(pill, function () { pill.className = "vx-status vx-status--warn"; pill.textContent = "Rolled back"; ver.textContent = cur.to; });
+      }
+      var notify = $("#rb-notify").classList.contains("is-on");
+      M.toast("Rolled back " + cur.svc + " to " + cur.to, {
+        tone: "warn", sub: notify ? "Posted to #platform" : "Team not notified",
+        action: { label: "Undo", onClick: function () {
+          if (pill && before) M.swap(pill, function () { pill.className = before.cls; pill.textContent = before.text; ver.textContent = before.ver; });
+          M.toast(cur.svc + " back on " + cur.from, { tone: "info" });
+        } }
+      });
+    });
+
+    /* ---- palette commands ---- */
+    doc.addEventListener("click", function (e) {
+      var j = e.target.closest("[data-jump]");
+      if (j) {
+        var tr = $('#services tr[data-svc="' + j.getAttribute("data-jump") + '"]');
+        if (tr) { tr.scrollIntoView({ behavior: M.level() === "off" ? "auto" : "smooth", block: "center" }); M.flash(tr); }
+        return;
+      }
+      var c = e.target.closest("[data-cmd]");
+      if (!c) return;
+      var small = c.querySelector("small"), label = small.previousSibling;
+      if (c.getAttribute("data-cmd") === "pause") {
+        state.paused = !state.paused;
+        if (state.paused) stop(); else start();
+        label.textContent = state.paused ? "Resume live updates" : "Pause live updates";
+        M.toast(state.paused ? "Live updates paused" : "Live updates resumed", { tone: "info" });
+      } else {
+        var html = doc.documentElement, off = html.getAttribute("data-vx-motion") === "off";
+        if (off) html.removeAttribute("data-vx-motion"); else html.setAttribute("data-vx-motion", "off");
+        M.toast(off ? "Motion back on" : "Reduced motion on", { tone: "info", sub: off ? "Standard level" : "Final states only" });
+      }
+    });
+
+    /* ---- Refresh: skeleton rows, then the real rows crossfade back ---- */
+    var refresh = $("#refresh"), tbody = $("#services");
+    refresh.addEventListener("click", function () {
+      var keep = Array.prototype.slice.call(tbody.children), cols = keep[0].children.length;
+      var widths = ["70%", "55%", "60%", "64%", "48%", "42%", "34px", "30px"];
+      refresh.disabled = true;
+      M.swap(tbody, function () {
+        tbody.replaceChildren();
+        for (var r = 0; r < keep.length; r++) {
+          var tr = el("tr");
+          for (var c = 0; c < cols; c++) {
+            var td = el("td"), s = el("span", c > 5 ? "vx-skeleton vx-skeleton--circle" : "vx-skeleton vx-skeleton--text");
+            if (c > 5) s.style.setProperty("--s", c === 6 ? "26px" : "28px"); else s.style.setProperty("--w", widths[c]);
+            td.appendChild(s); tr.appendChild(td);
+          }
+          tbody.appendChild(tr);
+        }
+      }).then(function () {
+        setTimeout(function () {
+          M.swap(tbody, function () { tbody.replaceChildren.apply(tbody, keep); })
+            .then(function () { refresh.disabled = false; M.toast("Services refreshed", { tone: "info", sub: "8 services · 1 incident open" }); });
+        }, 900);
+      });
+    });
+  })();
+</script>
+</body>
+</html>

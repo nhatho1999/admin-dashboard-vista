@@ -1,0 +1,59 @@
+<!doctype html>
+<!-- VISTA UI · AUTH SHELL — sign in / sign up / reset / invite. Left: glass brand side with one proof
+     point (quote, metric, product shot). Right: the form on the panel. Any theme; "opaline", "indigo"
+     and "lapis" look best. ≤1100px the brand side hides and the form takes the full width.
+     Replace every [[…]] placeholder. -->
+<html lang="en" data-theme="indigo">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in — [[App name]]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vista.css">
+  <script src="../assets/vista-motion.js"></script>
+</head>
+<body>
+<div class="vx-shell--auth">
+
+  <aside class="vx-auth__side vx-chrome">
+    <div class="vx-brand">
+      <div class="vx-brand__mark"><i data-lucide="[[brand-icon]]"></i></div>
+      <div class="vx-brand__text"><div class="vx-brand__name">[[App name]]</div><div class="vx-brand__sub">[[Tagline]]</div></div>
+    </div>
+    <div>
+      <p class="vx-auth__quote">“[[One sentence from a real customer about the outcome they got.]]”</p>
+      <div class="vx-row" style="margin-top:18px"><span class="vx-avatar vx-avatar--sky">[[AB]]</span><div><b>[[Full name]]</b><div class="vx-caption">[[Role, Company]]</div></div></div>
+    </div>
+    <div class="vx-grid-3">
+      <div><div class="vx-stat__value" data-vx-count>[[12,400]]</div><div class="vx-caption">[[teams]]</div></div>
+      <div><div class="vx-stat__value" data-vx-count>[[99.98]]%</div><div class="vx-caption">[[uptime]]</div></div>
+      <div><div class="vx-stat__value" data-vx-count>[[4.9]]</div><div class="vx-caption">[[average rating]]</div></div>
+    </div>
+  </aside>
+
+  <main class="vx-panel vx-auth__main">
+    <form class="vx-auth__form" data-vx-reveal onsubmit="event.preventDefault()">
+      <div>
+        <h1 class="vx-h1">[[Welcome back]]</h1>
+        <p class="vx-sub" style="margin-top:6px">[[Sign in to continue to App name.]]</p>
+      </div>
+      <div class="vx-grid-2">
+        <button type="button" class="vx-btn vx-btn--lg vx-ripple"><i data-lucide="[[icon]]"></i>[[Provider]]</button>
+        <button type="button" class="vx-btn vx-btn--lg vx-ripple"><i data-lucide="[[icon]]"></i>[[Provider]]</button>
+      </div>
+      <div class="vx-auth__divider">or with email</div>
+      <div class="vx-field"><label for="email">Work email</label><span class="vx-input vx-input--lg"><i data-lucide="mail"></i><input id="email" type="email" autocomplete="email" placeholder="[[name@company.com]]"></span></div>
+      <div class="vx-field"><label for="pw">Password</label><span class="vx-input vx-input--lg"><i data-lucide="lock"></i><input id="pw" type="password" autocomplete="current-password" placeholder="••••••••"></span></div>
+      <div class="vx-row vx-row--between"><label class="vx-row" style="gap:8px;font-size:13px"><span class="vx-check is-on" role="checkbox" aria-checked="true" tabindex="0"><i data-lucide="check"></i></span>Keep me signed in</label><a href="#" class="vx-accent" style="font-size:13px;font-weight:600">Forgot password?</a></div>
+      <button class="vx-btn vx-btn--cta vx-btn--lg vx-btn--block vx-ripple" data-vx-loading="1100" data-vx-toast="[[Signed in]]" data-vx-toast-sub="[[Redirecting to your workspace…]]">Sign in</button>
+      <p class="vx-caption" style="text-align:center">[[New here?]] <a href="#" class="vx-accent" style="font-weight:600">[[Create an account]]</a></p>
+    </form>
+  </main>
+</div>
+<script src="../assets/vendor/lucide.min.js"></script>
+<script src="../assets/vista-charts.js"></script>
+<script src="../assets/vista.js"></script>
+</body>
+</html>

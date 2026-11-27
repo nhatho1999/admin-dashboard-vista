@@ -3,13 +3,14 @@
    Types : bar · line · area · donut · gauge · ring · sparkline
    Usage : <div class="vx-chart" style="--h:240px" data-vx-chart="bar"
                 data-vx='{"labels":["Jan","Feb"],"series":[{"name":"Rev","data":[3,5]}]}'></div>
-           Charts auto-render on DOMContentLoaded and re-render on resize.
+           Charts auto-render on DOMContentLoaded and re-render (once per frame, at most) on resize.
            JS API: VistaCharts.render(el, type, config) / VistaCharts.renderAll(root)
    Colors: "var(--vx-chart-1)" … "--vx-chart-6" are used by default, or pass
            `color` per series / slice (any CSS color or token name like "chart-3").
    Motion: charts draw themselves in the first time they scroll into view (bars grow, lines
-           sweep, arcs fill). Calling render() again on the same element replays it faster
-           (period switch). Off with "animate": false, renderAll(root, {animate:false}),
+           sweep, arcs fill). Calling render() again on the same element morphs the old shapes
+           into the new data (bars / lines / areas with the same series & point count, where the
+           browser can animate the SVG `d` property) or else replays the draw-in faster. Off with "animate": false, renderAll(root, {animate:false}),
            <html data-vx-motion="off"> or prefers-reduced-motion.
    ========================================================================== */
 (function (global) {
@@ -38,6 +39,12 @@
     else if (f.compact !== false && Math.abs(n) >= 1e3) s = trim(n / 1e3) + "K";
     else s = f.decimals !== undefined ? n.toFixed(f.decimals) : trim(n);
     return (f.prefix || "") + s + (f.suffix || "");
+  }
+  /* labels, names and values may come from user data → never inject them as HTML */
+  function esc(v) {
+    return String(v === undefined || v === null ? "" : v).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
   }
   function trim(n) { return (Math.round(n * 10) / 10).toString(); }
   function niceMax(max, ticks) {
@@ -97,7 +104,7 @@
     if (!c) return;
     var d = document.createElement("div");
     d.className = "vx-chart__center" + (cls ? " " + cls : "");
-    d.innerHTML = (c.value !== undefined ? "<b>" + c.value + "</b>" : "") + (c.label ? "<span>" + c.label + "</span>" : "");
+    d.innerHTML = (c.value !== undefined ? "<b>" + esc(c.value) + "</b>" : "") + (c.label ? "<span>" + esc(c.label) + "</span>" : "");
     el.appendChild(d);
   }
   function seriesMax(series, stacked) {
@@ -140,22 +147,41 @@
     var bottom = cfg.xAxis === false ? 4 : 26;
     return { x: left, y: cfg.padTop || 10, w: s.w - left - (cfg.padRight || 8), h: s.h - bottom - (cfg.padTop || 10) };
   }
+  /* tooltip position = `translate` (compositor), not left/top (layout) */
+  function place(tip, x, y) { tip.style.translate = Math.round(x) + "px " + Math.round(y) + "px"; }
+  var scrolls = 0;   // bumps on any scroll → cached hover rects go stale
+  global.addEventListener("scroll", function () { scrolls++; }, { passive: true, capture: true });
+  global.addEventListener("resize", function () { scrolls++; }, { passive: true });
+  /* hover: one rect read per hover (not per event), one DOM update per frame, none if the index didn't change */
   function hoverLayer(el, svg, box, n, xAt, html, onMove) {
     var tip = tooltip(el), guide = h("line", { y1: box.y, y2: box.y + box.h, stroke: "var(--vx-chart-muted)", "stroke-width": 1, opacity: 0 }, svg);
     var hit = h("rect", { x: box.x, y: box.y, width: box.w, height: box.h, fill: "transparent" }, svg);
-    hit.addEventListener("mousemove", function (e) {
-      var r = svg.getBoundingClientRect(), mx = e.clientX - r.left, best = 0, bd = Infinity;
-      for (var i = 0; i < n; i++) { var d = Math.abs(xAt(i) - mx); if (d < bd) { bd = d; best = i; } }
+    var rect = null, at = -1, cur = -1, mx = 0, queued = false;
+    function frame() {
+      queued = false;
+      if (!rect) return;
+      var x = mx - rect.left, best = 0, bd = Infinity;
+      for (var i = 0; i < n; i++) { var d = Math.abs(xAt(i) - x); if (d < bd) { bd = d; best = i; } }
+      if (best === cur) return;
+      cur = best;
       guide.setAttribute("x1", xAt(best)); guide.setAttribute("x2", xAt(best)); guide.setAttribute("opacity", 1);
-      tip.innerHTML = html(best); tip.style.left = xAt(best) + "px"; tip.style.top = box.y + 8 + "px"; tip.classList.add("is-on");
+      tip.innerHTML = html(best); place(tip, xAt(best), box.y + 8); tip.classList.add("is-on");
       if (onMove) onMove(best);
+    }
+    hit.addEventListener("mousemove", function (e) {
+      if (!rect || at !== scrolls) { rect = svg.getBoundingClientRect(); at = scrolls; }
+      mx = e.clientX;
+      if (!queued) { queued = true; requestAnimationFrame(frame); }
     });
-    hit.addEventListener("mouseleave", function () { tip.classList.remove("is-on"); guide.setAttribute("opacity", 0); if (onMove) onMove(-1); });
+    hit.addEventListener("mouseleave", function () {
+      rect = null; cur = -1;
+      tip.classList.remove("is-on"); guide.setAttribute("opacity", 0); if (onMove) onMove(-1);
+    });
   }
   function tipHtml(cfg, i) {
-    var out = "<div>" + (cfg.labels ? cfg.labels[i] : "") + "</div>";
+    var out = "<div>" + esc(cfg.labels ? cfg.labels[i] : "") + "</div>";
     cfg.series.forEach(function (s, k) {
-      out += '<div class="row"><i style="--c:' + color(s.color, k) + '"></i>' + (s.name || "") + "<b>" + fmt(s.data[i], cfg.yFormat) + "</b></div>";
+      out += '<div class="row"><i style="--c:' + esc(color(s.color, k)) + '"></i>' + esc(s.name) + "<b>" + esc(fmt(s.data[i], cfg.yFormat)) + "</b></div>";
     });
     return out;
   }
@@ -194,7 +220,7 @@
           var pill = document.createElement("div");
           pill.className = "vx-chart-pill vx-chart-pill--light";
           pill.textContent = typeof cfg.highlightLabel === "string" ? cfg.highlightLabel : fmt(v, cfg.yFormat);
-          pill.style.left = x + bw / 2 + "px"; pill.style.top = y - 14 + "px";
+          pill.style.left = x + bw / 2 + "px"; pill.style.top = y - 14 + "px"; pill.setAttribute("data-k", "hl");
           el.appendChild(pill);
         }
       });
@@ -208,7 +234,7 @@
       }
     }
     if (cfg.tooltip !== false) hoverLayer(el, svg, box, n, cfg._xAt, function (i) { return tipHtml(cfg, i); }, function (sel) {
-      bars.forEach(function (b) { b.el.style.opacity = sel < 0 || b.i === sel ? "" : ".55"; });
+      bars.forEach(function (b) { var o = sel < 0 || b.i === sel ? "" : ".55"; if (b.o !== o) { b.o = o; b.el.style.opacity = o; } });
     });
   }
 
@@ -270,14 +296,18 @@
           "stroke-linecap": cfg.round === false ? "butt" : "round", "class": "vx-m-arc",
           "data-a": ((a0 + Math.PI / 2) / (Math.PI * 2)).toFixed(4), "data-s": ((a1 - a0) / (Math.PI * 2)).toFixed(4)
         }, svg);
-        p.addEventListener("mousemove", function (e) {
-          var b = el.getBoundingClientRect();
-          tip.innerHTML = '<div class="row"><i style="--c:' + color(d.color, i) + '"></i>' + d.label + "<b>" +
-            (cfg.format ? fmt(d.value, cfg.format) : Math.round((d.value / total) * 100) + "%") + "</b></div>";
-          tip.style.left = e.clientX - b.left + "px"; tip.style.top = e.clientY - b.top + "px"; tip.classList.add("is-on");
-          p.setAttribute("stroke-width", th + 4);
+        var b = null, at = -1, ex = 0, ey = 0, queued = false;
+        p.addEventListener("mouseenter", function () {
+          tip.innerHTML = '<div class="row"><i style="--c:' + esc(color(d.color, i)) + '"></i>' + esc(d.label) + "<b>" +
+            esc(cfg.format ? fmt(d.value, cfg.format) : Math.round((d.value / total) * 100) + "%") + "</b></div>";
+          tip.classList.add("is-on"); p.setAttribute("stroke-width", th + 4);
         });
-        p.addEventListener("mouseleave", function () { tip.classList.remove("is-on"); p.setAttribute("stroke-width", th); });
+        p.addEventListener("mousemove", function (e) {
+          if (!b || at !== scrolls) { b = el.getBoundingClientRect(); at = scrolls; }
+          ex = e.clientX - b.left; ey = e.clientY - b.top;
+          if (!queued) { queued = true; requestAnimationFrame(function () { queued = false; place(tip, ex, ey); }); }
+        });
+        p.addEventListener("mouseleave", function () { b = null; tip.classList.remove("is-on"); p.setAttribute("stroke-width", th); });
       }
       a += sweep;
     });
@@ -339,7 +369,7 @@
   };
 
   /* ---------- MOTION: draw-in on first view, quick replay on update ---------- */
-  var ROOT = document.documentElement, easeOk = {};
+  var ROOT = document.documentElement, easeOk = {}, TK = null;
   function motionOff() {
     return ROOT.getAttribute("data-vx-motion") === "off" ||
       !!(global.matchMedia && global.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -358,6 +388,16 @@
     }
     return easeOk[v] ? v : fb;
   }
+  /* motion tokens: shared with vista-motion.js when it is loaded, otherwise read once */
+  function tokens() {
+    if (global.VistaMotion && global.VistaMotion.tokens) return global.VistaMotion.tokens();
+    if (!TK) {
+      var out = tokEase("--vx-ease-out", "cubic-bezier(.16,1,.3,1)"), spring = tokEase("--vx-ease-spring", out);
+      TK = { draw: tokMs("--vx-dur-draw", 900), enter: tokMs("--vx-dur-enter", 560), glide: tokMs("--vx-dur-glide", 420),
+        out: out, spring: spring, bounce: tokEase("--vx-ease-bounce", spring) };
+    }
+    return TK;
+  }
   function extras(el) { return el.querySelectorAll(":scope > svg, :scope > .vx-chart-pill, :scope > .vx-chart__center"); }
   function hide(el) { extras(el).forEach(function (n) { n.style.opacity = "0"; }); }
   function unhide(el) { extras(el).forEach(function (n) { n.style.opacity = ""; }); }
@@ -373,9 +413,7 @@
     unhide(el);
     var svg = el.querySelector(":scope > svg");
     if (!svg || !svg.animate) return;
-    var draw = tokMs("--vx-dur-draw", 900) * speed, enter = tokMs("--vx-dur-enter", 560) * speed;
-    var out = tokEase("--vx-ease-out", "cubic-bezier(.16,1,.3,1)");
-    var spring = tokEase("--vx-ease-spring", out), bounce = tokEase("--vx-ease-bounce", spring);
+    var tk = tokens(), draw = tk.draw * speed, enter = tk.enter * speed, out = tk.out, spring = tk.spring, bounce = tk.bounce;
     function o(d, dur, ease) { return { duration: dur, delay: delay + d, easing: ease, fill: "backwards" }; }
     svg.animate([{ opacity: 0 }, { opacity: 1 }], o(0, 260 * speed, "linear"));
 
@@ -425,28 +463,65 @@
     });
   }, { threshold: 0.2 }) : null;
 
+  /* ---------- MORPH: old shapes flow into the new data (no redraw from zero) ---------- */
+  var MORPH = !!(global.CSS && CSS.supports && CSS.supports("d", 'path("M0 0")'));
+  var SHAPES = ".vx-m-bar, .vx-m-line, .vx-m-area";
+  function key(p) { return p.getAttribute("class") + ":" + (p.getAttribute("data-k") || 0) + ":" + (p.getAttribute("data-i") || ""); }
+  function sig(d) { return d.replace(/[^A-Za-z]/g, ""); }
+  function snapshot(el) {
+    var svg = el.querySelector(":scope > svg");
+    if (!svg || svg.querySelector(".vx-m-arc")) return null;
+    var m = {}, n = 0;
+    svg.querySelectorAll(SHAPES).forEach(function (p) { m[key(p)] = p.getAttribute("d"); n++; });
+    return n ? { d: m, n: n, vb: svg.getAttribute("viewBox") } : null;
+  }
+  function morph(el, prev) {
+    var svg = el.querySelector(":scope > svg");
+    if (!svg || svg.getAttribute("viewBox") !== prev.vb) return false;
+    var ps = svg.querySelectorAll(SHAPES), pairs = [];
+    if (ps.length !== prev.n) return false;
+    for (var i = 0; i < ps.length; i++) {
+      var from = prev.d[key(ps[i])], to = ps[i].getAttribute("d");
+      if (!from || sig(from) !== sig(to)) return false;
+      pairs.push([ps[i], from, to]);
+    }
+    if (!pairs.some(function (pr) { return pr[1] !== pr[2]; })) return false;   // same data → replay instead
+    var tk = tokens();
+    pairs.forEach(function (pr) {
+      if (pr[1] !== pr[2]) pr[0].animate([{ d: 'path("' + pr[1] + '")' }, { d: 'path("' + pr[2] + '")' }], { duration: tk.glide * 1.4, easing: tk.out });
+    });
+    // labels / dots / pills: quick settle instead of a full replay
+    svg.querySelectorAll(":scope > g, .vx-m-dot, .vx-m-ref").forEach(function (g) { g.animate([{ opacity: 0.25 }, { opacity: 1 }], { duration: tk.glide, easing: tk.out }); });
+    el.querySelectorAll(":scope > .vx-chart-pill, :scope > .vx-chart__center").forEach(function (p) { p.animate([{ opacity: 0 }, { opacity: 1 }], { duration: tk.glide, delay: tk.glide * 0.5, easing: tk.out, fill: "backwards" }); });
+    return true;
+  }
+
   function render(el, type, cfg, opts) {
     if (!TYPES[type]) { console.warn("[vista-charts] unknown type", type); return; }
+    var animate = cfg.animate !== false && !(opts && opts.animate === false) && !motionOff();
+    var prev = animate && el.__vxSeen && !el.__vxArmed && MORPH && !(opts && opts.replay) && el.__vx && el.__vx.type === type ? snapshot(el) : null;
     el.__vx = { type: type, cfg: cfg };
     el.classList.add("vx-chart");
     try { TYPES[type](el, cfg); } catch (err) { console.error("[vista-charts]", type, err); }
-    var animate = cfg.animate !== false && !(opts && opts.animate === false) && !motionOff();
-    if (!animate) el.__vxArmed = false;
-    else if (el.__vxSeen) play(el, 0.7, 0);              // data/period change → quick replay
+    if (!animate) { el.__vxArmed = false; unhide(el); }
+    else if (el.__vxSeen) { if (!(prev && morph(el, prev))) play(el, 0.7, 0); }   // data/period change
     else {
       el.__vxArmed = true; hide(el);
       if (io) io.observe(el); else play(el, 1, 0);
     }
     el.__vxSeen = true;
     if (!el.__vxObs && global.ResizeObserver) {
-      var last = 0;
-      el.__vxObs = new ResizeObserver(function (en) {
-        var w = Math.round(en[0].contentRect.width);
-        if (w && w !== last) {
-          last = w; TYPES[el.__vx.type](el, el.__vx.cfg);
-          if (el.__vxArmed) hide(el);
-        }
-      });
+      // start from the width just drawn: the observer's initial callback must not redraw it again.
+      // Later size changes redraw at most once per frame (drag-resizing a window fires many).
+      var last = el.clientWidth, queued = false;
+      var redraw = function () {
+        queued = false;
+        var w = el.clientWidth;
+        if (!w || Math.abs(w - last) < 1) return;
+        last = w; TYPES[el.__vx.type](el, el.__vx.cfg);
+        if (el.__vxArmed) hide(el);
+      };
+      el.__vxObs = new ResizeObserver(function () { if (!queued) { queued = true; requestAnimationFrame(redraw); } });
       el.__vxObs.observe(el);
     }
   }
@@ -465,7 +540,8 @@
   function flush() {
     document.querySelectorAll(".vx-chart").forEach(function (el) { if (el.__vxArmed) { if (io) io.unobserve(el); play(el, 1, 0); } });
   }
-  global.VistaCharts = { render: render, renderAll: renderAll, replay: function (el) { if (el.__vx) render(el, el.__vx.type, el.__vx.cfg); }, flush: flush, format: fmt };
+  global.VistaCharts = { render: render, renderAll: renderAll, replay: function (el) { if (el.__vx) render(el, el.__vx.type, el.__vx.cfg, { replay: true }); },
+    update: function (el, patch) { if (!el.__vx) return; var c = {}, k; for (k in el.__vx.cfg) c[k] = el.__vx.cfg[k]; for (k in patch) c[k] = patch[k]; render(el, el.__vx.type, c); }, flush: flush, format: fmt, escape: esc };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { renderAll(); });
   else renderAll();
 })(window);

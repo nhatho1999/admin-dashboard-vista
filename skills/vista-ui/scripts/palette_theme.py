@@ -250,7 +250,7 @@ ORDER = ["page", "ink", "ink-2", "ink-3", "on-dark", "on-dark-2", "on-dark-3", "
          "line", "primary", "primary-ink", "primary-soft", "cta", "cta-ink", "accent", "nav-active-bg", "nav-active-ink",
          "brand-mark", "chart-1", "chart-2", "chart-3", "chart-4", "chart-5", "chart-6", "chart-grid", "chart-muted"]
 
-DARK_FIXES = """[data-theme="{s}"] {{ --vx-pos: #4ade80; --vx-pos-soft: rgba(74, 222, 128, .14); --vx-neg: #f87171; --vx-neg-soft: rgba(248, 113, 113, .14);
+DARK_FIXES = """[data-theme="{s}"] {{ --vx-dialog-bg: #1d1d1f; --vx-pos: #4ade80; --vx-pos-soft: rgba(74, 222, 128, .14); --vx-neg: #f87171; --vx-neg-soft: rgba(248, 113, 113, .14);
   --vx-warn: #fbbf24; --vx-warn-soft: rgba(251, 191, 36, .14); --vx-info: #60a5fa; --vx-info-soft: rgba(96, 165, 250, .14); }}
 [data-theme="{s}"] .vx-panel {{ box-shadow: var(--vx-panel-shadow), inset 0 1px 0 rgba(255, 255, 255, .08); }}
 [data-theme="{s}"] :is(.vx-seg .is-active, .vx-chip.is-active, .vx-seg--light .is-active, .vx-btn--light, .vx-chart-pill--light) {{ color: #141414; }}

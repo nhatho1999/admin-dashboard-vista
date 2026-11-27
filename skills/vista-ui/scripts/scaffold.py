@@ -6,7 +6,8 @@ Usage:
     python3 scripts/scaffold.py --shell notch --out ./ui/crm.html --inline       # single self-contained file
 
 Shells : sidebar (lagoon | indigo | graphite | lapis | orchid | marina) · notch (evergreen | terracotta)
-         spatial (aurora | opaline) — any theme works in any shell; these pairings look best.
+         spatial (aurora | opaline) · topnav (marina | lapis | graphite | lagoon) · auth (indigo | opaline | lapis)
+         — any theme works in any shell; these pairings look best.
 Assets : by default the skill's assets/ folder is copied next to the page as  vista-assets/
          (skipped if it already exists unless --force-assets). --inline embeds everything instead.
 """
@@ -17,7 +18,7 @@ import shutil
 import sys
 
 SKILL = pathlib.Path(__file__).resolve().parent.parent
-DEFAULT_THEME = {"sidebar": "indigo", "notch": "evergreen", "spatial": "aurora"}
+DEFAULT_THEME = {"sidebar": "indigo", "notch": "evergreen", "spatial": "aurora", "topnav": "marina", "auth": "indigo"}
 THEMES = ["lagoon", "indigo", "aurora", "evergreen", "graphite", "terracotta", "lapis", "orchid", "opaline", "marina"]
 
 

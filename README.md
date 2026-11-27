@@ -3,8 +3,10 @@
 **vista-ui** is a *skill* for LLM agents (Claude Code, Codex, Cursor, Copilot, Windsurf… or any model that can
 read markdown) that produces Dribbble-quality **glassmorphism** dashboard UIs: frosted glass panels over gradient
 backgrounds, a floating sidebar, big-number KPI cards, smooth SVG charts and pill-shaped buttons —
-plus **professional motion**: the page enters in a choreographed sequence, charts draw themselves, numbers count up,
-an "active" pill glides between options, light follows the cursor across the glass, and toasts/skeletons/undo feel fluid.
+plus **professional motion**: the page enters in a choreographed sequence, charts draw themselves and morph when data
+changes, numbers roll like an odometer, an "active" pill glides between options, light follows the cursor across the glass,
+modals/drawers/sheets and a ⌘K palette spring in, kanban cards drag with FLIP re-layout, and toasts/skeletons/undo feel fluid —
+all tuned to stay smooth on weak hardware (glass never moves, adaptive lite glass on slow devices, one DOM write per frame).
 
 | Lagoon | Indigo |
 |---|---|
@@ -15,6 +17,12 @@ an "active" pill glides between options, light follows the cursor across the gla
 | ![graphite](docs/screenshots/graphite-saas-analytics-1440.png) | ![terracotta](docs/screenshots/terracotta-restaurant-reservations-1440.png) |
 | **Orchid · Support inbox** | **Opaline (light) · Settings** |
 | ![orchid](docs/screenshots/orchid-support-inbox-1440.png) | ![opaline](docs/screenshots/opaline-workspace-settings-1440.png) |
+| **Marina (topnav) · Sprint board — drag & drop** | **Lapis · Team calendar** |
+| ![marina](docs/screenshots/marina-project-board-1440.png) | ![lapis](docs/screenshots/lapis-team-calendar-1440.png) |
+| **Graphite · Deploy console — odometers, chart morph** | **Indigo (auth) · Sign in → 2FA** |
+| ![deploy](docs/screenshots/graphite-deploy-console-1440.png) | ![sign-in](docs/screenshots/indigo-sign-in-1440.png) |
+| **Orchid · Walkthrough — how the refund agent works** | |
+| ![walkthrough](docs/screenshots/orchid-agent-walkthrough-1440.png) | |
 | **Motion · Live operations** | **Entrance filmstrip (120 → 300 → 500 → 800 ms)** |
 | ![motion](docs/screenshots/lagoon-live-ops-motion-1440.png) | ![filmstrip](docs/screenshots/motion-entrance-filmstrip.png) |
 
@@ -24,28 +32,30 @@ an "active" pill glides between options, light follows the cursor across the gla
 skills/vista-ui/
 ├── SKILL.md                 # entry point: the 7-step workflow for the agent
 ├── assets/
-│   ├── vista.css            # design system: tokens, 10 themes, 3 shells, ~50 components (vx- prefix)
-│   ├── vista-charts.js      # dependency-free SVG charts: bar, line, area, donut, gauge, ring, sparkline (with draw-in)
-│   ├── vista-motion.js      # motion engine: entrance, scroll reveal, count-up, glider, glow/tilt, toast, FLIP
+│   ├── vista.css            # design system: tokens, 10 themes, 5 shells, ~60 components (vx- prefix), lite glass
+│   ├── vista-charts.js      # dependency-free SVG charts: bar, line, area, donut, gauge, ring, sparkline (draw-in + data morph)
+│   ├── vista-motion.js      # motion engine: entrance, reveal, count-up/odometer, glider, glow/tilt/magnetic/ripple, dialogs,
+│   │                        #   ⌘K palette, drag & drop, toast, FLIP, adaptive glass
 │   ├── vista.js             # icons + toggles for segmented/chips/tabs/switch, live theme switching
 │   └── vendor/lucide.min.js # Lucide icon set (ISC) — works offline
-├── templates/               # page shells: sidebar.html · notch.html · spatial.html
-├── examples/                # 9 complete pages (8 themes, many page types) + theme-gallery.html + index.html (gallery)
+├── templates/               # page shells: sidebar · notch · spatial · topnav (⌘K + drawer) · auth
+├── examples/                # 14 complete pages (all 10 themes, many page types) + theme-gallery.html + index.html (gallery)
 ├── references/              # in-depth docs, read by the agent only when needed
 │   ├── design-language.md   # the style's visual "DNA", do's and don'ts
 │   ├── themes.md            # 10 themes, picking a theme per product, generator, brand themes, dark mode
 │   ├── palettes.md / .json  # library of 53 mood-based palettes (minimal, warm, cool, vivid, modern)
 │   ├── components.md        # copy-paste HTML for every component
-│   ├── layouts.md           # shells + page recipes (overview, analytics, tables, gallery, inbox…)
+│   ├── layouts.md           # shells + page recipes (overview, analytics, tables, inbox, board, calendar, console, sign-in…)
 │   ├── charts.md            # chart API
-│   ├── motion.md            # motion language: tokens, entrance, patterns, recipes, a11y
+│   ├── motion.md            # motion language: tokens, entrance, patterns, recipes, performance rules, a11y
+│   ├── walkthroughs.md      # animate how a process works: run traces, handshakes, product tours, timings
 │   ├── framework-port.md    # using it with React/Next, Vue, Svelte, Tailwind, shadcn
 │   └── checklist.md         # pre-delivery QA checklist
 └── scripts/
     ├── scaffold.py          # create a new page from a template (copy or inline assets)
     ├── bundle.py            # inline CSS/JS into a single HTML file
     ├── palette_theme.py     # palette / hex codes → full Vista theme + contrast report
-    └── screenshot.py        # PNG capture + reports console errors, bad icon names, empty charts, leftover placeholders; --frames = motion filmstrip
+    └── screenshot.py        # PNG capture + reports console errors, bad icon names, empty charts, leftover placeholders; --frames = motion filmstrip; --perf = smoothness report
 adapters/system-prompt.md    # condensed prompt for agents that can't read the skill folder
 install.sh                   # installs the skill for each agent type
 AGENTS.md                    # instructions for agents working in this repo itself
@@ -84,15 +94,24 @@ Just add `<script src="vista-motion.js"></script>` to `<head>` (the templates al
 
 | Moment | Motion |
 |---|---|
-| Page load | sidebar slides in → panel settles → heading → cards rise in reading order (45ms stagger) |
+| Page load | glass chrome fades in, nav items slide → panel → heading → cards rise in reading order (45ms stagger) |
 | Scroll | cards below the fold rise as they enter the viewport |
-| Numbers | KPIs count up from 0 at a fixed width so nothing shifts; live updates flash green/red (`countTo`) |
-| Charts | bars spring up, lines sweep left → right, donut/gauge/ring sweep around; changing the period redraws |
+| Numbers | KPIs count up from 0 at a fixed width so nothing shifts; `data-vx-odometer` rolls digits on the GPU; live updates flash green/red (`countTo`) |
+| Charts | bars spring up, lines sweep left → right, donut/gauge/ring sweep around; new data morphs the shapes (`data-vx-patch`, `VistaCharts.update`) |
 | Selection | segmented / tabs / nav / dock: an "active" pill glides on a spring |
 | Hover | cursor-following light + glowing border (`vx-glow`), 3D tilt (`vx-tilt`), CTA shine |
-| Actions | gentle press shrink; loading buttons; glass toasts with a countdown bar, pause on hover, Undo; new rows slide in while others make room (FLIP) |
+| Actions | press shrink, ink ripple, magnetic CTA; loading buttons; glass toasts with a countdown bar, pause on hover, Undo; new rows slide in while others make room (FLIP) |
+| Overlays | `<dialog>` modal / drawer / sheet with spring in, faster out, Esc + backdrop close; ⌘K command palette with gliding highlight |
+| Drag & drop | `data-vx-sortable`: card lifts, slot opens, neighbours glide (FLIP), drop springs home; Alt+Arrow keys; `vx:sort` event |
+| Walkthroughs | `data-vx-sequence` plays a process step by step — run trace (spinner → check, parallel / loop / branch / fail), sequence-diagram arrows, stage stepper, sliding app screens, spotlight + coach label — with Run · Pause · Step · 0.5–2× · Reset |
 
 Intensity: `<html data-vx-motion="subtle|standard|expressive|off">`. `prefers-reduced-motion` is always respected.
+
+**Performance.** Live `backdrop-filter` is the costliest thing in a glass UI (measured: ~5× slower frames when the GPU
+can't help). So glass surfaces only fade, never move; `<html data-vx-glass="auto">` (default) samples the first second and
+switches slow devices to *lite glass* (no live blur, nearly identical over gradients) for the session; pointer effects,
+chart hover and resize are coalesced to one write per frame; count-ups batch layout reads; charts render once on load.
+Check any page with `screenshot.py --perf`.
 Details: `skills/vista-ui/references/motion.md`; live demo: `examples/lagoon-live-ops-motion.html`.
 
 ## Installation
@@ -118,6 +137,7 @@ python3 skills/vista-ui/scripts/scaffold.py --shell sidebar --theme lagoon --tit
 # fill in the [[placeholders]] …
 python3 skills/vista-ui/scripts/screenshot.py out/gym.html --full      # visual check
 python3 skills/vista-ui/scripts/screenshot.py out/gym.html --frames 0,150,300,600   # motion filmstrip
+python3 skills/vista-ui/scripts/screenshot.py out/gym.html --perf                     # smoothness report
 python3 skills/vista-ui/scripts/bundle.py out/gym.html -o out/gym.single.html   # single file for sharing
 ```
 The screenshot script needs Playwright: `pip install playwright && python -m playwright install --with-deps chromium`.
